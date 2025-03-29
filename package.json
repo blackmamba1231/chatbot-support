@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "Chatbot-support",
   "private": true,
   "scripts": {
     "build": "turbo run build",
