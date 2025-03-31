@@ -94,3 +94,9 @@ Instructions for deploying to production environments:
 ## Support
 
 For questions or issues, please open an issue on the GitHub repository or contact the development team at support@example.com.
+
+## Updates from freelancer:
+.\venv\Scripts\activate
+pip install -r requirements.txt
+python main.py
+http://localhost:3000
