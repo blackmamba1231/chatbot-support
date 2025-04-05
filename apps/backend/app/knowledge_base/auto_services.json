@@ -1,0 +1,50 @@
+{
+  "services": [
+    {
+      "id": "service1",
+      "name": "Premium Auto Service",
+      "description": "Full-service auto repair and maintenance facility specializing in brake systems, engine repair, and routine maintenance.",
+      "location": "123 Main Street, Cityville",
+      "contact": "+1-555-123-4567",
+      "website": "https://premiumauto.example.com",
+      "specialties": ["brake repair", "engine diagnostics", "oil change", "tire replacement"],
+      "hours": "Monday-Friday: 8am-6pm, Saturday: 9am-4pm"
+    },
+    {
+      "id": "service2",
+      "name": "Quick Fix Auto Center",
+      "description": "Rapid service auto center focusing on quick repairs and maintenance with same-day service guarantee.",
+      "location": "456 Oak Avenue, Townsburg",
+      "contact": "+1-555-987-6543",
+      "website": "https://quickfixauto.example.com",
+      "specialties": ["brake service", "quick oil change", "battery replacement", "headlight repair"],
+      "hours": "Monday-Saturday: 7am-7pm, Sunday: 9am-4pm"
+    },
+    {
+      "id": "service3",
+      "name": "Elite Brake Specialists",
+      "description": "Specialized auto service focusing exclusively on brake systems, offering comprehensive brake repairs and replacements.",
+      "location": "789 Pine Road, Villageton",
+      "contact": "+1-555-456-7890",
+      "website": "https://elitebrakes.example.com",
+      "specialties": ["brake pad replacement", "brake fluid flush", "rotor resurfacing", "brake line repair"],
+      "hours": "Monday-Friday: 8am-5pm, Saturday: 9am-3pm"
+    }
+  ],
+  "common_issues": {
+    "brake_problems": [
+      "Squeaking or grinding noises when braking",
+      "Soft or spongy brake pedal",
+      "Vehicle pulling to one side when braking",
+      "Vibration when braking",
+      "Brake warning light on dashboard",
+      "Burning smell while driving",
+      "Longer stopping distance"
+    ],
+    "recommended_maintenance": {
+      "brake_pads": "Every 30,000 to 70,000 miles depending on driving conditions",
+      "brake_fluid": "Every 2 years or 30,000 miles",
+      "rotors": "Usually replaced with brake pads if worn or damaged"
+    }
+  }
+}
