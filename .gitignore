@@ -4,6 +4,9 @@
 node_modules
 .pnp
 .pnp.js
+venv/
+__pycache__/
+*.pyc
 
 # Local env files
 .env
@@ -11,6 +14,7 @@ node_modules
 .env.development.local
 .env.test.local
 .env.production.local
+test.env
 
 # Testing
 coverage
@@ -18,6 +22,31 @@ coverage
 # Turbo
 .turbo
 
+# Cache and temp files
+.cache/
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+# Build outputs
+dist/
+build/
+.next/
+
+# API credentials
+credentials/
+
+# Test files
+test_*.py
+
+# Generated files
+*_latest.json
+woocommerce_api_docs.json
+
+# Temporary bundles
+*.bundle
 # Vercel
 .vercel
 

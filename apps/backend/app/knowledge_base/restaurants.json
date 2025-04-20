@@ -1,0 +1,904 @@
+{
+  "restaurants": [
+    {
+      "id": "32673",
+      "name": "<span class=\"notranslate\">Miercurea Ciuc &#8211; Nest Park Retail</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Strada Lunca Mare 5, Miercurea Ciuc, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32671",
+      "name": "Vaslui &#8211; Proxima Shopping Center",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Strada \u0218tefan cel Mare 79, Vaslui, Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall-1.png?fit=476%2C373&ssl=1"
+    },
+    {
+      "id": "32669",
+      "name": "<span class=\"notranslate\">T\u00e2rgu-Jiu &#8211; Targu-Jiu Shopping City</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32667",
+      "name": "<span class=\"notranslate\">Timi\u0219oara &#8211; Shopping City Timi\u0219oara</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32665",
+      "name": "<span class=\"notranslate\">Timi\u0219oara &#8211; Iulius Mall Timi\u0219oara</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32663",
+      "name": "<span class=\"notranslate\">Timi\u0219oara &#8211; Bega Shopping Center</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32661",
+      "name": "<span class=\"notranslate\">T\u00e2rgu Mure\u0219 &#8211; Shopping City</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32659",
+      "name": "<span class=\"notranslate\">T\u00e2rgu Mure\u0219 &#8211; PlazaM T\u00e2rgu Mure\u0219</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Strada Gheorghe Doja 243, T\u00e2rgu Mure\u0219, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32657",
+      "name": "<span class=\"notranslate\">T\u00e2rgu Mure\u0219 &#8211; Mure\u0219 Mall</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Bulevardul 1 Decembrie 1918 291, T\u00e2rgu Mure\u0219, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32655",
+      "name": "<span class=\"notranslate\">Suceava &#8211; Shopping City Suceava</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32653",
+      "name": "<span class=\"notranslate\">Suceava &#8211; Iulius Mall Suceava</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32651",
+      "name": "<span class=\"notranslate\">Sf\u00e2ntu Gheorghe &#8211; Sepsi Value Centre</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32649",
+      "name": "<span class=\"notranslate\">Sibiu &#8211; Shopping City Sibiu</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32647",
+      "name": "<span class=\"notranslate\">Sibiu &#8211; Promenada Sibiu</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32645",
+      "name": "<span class=\"notranslate\">Satu Mare &#8211; Satu Mare Shopping City</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32643",
+      "name": "<span class=\"notranslate\">R\u00e2mnicu V\u00e2lcea &#8211; Shopping City R\u00e2mnicu V\u00e2lcea</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32641",
+      "name": "<span class=\"notranslate\">R\u00e2mnicu V\u00e2lcea &#8211; River Plaza Mall</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32639",
+      "name": "<span class=\"notranslate\">Ploie\u0219ti &#8211; Prahova Value Center</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32637",
+      "name": "<span class=\"notranslate\">Ploie\u0219ti &#8211; Ploiesti Shopping City</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32635",
+      "name": "<span class=\"notranslate\">Ploie\u0219ti &#8211; AFI Ploiesti</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32633",
+      "name": "<span class=\"notranslate\">Pite\u0219ti &#8211; Vivo Pite\u0219ti</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32631",
+      "name": "<span class=\"notranslate\">Pite\u0219ti &#8211; Trivale Shopping Center</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32629",
+      "name": "<span class=\"notranslate\">Pite\u0219ti &#8211; Pite\u0219ti Shopping Park</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32627",
+      "name": "<span class=\"notranslate\">Pite\u0219ti &#8211; Pite\u0219ti Retail Park</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32625",
+      "name": "<span class=\"notranslate\">Pite\u0219ti &#8211; Supernova Shopping Center</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32623",
+      "name": "<span class=\"notranslate\">Pite\u0219ti &#8211; Arge\u0219 Mall</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32621",
+      "name": "<span class=\"notranslate\">Piatra Neamt &#8211; Shoping City Piatra Neamt</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32619",
+      "name": "<span class=\"notranslate\">Piatra Neam\u021b &#8211; Galleria Piatra Neam\u021b</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32617",
+      "name": "<span class=\"notranslate\">Oradea &#8211; Cri\u0219ul Shopping Center</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Oradea, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32615",
+      "name": "<span class=\"notranslate\">Oradea &#8211; Prima Shopping Center</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Oradea, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32613",
+      "name": "<span class=\"notranslate\">Oradea &#8211; Lotus Retail Park</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Oradea, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32611",
+      "name": "<span class=\"notranslate\">Oradea &#8211; Lotus Center</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Oradea, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32609",
+      "name": "<span class=\"notranslate\">Oradea &#8211; Era Shopping Park Oradea</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Oradea, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32607",
+      "name": "<span class=\"notranslate\">Ia\u0219i &#8211; Palas Mall</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32605",
+      "name": "<span class=\"notranslate\">Ia\u0219i &#8211; Moldova Center</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32603",
+      "name": "<span class=\"notranslate\">Ia\u0219i &#8211; Iulius Mall Ia\u0219i</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32601",
+      "name": "<span class=\"notranslate\">Ia\u0219i &#8211; MCM Center</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32599",
+      "name": "<span class=\"notranslate\">Ia\u0219i &#8211; Galeriile Comerciale IASSIORUM</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32597",
+      "name": "<span class=\"notranslate\">Ia\u0219i &#8211; Felicia Shopping Center</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32595",
+      "name": "<span class=\"notranslate\">Ia\u0219i &#8211; Era Shopping Park Ia\u0219i</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32593",
+      "name": "<span class=\"notranslate\">Gala\u021bi &#8211; Gala\u021bi Shopping City</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32591",
+      "name": "<span class=\"notranslate\">Foc\u0219ani &#8211; Foc\u0219ani Mall</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32589",
+      "name": "<span class=\"notranslate\">Drobeta Turnu Severin &#8211; Supernova Drobeta</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32587",
+      "name": "<span class=\"notranslate\">Drobeta Turnu Severin &#8211; Severin Shopping Center</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32585",
+      "name": "<span class=\"notranslate\">Deva &#8211; Shopping City Deva</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32583",
+      "name": "<span class=\"notranslate\">Craiova &#8211; Promenada Mall</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32581",
+      "name": "<span class=\"notranslate\">Craiova &#8211; Mercur Center</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32579",
+      "name": "<span class=\"notranslate\">Craiova &#8211; Electroputere Parc</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32577",
+      "name": "<span class=\"notranslate\">Craiova &#8211; Aliss Shopping City</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32575",
+      "name": "<span class=\"notranslate\">Constan\u021ba &#8211; Supernova Constan\u021ba</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32573",
+      "name": "<span class=\"notranslate\">Constan\u021ba &#8211; Vivo Constan\u021ba</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32571",
+      "name": "<span class=\"notranslate\">Constan\u021ba &#8211; Tomis Mall</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32569",
+      "name": "<span class=\"notranslate\">Constan\u021ba &#8211; Tom</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32567",
+      "name": "<span class=\"notranslate\">Constan\u021ba &#8211; City Park Mall</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32565",
+      "name": "<span class=\"notranslate\">Cluj-Napoca &#8211; Central</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Cluj-Napoca, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32563",
+      "name": "<span class=\"notranslate\">Cluj-Napoca &#8211; Sora Shopping Center</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Cluj-Napoca, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32561",
+      "name": "<span class=\"notranslate\">Cluj-Napoca &#8211; Iulius Mall Cluj</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Cluj-Napoca, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32559",
+      "name": "<span class=\"notranslate\">Cluj-Napoca &#8211; VIVO! Cluj-Napoca</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Cluj-Napoca, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32557",
+      "name": "<span class=\"notranslate\">Cluj-Napoca &#8211; Platinia Shopping Center</span>",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Cluj-Napoca, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32555",
+      "name": "<span class=\"notranslate\">Buz\u0103u &#8211; Galleria Buz\u0103u</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32553",
+      "name": "<span class=\"notranslate\">Buz\u0103u &#8211; Shopping City Buzau</span>",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32551",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Supernova Alexandriei</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32549",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Supernova Lujerului</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32547",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Galeriile Titan</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32545",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Vulcan Value Centre</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32543",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Vitantis Shopping Center</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32541",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Veranda Mall</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32539",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Unirea Shopping Center</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32537",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Sun Plaza</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32535",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Promenada Mall</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32533",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Prosper Plaza</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32531",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Plaza Romania</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32529",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Park Lake</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32527",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Militari Shopping</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32525",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Mega Mall</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32523",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Liberty Center</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32521",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Grand Arena</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32519",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Fashion House</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32517",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Dragonul Ro\u0219u</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32515",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Colosseum Retail Park</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32513",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Bucure\u0219ti Mall</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32511",
+      "name": "Livrare din Bucure\u0219ti &#8211; B\u0103neasa Shopping City",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Calea Unirii 22, Suceava, Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Bucuresti-%E2%80%93-Baneasa-Shopping-City.png?fit=564%2C476&ssl=1"
+    },
+    {
+      "id": "32509",
+      "name": "<span class=\"notranslate\">Bucure\u0219ti &#8211; Centrul Comercial Iris Titan</span>",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": ""
+    },
+    {
+      "id": "32507",
+      "name": "Livrare din Bucure\u0219ti &#8211; AFI Cotroceni",
+      "cuisine": "international",
+      "rating": 0.0,
+      "address": "Bucure\u0219ti, Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Bucuresti-%E2%80%93-AFI-Cotroceni.png?fit=604%2C488&ssl=1"
+    },
+    {
+      "id": "32505",
+      "name": "Livrare Br\u0103ila &#8211; Br\u0103ila Mall",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Braila-Braila-Mall.png?fit=493%2C379&ssl=1"
+    },
+    {
+      "id": "32503",
+      "name": "Bra\u0219ov &#8211; Star",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Brasov-Star.png?fit=497%2C384&ssl=1"
+    },
+    {
+      "id": "32499",
+      "name": "Livrare din Bra\u0219ov &#8211; Eliana Mall",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Brasov-Eliana-Mall.png?fit=485%2C385&ssl=1"
+    },
+    {
+      "id": "32497",
+      "name": "Bra\u0219ov &#8211; Magnolia Shopping Center",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Brasov-Magnolia-Shopping-Center.png?fit=411%2C331&ssl=1"
+    },
+    {
+      "id": "32495",
+      "name": "Livrare din Bra\u0219ov &#8211; Unirea Shopping Center Bra\u0219ov",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Brasov-Unirea-Shopping-Center-Brasov.png?fit=527%2C415&ssl=1"
+    },
+    {
+      "id": "32493",
+      "name": "Bra\u0219ov &#8211; Coresi Shopping Resort",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Coresi-Shopping-Resort.png?fit=474%2C391&ssl=1"
+    },
+    {
+      "id": "32491",
+      "name": "Bra\u0219ov &#8211; AFI Bra\u0219ov",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Brasov-AFI-Brasov.png?fit=462%2C389&ssl=1"
+    },
+    {
+      "id": "32489",
+      "name": "Livrare Boto\u0219ani &#8211; Uvertura Mall",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Botosani-Uvertura-Mall.png?fit=489%2C408&ssl=1"
+    },
+    {
+      "id": "32487",
+      "name": "Livrare Boto\u0219ani &#8211; Boto\u0219ani Shopping Center",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Botosani-Botosani-Shopping-Center.png?fit=293%2C280&ssl=1"
+    },
+    {
+      "id": "32485",
+      "name": "Livrare Bistri\u021ba &#8211; B1 Retail Park",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Bistrita-B1-Retail-Park.png?fit=505%2C391&ssl=1"
+    },
+    {
+      "id": "32483",
+      "name": "Livrare Bistri\u021ba &#8211; Bistri\u021ba Retail Park",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Bistrita-B1-Retail-Park.png?fit=505%2C391&ssl=1"
+    },
+    {
+      "id": "32481",
+      "name": "Livrare Baia Mare &#8211; Vivo Baia Mare",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Baia-Mare-Vivo-Baia-Mare.png?fit=418%2C386&ssl=1"
+    },
+    {
+      "id": "32479",
+      "name": "Livrare Bac\u0103u &#8211; Hello Shopping Park",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Bacau-Hello-Shopping-Park.png?fit=617%2C476&ssl=1"
+    },
+    {
+      "id": "32477",
+      "name": "Livrare Bac\u0103u &#8211; Arena Mall Bac\u0103u",
+      "cuisine": "mall delivery",
+      "rating": 0.0,
+      "address": "Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Bacau-Arena-Mall-Bacau.png?fit=576%2C525&ssl=1"
+    },
+    {
+      "id": "32475",
+      "name": "Livrare Arad &#8211; Atrium Mall",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Calea Aurel Vlaicu 10-12, Arad, Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Arad-Atrium-Mall.png?fit=593%2C474&ssl=1"
+    },
+    {
+      "id": "32473",
+      "name": "Alba Iulia &#8211; Carolina Mall",
+      "cuisine": "traditional",
+      "rating": 0.0,
+      "address": "Strada \u0218tefan cel Mare 22, Alba Iulia, Romania",
+      "phone": "+40 21 123 4567",
+      "image": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall.png?fit=476%2C373&ssl=1"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import json
 import os
 import random
 from datetime import datetime, timedelta
+from app.services.woocommerce_service import WooCommerceService
 
 class Document:
     def __init__(self, page_content, metadata=None):
@@ -16,11 +17,16 @@ class RAGEngine:
         self.qa_chain = None
         self.vector_store = None
         self.texts = []
+        self.wc_service = WooCommerceService()
         self.setup_engine()
 
     def setup_engine(self):
         """Initialize the RAG components"""
         try:
+            # Sync the knowledge base with the latest data from WooCommerce
+            self.wc_service.sync_knowledge_base()
+            
+            # Load the synced knowledge base
             kb_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "knowledge_base", "auto_services.json")
             with open(kb_path, 'r') as f:
                 kb_data = json.load(f)
@@ -95,6 +101,9 @@ class RAGEngine:
     
     def _find_nearest_services(self, location: Dict[str, float] = None) -> List[Document]:
         """Find services nearest to the user's location"""
+        # Get fresh data from WooCommerce
+        self.wc_service.sync_knowledge_base()
+        
         # In a real implementation, this would use geospatial calculations
         # For demo purposes, we'll just return all services
         return [doc for doc in self.texts if doc.metadata.get("type") == "service"]
