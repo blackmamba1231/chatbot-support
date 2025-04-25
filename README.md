@@ -1,73 +1,36 @@
 # Vogo.Family Mall Delivery Chatbot
 
-An AI-powered chatbot for Vogo.Family mall delivery services, providing seamless shopping experience across multiple Romanian cities.
+An AI-powered chatbot platform for Vogo.Family, supporting mall delivery, shopping, and customer support across web and mobile.
 
 ## Features
 
-- 🤖 AI-powered chat interface with GPT integration
+- 🤖 AI-powered chat (GPT-3.5/4, RAG)
 - 🗣️ Voice messaging with Whisper transcription
-- 🛍️ Mall delivery from multiple locations
-- 🏪 Real-time product catalog from WooCommerce
+- 🛍️ Mall delivery from multiple Romanian cities
+- 🏪 Real-time WooCommerce product catalog
 - 📧 Order confirmation emails
 - 💳 Secure payment processing
-- 📍 Location-based product recommendations
-- 🛒 Shopping cart functionality
-- 🔍 Product search and filtering
-- 📦 Order tracking and management
+- 📍 Location-based recommendations
+- 🛒 Shopping cart & order
+- 🔍 Product search
+- 📦 Order tracking
+- 🖥️ Modern web & 📱 mobile UI
+
+---
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) (v18 or later)
-- [Python](https://python.org/) (v3.9 or later)
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- [Python](https://python.org/) (v3.9+)
 - [Git](https://git-scm.com/)
-- [WooCommerce Store](https://woocommerce.com/) with API access
-- [OpenAI API Key](https://platform.openai.com/) for GPT and Whisper
+- [Android Studio](https://developer.android.com/studio) (for mobile dev)
+- [OpenAI API Key](https://platform.openai.com/)
+- [WooCommerce Store](https://woocommerce.com/) API credentials
 
-## Installation
+---
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/blackmamba1231/chatbot-support.git
-   cd chatbot-support
-   ```
+## 1. Clone the Repository
 
-2. **Backend Setup**
-   ```bash
-   cd apps/backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: .\venv\Scripts\activate
-   pip install -r requirements.txt
-   cp .env.example .env  # Update with your credentials
-   ```
-
-3. **Frontend Setup**
-   ```bash
-   cd ../fe
-   npm install
-   cp .env.example .env  # Update with your credentials
-   ```
-
-4. **Environment Configuration**
-
-   Update the following files with your credentials:
-   - `apps/backend/.env`:
-     ```env
-     OPENAI_API_KEY=your_api_key
-     WP_API_URL=https://your-store.com
-     WP_CONSUMER_KEY=your_woocommerce_key
-     WP_CONSUMER_SECRET=your_woocommerce_secret
-     SMTP_USERNAME=your_email@vogo.family
-     SMTP_PASSWORD=your_email_password
-     ```
-
-5. **Google Calendar Setup**
-   - Create a project in [Google Cloud Console](https://console.cloud.google.com/)
-   - Enable Google Calendar API
-   - Download credentials.json and place it in `apps/backend/`
-
-## Running the Application
-
-1. **Start the Backend**
    ```bash
    cd apps/backend
    uvicorn main:app --reload --port 8000

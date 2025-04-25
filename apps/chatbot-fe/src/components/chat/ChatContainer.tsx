@@ -174,16 +174,19 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
 
   return (
     <div className={cn(
-      'fixed bottom-4 right-4 w-96 bg-white rounded-lg shadow-xl flex flex-col',
-      'border border-gray-200',
+      'fixed bottom-6 right-6 w-full max-w-md z-50 font-sans',
+      'bg-white/70 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-100 flex flex-col',
+      'transition-all duration-300',
       className
-    )}>
+    )} style={{minHeight: 520, maxHeight: '80vh'}}>
+
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-blue-500 rounded-t-lg">
-        <h2 className="text-lg font-semibold text-white">Vogo.Family Support</h2>
+      <div className="flex items-center justify-between p-5 border-b border-gray-100 bg-blue-600 rounded-t-2xl shadow-sm relative z-20">
+        <h2 className="text-xl font-bold text-white tracking-tight">Vogo.Family Support</h2>
         <button
           onClick={onMinimize}
-          className="text-white hover:text-gray-200 transition-colors"
+          className="text-white hover:text-gray-200 transition-colors p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-white"
+          aria-label="Minimize chat"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -203,35 +206,34 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[400px]">
+      <div className="flex-1 overflow-y-auto p-4 space-y-6 max-h-[400px]">
         {messages.map((message) => (
           <div
             key={message.id}
             className={cn(
-              'flex items-start space-x-2',
-              message.role === 'user' ? 'justify-end' : 'justify-start'
+              'flex items-end',
+              message.role === 'user' ? 'justify-end flex-row-reverse' : 'justify-start'
             )}
           >
-            {message.role === 'assistant' && (
-              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium">
-                K
-              </div>
-            )}
-            <div
-              className={cn(
-                'max-w-[80%] p-3 rounded-lg',
-                message.role === 'user'
-                  ? 'bg-blue-500 text-white rounded-br-none'
-                  : 'bg-gray-100 text-gray-900 rounded-bl-none'
-              )}
-            >
-              {message.content}
+            {/* Avatar */}
+            <div className={cn(
+              'flex-shrink-0 w-10 h-10 rounded-full shadow-md flex items-center justify-center font-bold text-lg',
+              message.role === 'user' ? 'bg-gray-400 text-white ml-2' : 'bg-blue-500 text-white mr-2'
+            )}>
+              {message.role === 'user' ? 'Y' : 'K'}
             </div>
-            {message.role === 'user' && (
-              <div className="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center text-white text-sm font-medium">
-                Y
-              </div>
-            )}
+            {/* Message bubble */}
+            <div className={cn(
+              'relative px-4 py-3 rounded-2xl shadow-md text-base break-words',
+              message.role === 'user'
+                ? 'bg-blue-500 text-white rounded-br-md rounded-tr-3xl rounded-tl-3xl'
+                : 'bg-white/90 text-gray-900 rounded-bl-md rounded-tl-3xl rounded-tr-3xl border border-gray-100'
+            )}>
+              {message.content}
+              <span className="block text-xs text-gray-400 mt-1 text-right select-none">
+                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
+            </div>
           </div>
         ))}
         {/* Location selection buttons */}

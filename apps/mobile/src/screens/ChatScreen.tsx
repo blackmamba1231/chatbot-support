@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../../App';
 
 import {
@@ -103,9 +104,8 @@ const ChatScreen = () => {
     setIsLoading(true);
 
     try {
-      // Send message to backend
-      const response = await sendMessage(text);
-      
+      // Send message to backend (match web: { message, language })
+      const response = await sendMessage(text, 'en');
       // Add bot response to the chat
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -114,16 +114,13 @@ const ChatScreen = () => {
         timestamp: Date.now(),
       };
       setMessages((prevMessages: Message[]) => [...prevMessages, botMessage]);
-
-      // Handle special actions
+      // Handle special actions if needed (navigation, etc.)
       if (response.action === 'shopping_list_item_added') {
-        // Navigate to shopping list screen with the added item
         navigation.navigate('ShoppingList', { 
           newItem: response.item,
           message: `${response.item} added to your shopping list`
         });
       } else if (response.action === 'calendar_event_added') {
-        // Navigate to calendar screen with the added event
         navigation.navigate('Calendar', { 
           newEvent: response.event_details,
           message: response.response
@@ -131,7 +128,6 @@ const ChatScreen = () => {
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      // Add error message
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: 'Sorry, I encountered an error. Please try again.',
@@ -143,6 +139,7 @@ const ChatScreen = () => {
       setIsLoading(false);
     }
   };
+
 
   // Render message item
   const renderMessageItem = ({ item }: { item: Message }) => {
@@ -187,55 +184,57 @@ const ChatScreen = () => {
   }, [messages]);
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-    >
-      <FlatList
-        ref={flatListRef}
-        data={messages}
-        renderItem={renderMessageItem}
-        keyExtractor={(item: Message) => item.id}
-        contentContainerStyle={styles.messagesContainer}
-      />
-
-      {isLoading && (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#0066cc" />
-          <Text style={styles.loadingText}>Kodee is typing...</Text>
-        </View>
-      )}
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={inputText}
-          onChangeText={setInputText}
-          placeholder="Type a message..."
-          placeholderTextColor="#999"
-          multiline
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f5f5' }}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+      >
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          renderItem={renderMessageItem}
+          keyExtractor={(item: Message) => item.id}
+          contentContainerStyle={styles.messagesContainer}
         />
-        <TouchableOpacity
-          style={styles.recordButton}
-          onPressIn={startRecording}
-          onPressOut={stopRecording}
-        >
-          <Icon
-            name={isRecording ? 'mic' : 'mic-none'}
-            size={24}
-            color={isRecording ? '#ff4c4c' : '#0066cc'}
+
+        {isLoading && (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="small" color="#0066cc" />
+            <Text style={styles.loadingText}>Kodee is typing...</Text>
+          </View>
+        )}
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={inputText}
+            onChangeText={setInputText}
+            placeholder="Type a message..."
+            placeholderTextColor="#999"
+            multiline
           />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.sendButton, !inputText.trim() && styles.sendButtonDisabled]}
-          onPress={() => handleSendMessage()}
-          disabled={!inputText.trim()}
-        >
-          <Icon name="send" size={24} color={inputText.trim() ? '#fff' : '#aaa'} />
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+          <TouchableOpacity
+            style={styles.recordButton}
+            onPressIn={startRecording}
+            onPressOut={stopRecording}
+          >
+            <Icon
+              name={isRecording ? 'mic' : 'mic-none'}
+              size={24}
+              color={isRecording ? '#ff4c4c' : '#0066cc'}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.sendButton, !inputText.trim() && styles.sendButtonDisabled]}
+            onPress={() => handleSendMessage()}
+            disabled={!inputText.trim()}
+          >
+            <Icon name="send" size={24} color={inputText.trim() ? '#fff' : '#aaa'} />
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
