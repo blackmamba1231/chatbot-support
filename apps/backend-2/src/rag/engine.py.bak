@@ -1,0 +1,3103 @@
+import os
+import logging
+import json
+import re
+from typing import List, Dict, Any, Optional, Tuple
+from openai import OpenAI
+from src.services.woocommerce_service import WooCommerceService
+from src.services.database_sync import WooCommerceSync
+from src.services.scraper import VogoScraper
+from src.menu_categories import MenuCategories
+from src.rag.menu_router import MenuRouter
+
+logger = logging.getLogger(__name__)
+
+class RAGEngine(MenuCategories):
+    """
+    Retrieval-Augmented Generation (RAG) engine for AI-powered product recommendations
+    and chat responses.
+    """
+    
+    def __init__(self, woocommerce_service: WooCommerceService):
+        self.woocommerce = woocommerce_service
+        self.api_key = os.getenv("OPENAI_API_KEY")
+        self.model = "gpt-3.5-turbo"
+        self.use_woocommerce = True  # Flag to control whether to use WooCommerce API
+        
+        # Define system prompt template
+        self.system_prompt = """
+        You are a helpful assistant for vogo.family, a Romanian multi-service app. 
+        Respond to customer inquiries about the services we offer. Be friendly, helpful, and concise.
+        When asked about products or services, use ONLY the product information provided in the context.
+        Don't make up any products or services that aren't mentioned in the context.
+        If the relevant information isn't in the context, suggest that the customer explore the available options on our website.
+        
+        You can respond in English or Romanian depending on the language of the user's question.
+        Keep responses brief and focused on the products provided in the context.
+        """
+        
+        # Check if API key is configured
+        if not self.api_key:
+            logger.warning("OpenAI API key not set. Using mock responses.")
+            
+        # Initialize OpenAI client
+        self.client = None
+        if self.api_key:
+            self.client = OpenAI(api_key=self.api_key)
+            
+        # Initialize database sync service
+        self.db_sync = None
+        
+        # Initialize scraped data storage
+        self.scraped_data = {}
+        self.scraper = None
+        self.data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "scraped_data")
+        
+        # Initialize menu router for specialized menu handling
+        self.menu_router = MenuRouter()
+        
+    async def initialize(self) -> bool:
+        """
+        Initialize the RAG engine, including mandatory database synchronization.
+        This should be called during application startup.
+        
+        Returns:
+            bool: True if initialization was successful, False otherwise
+        """
+        logger.info("Initializing RAG engine")
+        
+        try:
+            # Try to initialize database sync if not initialized
+            if not self.db_sync:
+                # Get credentials from WooCommerceService
+                consumer_key = self.woocommerce.consumer_key
+                consumer_secret = self.woocommerce.consumer_secret
+                base_url = self.woocommerce.base_url
+                
+                # Create WooCommerceSync with required parameters
+                self.db_sync = WooCommerceSync(
+                    consumer_key=consumer_key,
+                    consumer_secret=consumer_secret,
+                    base_url=base_url
+                )
+                
+                # Optional database sync (don't fail if it doesn't work)
+                try:
+                    # Use initialize() instead of sync_categories_and_products()
+                    await self.db_sync.initialize()
+                    logger.info("Database synchronization completed successfully")
+                except Exception as e:
+                    logger.warning(f"Database synchronization error (non-critical): {e}")
+            
+            # Load any available scraped data
+            self._load_scraped_data()
+            
+            return True
+        except Exception as e:
+            logger.error(f"Error initializing RAG engine: {e}")
+            return False
+            
+    def _load_scraped_data(self) -> None:
+        """
+        Load scraped data from JSON files if available, with special handling for priority files.
+        Implements a hybrid approach prioritizing local JSON files for specialized menus.
+        """
+        if not os.path.exists(self.data_dir):
+            logger.info(f"Scraped data directory not found at {self.data_dir}")
+            return
+            
+        try:
+            # Track successful loads and total files
+            successful_loads = 0
+            total_files = 0
+            loaded_categories = []
+            
+            # Map of special categories that should use direct file access instead of caching
+            # These will be loaded but also accessed directly when needed
+            self.direct_access_categories = {
+                "italian": ["meniu_italian_detailed.json", "meniu_italian.json"],
+                "traditional": ["meniu_traditional_detailed.json", "meniu_traditional.json"],
+                "vegan": ["meniu_vegan_detailed.json", "meniu_vegan.json"],
+                "asian": ["meniu_asia_detailed.json", "meniu_asia.json"],
+                "arabic": ["meniu_arabesc.json"],
+                "greek": ["meniu_grecesc.json"],
+                "spanish": ["meniu_spaniol.json"],
+                "sport": ["meniu_sport.json"],
+                "organic": ["alimente_bio_detailed.json", "alimente_bio.json"],
+                "sugar_free": ["produse_fara_zahar_detailed.json", "produse_fara_zahar.json"],
+                "tutoring": ["pregatire_scoala_si_meditatii_detailed.json", "pregatire_scoala_si_meditatii.json"],
+                "olive_oil": ["ulei_de_masline_bio_detailed.json", "ulei_de_masline_bio.json"],
+                "essential_oils": ["uleiuri_esentiale_alimentare_bio_detailed.json", "uleiuri_esentiale_alimentare_bio.json"]
+            }
+            
+            # Flatten priority files list from the direct access categories map
+            priority_files = []
+            for category_files in self.direct_access_categories.values():
+                priority_files.extend(category_files)
+            
+            # Add other important files that should be prioritized but don't need direct access
+            priority_files.extend([
+                "restaurant_detailed.json",
+                "restaurant.json",
+                "mall_detailed.json",
+                "mall.json",
+                "travel_detailed.json", 
+                "travel.json",
+                "farma_detailed.json",
+                "farma.json",
+                "vip_assistance_detailed.json",
+                "vip_assistance.json"
+            ])
+            
+            # Remove duplicates while preserving order
+            priority_files = list(dict.fromkeys(priority_files))
+            
+            logger.info(f"Starting to load {len(priority_files)} priority files")
+            
+            # Try to load each priority file first
+            for priority_file in priority_files:
+                file_path = os.path.join(self.data_dir, priority_file)
+                if os.path.exists(file_path):
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            data = json.load(f)
+                            if isinstance(data, list):
+                                category_name = priority_file.replace('.json', '')
+                                self.scraped_data[category_name] = data
+                                logger.info(f"[PRIORITY] Loaded {len(data)} products from {priority_file}")
+                                successful_loads += 1
+                                loaded_categories.append(category_name)
+                            else:
+                                logger.warning(f"Skipping priority file {priority_file} as it does not contain a product list")
+                    except Exception as e:
+                        logger.error(f"Error loading priority file {priority_file}: {str(e)}")
+                else:
+                    logger.warning(f"Priority file {priority_file} not found at {file_path}")
+                    
+            # Verify all critical direct access categories have at least one file loaded
+            for category, files in self.direct_access_categories.items():
+                category_loaded = any(f.replace('.json', '') in loaded_categories for f in files)
+                if not category_loaded:
+                    logger.warning(f"⚠️ Critical category '{category}' has no files loaded. Direct file access will be used as fallback.")
+                else:
+                    logger.info(f"✅ Category '{category}' successfully loaded for hybrid access.")
+                    
+            # Add file paths to direct access categories for easier access
+            for category, files in self.direct_access_categories.items():
+                self.direct_access_categories[category] = [os.path.join(self.data_dir, f) for f in files]
+            
+            # Load all_products.json if it exists
+            all_products_path = os.path.join(self.data_dir, "all_products.json")
+            if os.path.exists(all_products_path):
+                with open(all_products_path, 'r', encoding='utf-8') as f:
+                    self.scraped_data["all_products"] = json.load(f)
+                logger.info(f"Loaded {len(self.scraped_data.get('all_products', []))} products from all_products.json")
+                successful_loads += 1
+                loaded_categories.append("all_products")
+                
+            # Load categories.json if it exists
+            categories_path = os.path.join(self.data_dir, "categories.json")
+            if os.path.exists(categories_path):
+                with open(categories_path, 'r', encoding='utf-8') as f:
+                    self.scraped_data["categories"] = json.load(f)
+                logger.info(f"Loaded {len(self.scraped_data.get('categories', []))} categories from categories.json")
+                successful_loads += 1
+                loaded_categories.append("categories")
+                
+            # Get all JSON files in the directory
+            all_json_files = [f for f in os.listdir(self.data_dir) 
+                             if f.endswith('.json') and not f.startswith('.')]
+            total_files = len(all_json_files)
+                           
+            # Load each category file
+            for cat_file in all_json_files:
+                # Skip files we've already loaded
+                if cat_file in priority_files or cat_file in ['all_products.json', 'categories.json', 'metadata.json']:
+                    continue  # Already loaded or not needed
+                    
+                category_name = cat_file.replace('.json', '')
+                # Skip if we already loaded this category
+                if category_name in self.scraped_data:
+                    continue
+                    
+                file_path = os.path.join(self.data_dir, cat_file)
+                
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                        if isinstance(data, list):
+                            self.scraped_data[category_name] = data
+                            logger.info(f"Loaded {len(data)} products from {cat_file}")
+                            successful_loads += 1
+                            loaded_categories.append(category_name)
+                        else:
+                            logger.warning(f"Skipping {cat_file} as it does not contain a product list")
+                except Exception as file_error:
+                    logger.error(f"Error loading {cat_file}: {file_error}")
+            
+            # Check backups directory if it exists
+            backups_dir = os.path.join(self.data_dir, "backups")
+            if os.path.exists(backups_dir) and os.path.isdir(backups_dir):
+                logger.info(f"Found backups directory, checking for most recent backups")
+                # Look for the most recent backup of each category if needed
+                for category in loaded_categories:
+                    backup_files = [f for f in os.listdir(backups_dir) 
+                                  if f.startswith(category) and f.endswith('.json')]
+                    backup_files.sort(reverse=True)  # Most recent first
+                    
+                    if backup_files and category not in self.scraped_data:
+                        try:
+                            backup_path = os.path.join(backups_dir, backup_files[0])
+                            with open(backup_path, 'r', encoding='utf-8') as f:
+                                self.scraped_data[category] = json.load(f)
+                            logger.info(f"Loaded backup data for {category} from {backup_files[0]}")
+                            successful_loads += 1
+                        except Exception as backup_error:
+                            logger.error(f"Error loading backup {backup_files[0]}: {backup_error}")
+            
+            # Verify critical files are loaded
+            critical_categories = ["meniu_italian", "meniu_italian_detailed"]
+            for critical in critical_categories:
+                if critical not in self.scraped_data or not self.scraped_data[critical]:
+                    logger.warning(f"CRITICAL: {critical} was not loaded or is empty - this may cause fallback to mock data")
+            # Log summary statistics
+            logger.info(f"Loaded {successful_loads} scraped data files with {len(loaded_categories)} categories")
+            if "all_products" in self.scraped_data:
+                logger.info(f"Total products in all_products: {len(self.scraped_data['all_products'])}")
+                
+        except Exception as e:
+            logger.error(f"Error loading scraped data: {str(e)}")
+            
+    def _format_scraped_products(self, products: List[Dict]) -> List[Dict]:
+        """
+        Transforms scraped products from JSON files to the format expected by the chatbot.
+        Handles different JSON formats including those with variations in field names.
+        
+        Args:
+            products: List of products from JSON files which may have various formats
+            
+        Returns:
+            List of standardized product dictionaries ready for the chatbot
+        """
+        formatted_products = []
+        
+        for i, product in enumerate(products):
+            # Skip empty or invalid products
+            if not product or not isinstance(product, dict):
+                continue
+                
+            # Create a standardized product dictionary
+            formatted_product = {
+                "id": product.get("id", 10000 + i),  # Generate ID if not present
+                "name": product.get("name", "Unnamed Product"),
+                "price": product.get("price", "N/A"),
+                "description": product.get("description", "") or product.get("long_description", ""),
+                "short_description": product.get("short_description", "") or product.get("description", "")[:100],
+                "permalink": product.get("permalink", product.get("url", "https://vogo.family")),
+                "categories": []
+            }
+            
+            # Handle categories
+            if "category" in product and product["category"]:
+                formatted_product["categories"] = [{"name": product["category"]}]
+            elif "categories" in product and isinstance(product["categories"], list):
+                formatted_product["categories"] = product["categories"]
+                
+            # Handle images
+            if "images" in product and isinstance(product["images"], list):
+                formatted_product["images"] = product["images"]
+            elif "image_url" in product and product["image_url"]:
+                formatted_product["images"] = [{"src": product["image_url"]}]
+            else:
+                formatted_product["images"] = [{"src": "https://vogo.family/wp-content/uploads/2025/02/default-image.jpg"}]
+                
+            # Format price if needed
+            if formatted_product["price"] and formatted_product["price"] != "N/A":
+                try:
+                    # Convert comma decimal separator to period if needed
+                    if isinstance(formatted_product["price"], str) and ',' in formatted_product["price"]:
+                        price_str = formatted_product["price"].replace(',', '.')
+                        # Remove any currency symbols or non-numeric characters except decimals
+                        price_str = ''.join(c for c in price_str if c.isdigit() or c == '.')
+                        price_float = float(price_str)
+                    else:
+                        price_float = float(formatted_product["price"])
+                    formatted_product["price"] = f"{price_float:.2f}"
+                except (ValueError, TypeError):
+                    # Keep as is if conversion fails
+                    pass
+                    
+            formatted_products.append(formatted_product)
+            
+        return formatted_products
+            
+    def _direct_load_category_products(self, category: str, max_items: int = 10) -> List[Dict]:
+        """
+        Directly load products from a specific category's JSON files, bypassing any caching.
+        This is the core of the hybrid approach - directly accessing files when needed.
+        
+        Args:
+            category: Category name (e.g., 'italian', 'vegan')
+            max_items: Maximum number of items to return
+            
+        Returns:
+            List of product dictionaries for the specified category
+        """
+        logger.info(f"Direct file loading for {category} category")
+        
+        # Map common category names to their file prefixes
+        category_mapping = {
+            'asian': ['meniu_asia', 'asia'],
+            'italian': ['meniu_italian', 'italian'],
+            'vegan': ['meniu_vegan', 'vegan'],
+            'traditional': ['meniu_traditional', 'traditional'],
+            'greek': ['meniu_grecesc', 'greek'],
+            'spanish': ['meniu_spaniol', 'spanish'],
+            'arabic': ['meniu_arabesc', 'arabic'],
+            'sport': ['meniu_sport', 'sport'],
+            'organic': ['alimente_bio', 'organic'],
+            'sugar_free': ['produse_fara_zahar', 'sugar_free'],
+            'restaurant': ['restaurant', 'restaurant_services'],
+            'restraunt': ['restaurant', 'restaurant_services']
+        }
+        
+        # Get possible file prefixes for this category
+        file_prefixes = [category]  # default to the category name itself
+        if category in category_mapping:
+            file_prefixes = category_mapping[category]
+        
+        # First, try direct category files
+        for prefix in file_prefixes:
+            for suffix in ['_detailed.json', '.json']:
+                file_path = os.path.join(self.data_dir, prefix + suffix)
+                if os.path.exists(file_path):
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            products = json.load(f)
+                            if isinstance(products, list) and products:
+                                logger.info(f"✅ Successfully loaded {len(products)} {category} products directly from {os.path.basename(file_path)}")
+                                return products[:max_items] if len(products) > max_items else products
+                    except Exception as e:
+                        logger.error(f"Error loading {category} from {file_path}: {str(e)}")
+        
+        # Check if this is a category we have mapped file paths for in the direct_access_categories
+        if category in self.direct_access_categories:
+            # Get the list of possible file paths for this category
+            file_paths = self.direct_access_categories[category]
+            
+            # Try each file path
+            for file_path in file_paths:
+                if os.path.exists(file_path):
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            products = json.load(f)
+                            if isinstance(products, list) and products:
+                                logger.info(f"✅ Successfully loaded {len(products)} {category} products directly from {os.path.basename(file_path)}")
+                                return products[:max_items] if len(products) > max_items else products
+                    except Exception as e:
+                        logger.error(f"Error loading {category} from {file_path}: {str(e)}")
+        
+        # If we get here, the category wasn't found in direct_access_categories or those files failed
+        
+        # If we reach here, try searching in all_products.json
+        all_products_path = os.path.join(self.data_dir, "all_products.json")
+        if os.path.exists(all_products_path):
+            try:
+                with open(all_products_path, 'r', encoding='utf-8') as f:
+                    all_products = json.load(f)
+                    
+                    # Define variations of the category name to look for
+                    category_variations = [
+                        category,
+                        f"meniu {category}",
+                        f"{category} menu",
+                        f"menu {category}",
+                        f"meniu_{category}"
+                    ]
+                    
+                    # Filter products by category
+                    filtered_products = []
+                    
+                    for product in all_products:
+                        # Check categories field
+                        if "categories" in product and isinstance(product["categories"], list):
+                            for cat in product["categories"]:
+                                if isinstance(cat, dict) and "name" in cat:
+                                    cat_name = cat["name"].lower()
+                                    if any(var.lower() in cat_name for var in category_variations):
+                                        filtered_products.append(product)
+                                        break
+                        
+                        # Also check in name and description (as backup)
+                        if len(filtered_products) < max_items:
+                            product_text = (product.get("name", "") + " " + 
+                                         product.get("description", "") + " " + 
+                                         product.get("short_description", "")).lower()
+                            
+                            if any(var.lower() in product_text for var in category_variations):
+                                if product not in filtered_products:  # Avoid duplicates
+                                    filtered_products.append(product)
+                    
+                    if filtered_products:
+                        logger.info(f"Found {len(filtered_products)} {category} products in all_products.json")
+                        return filtered_products[:max_items]
+            except Exception as e:
+                logger.error(f"Error searching for {category} in all_products.json: {str(e)}")
+        
+        # If we still don't have products, log a warning
+        logger.warning(f"⚠️ No {category} products found via direct file loading. Will use fallback data.")
+        return []
+    
+    def _get_restaurant_services(self) -> List[Dict]:
+        """
+        Returns a list of restaurant services.
+        OVERRIDE: This method ignores the restaurant.json file content since it contains unrelated products.
+        
+        Returns:
+            List of restaurant services dictionaries
+        """
+        logger.info("Getting restaurant services using curated restaurant data")
+        
+        # CRITICAL FIX: The restaurant.json file contains unrelated products
+        # So we'll provide proper restaurant services directly
+        return [
+            {
+                "id": 50001,
+                "name": "Restaurant Food Delivery - Premium",
+                "price": "50.00",
+                "description": "Premium restaurant food delivery service from any restaurant in your city. We pick up and deliver your favorite meals directly to your door. Available in all major Romanian cities.",
+                "short_description": "Premium restaurant food delivery from any local restaurant.",
+                "permalink": "https://vogo.family/restaurant-delivery/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/restaurant-delivery.jpg"}
+                ],
+                "categories": [{"name": "Restaurant Services"}]
+            },
+            {
+                "id": 50002,
+                "name": "Restaurant Reservation Assistance",
+                "price": "30.00",
+                "description": "Let us handle your restaurant reservations. We'll make calls, confirm bookings, and ensure you get the best table. Works with partner restaurants across Romania.",
+                "short_description": "Restaurant reservation booking service.",
+                "permalink": "https://vogo.family/restaurant-reservation/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/restaurant-reservation.jpg"}
+                ],
+                "categories": [{"name": "Restaurant Services"}]
+            },
+            {
+                "id": 50003,
+                "name": "Restaurant Menu Translation Service",
+                "price": "25.00",
+                "description": "On-demand translation of restaurant menus for foreign visitors. Available in 10+ languages including English, French, German, Spanish, and more.",
+                "short_description": "Restaurant menu translation in multiple languages.",
+                "permalink": "https://vogo.family/menu-translation/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/menu-translation.jpg"}
+                ],
+                "categories": [{"name": "Restaurant Services"}]
+            }
+        ]
+            
+    def _get_default_restaurant_products(self) -> List[Dict]:
+        """
+        Returns a list of default restaurant products that are always available.
+        Used as a fallback when API calls fail or no restaurant data is available.
+{{ ... }}
+        
+        Returns:
+            List of restaurant product dictionaries
+        """
+        # Try to get restaurant products from the JSON files first
+        restaurant_products = self._get_restaurant_products()
+        if restaurant_products:
+            return restaurant_products
+            
+        # Fall back to hardcoded defaults if no JSON data available
+        return [
+            {
+                "id": 9501,
+                "name": "Pizza Delivery Service",
+                "price": "45.00",
+                "description": "[Example Service] Fast pizza delivery from local restaurants to your door in under 30 minutes. Browse our full catalog on the website for all available restaurant options.",
+                "short_description": "Order your favorite pizza with our delivery service.",
+                "permalink": "https://vogo.family",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2023/04/pizza.jpg"}
+                ],
+                "categories": [{"id": 546, "name": "Restaurant Delivery"}]
+            },
+            {
+                "id": 9502,
+                "name": "Italian Cuisine Delivery",
+                "price": "55.00",
+                "description": "[Example Service] Authentic Italian cuisine delivered to your door. Our service partners with top-rated Italian restaurants throughout Romania.",
+                "short_description": "Authentic Italian cuisine delivered to your door.",
+                "permalink": "https://vogo.family",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2023/04/italian.jpg"}
+                ],
+                "categories": [{"id": 546, "name": "Restaurant Delivery"}]
+            },
+            {
+                "id": 9503,
+                "name": "Asian Fusion Delivery",
+                "price": "50.00",
+                "description": "[Example Service] Experience the best of Asian fusion cuisine delivered fresh to your location. Our partners include the top-rated Asian restaurants in your city.",
+                "short_description": "Asian cuisine delivered to your door.",
+                "permalink": "https://vogo.family",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2023/04/asian.jpg"}
+                ],
+                "categories": [{"id": 546, "name": "Restaurant Delivery"}]
+            },
+            {
+                "id": 9504,
+                "name": "Fast Food Delivery",
+                "price": "35.00",
+                "description": "[Example Service] Quick delivery of burgers, fries, and other fast food favorites from popular chains. Visit our website to see all available restaurants in your area.",
+                "short_description": "Fast food delivered to your door in minutes.",
+                "permalink": "https://vogo.family",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2023/04/fastfood.jpg"}
+                ],
+                "permalink": base_url,
+                "images": [{"src": f"{base_url}/wp-content/uploads/2023/04/fastfood.jpg"}],
+                "categories": [{"id": 546, "name": "Restaurant Delivery"}]
+            },
+            {
+                "id": 9505,
+                "name": "Sushi and Asian Cuisine",
+                "price": "60.00",
+                "description": "[Example Service] Premium sushi and Asian dishes delivered fresh to your location from top-rated restaurants. Check current availability and menus on our website.",
+                "short_description": "Fresh sushi and Asian cuisine delivery service.",
+                "permalink": base_url,
+                "images": [{"src": f"{base_url}/wp-content/uploads/2023/04/sushi.jpg"}],
+                "categories": [{"id": 546, "name": "Restaurant Delivery"}]
+            }
+        ]
+    
+    def _categorize_query(self, query: str) -> dict:
+        """
+        Categorize a query into different service types using semantic analysis.
+        
+        Args:
+            query: User's question
+            
+        Returns:
+            Dictionary with category flags and confidence scores
+        """
+        query_lower = query.lower()
+        
+        # ===== CATEGORY KEYWORD DEFINITIONS =====
+        # These extensive keyword lists help match user intent even if they don't use exact category names
+        
+        # Food and restaurant keywords - comprehensive set covering various cuisines and food preferences
+        food_keywords = [
+            # General food terms
+            "food", "restaurant", "pizza", "delivery", "meal", "lunch", "dinner", "breakfast", "brunch",
+            "menu", "order", "eat", "hungry", "cuisine", "dish", "pasta", "hungry", "tasty", "delicious",
+            "burger", "sandwich", "taco", "sushi", "steak", "seafood", "vegetarian", "vegan", "gluten-free",
+            "chef", "cook", "recipe", "takeout", "takeaway", "delivery", "dine", "dining",
+            # Cuisines
+            "italian", "chinese", "japanese", "indian", "mexican", "thai", "french", "mediterranean",
+            "greek", "turkish", "lebanese", "american", "fast food", "street food", "gourmet",
+            # Romanian equivalents
+            "mancare", "restaurant", "pizza", "livrare", "pranz", "cina", "mic dejun", "bucatarie",
+            "meniu", "comanda", "mananca", "foame", "bucatarie", "fel de mancare", "gustos", "delicios",
+            "ciorba", "supa", "friptura", "desert", "aperitiv", "bauturi", "cafenea"
+        ]
+        
+        # Pet query keywords - extended to include specific types of pet services and products
+        pet_keywords = [
+            # General pet terms
+            "pet", "dog", "cat", "animal", "veterinary", "vet", "clinic", "grooming", "pet sitting",
+            "kennel", "boarding", "pet hotel", "pet store", "pet food", "pet supplies", "pet accessories",
+            "pet medicine", "pet health", "pet care", "puppy", "kitten", "leash", "collar", "toy",
+            "litter", "bird", "fish", "reptile", "hamster", "guinea pig", "rabbit", "pet adoption",
+            # Romanian equivalents
+            "animale", "caine", "pisica", "veterinar", "clinica", "ingrijire", "hrana animale",
+            "accesorii", "joaca", "sanatate", "pensiune", "tratament", "caini", "pisici", "rozatoare"
+        ]
+        
+        # Spa and wellness keywords - expanded to include all types of spa treatments and wellness services
+        spa_keywords = [
+            # General spa terms
+            "spa", "massage", "wellness", "relaxation", "facial", "treatment", "temple", "beauty",
+            "relaxing", "therapy", "therapeutic", "aromatherapy", "hot stone", "deep tissue", "swedish",
+            "manicure", "pedicure", "body wrap", "sauna", "steam room", "jacuzzi", "hot tub", "retreat",
+            "meditation", "yoga", "pilates", "stress relief", "detox", "rejuvenation", "pamper",
+            # Romanian equivalents
+            "masaj", "relaxare", "facial", "tratament", "terapie", "wellness", "frumusete",
+            "sauna", "detoxifiere", "rejuvenare", "impachetari", "terapeutic", "relaxant", "tao"
+        ]
+        
+        # Shopping keywords - expanded to include different shopping contexts and specific product types
+        shopping_keywords = [
+            # General shopping terms
+            "mall", "shopping", "store", "buy", "purchase", "shop", "retail", "outlet", "market",
+            "supermarket", "hypermarket", "boutique", "clothing", "fashion", "electronics", "furniture",
+            "appliances", "books", "toys", "gifts", "jewelry", "accessories", "department store",
+            "sale", "discount", "price", "item", "product", "brand", "online shopping", "ecommerce",
+            # Romanian equivalents
+            "magazin", "cumpara", "achizitie", "produse", "cumparaturi", "pret", "reducere",
+            "haine", "incaltaminte", "electronice", "mobilier", "cadouri", "bijuterii"
+        ]
+        
+        # Travel and tourism keywords - comprehensive set covering all aspects of travel
+        travel_keywords = [
+            # General travel terms
+            "travel", "vacation", "holiday", "trip", "tour", "flight", "destination", "tourism",
+            "hotel", "resort", "booking", "tourist", "guide", "explore", "visit", "journey", "excursion",
+            "sightseeing", "attractions", "adventure", "cruise", "beach", "mountains", "island",
+            "passport", "visa", "luggage", "suitcase", "backpack", "itinerary", "reservation",
+            "airport", "airline", "accommodation", "hostel", "motel", "bed and breakfast", "villa",
+            "rent", "car rental", "train", "bus", "ferry", "transportation", "landmark", "monument",
+            "museum", "gallery", "park", "nature", "wildlife", "camping", "hiking", "backpacking",
+            # Popular destinations
+            "europe", "asia", "america", "africa", "australia", "caribbean", "mediterranean",
+            "paris", "london", "rome", "barcelona", "new york", "tokyo", "dubai", "bali", "phuket",
+            "abu dhabi", "alicante", "benidorm", "brasov", "dubai", "hurgada", "maldive", "antalya",
+            # Romanian equivalents
+            "calatorii", "vacanta", "concediu", "calatorie", "tur", "zbor", "destinatie",
+            "hotel", "cazare", "rezervare", "turist", "ghid", "turism", "explora", "vizita",
+            "bilet", "avion", "bagaj", "pasaport", "aeroport", "transport", "atractii", "plaja",
+            "munte", "insula", "plimbare", "aventura", "sejur", "circuit", "obiective turistice"
+        ]
+        
+        # Organic food and health food keywords - expanded to include all types of health foods
+        organic_food_keywords = [
+            # General organic/health food terms
+            "organic", "bio", "ecological", "natural", "healthy food", "eco", "health food", "superfood",
+            "non-gmo", "pesticide-free", "sustainable", "locally grown", "farm fresh", "farmers market",
+            "free range", "grass fed", "whole food", "raw food", "pure", "unprocessed", "clean eating",
+            "vegan food", "vegetarian food", "gluten-free food", "dairy-free", "sugar-free", "keto",
+            "paleo", "plant-based", "fruits", "vegetables", "grains", "nuts", "seeds", "herbs",
+            "vitamins", "minerals", "antioxidants", "supplements", "probiotics", "protein",
+            # Specific health foods
+            "quinoa", "chia", "flax", "hemp", "avocado", "coconut", "almond", "olive oil", "honey",
+            "green tea", "kombucha", "kefir", "yogurt", "tofu", "tempeh", "seitan", "spirulina", 
+            # Romanian equivalents
+            "aliment bio", "alimente bio", "ecologic", "natural", "sanatos", "organic", "sanatate",
+            "fara gluten", "fara lactoza", "fara zahar", "ulei", "seminte", "nuci", "fructe", "legume"
+        ]
+        
+        # Children related keywords - comprehensive coverage of child-related services
+        children_keywords = [
+            # General children terms
+            "children", "kids", "child", "baby", "toddler", "infant", "newborn", "teenager", "teen",
+            "daycare", "babysitting", "childcare", "kindergarten", "preschool", "school", "education",
+            "tutor", "tutoring", "lessons", "learning", "developmental", "playground", "toys",
+            "activities", "games", "books", "clothing", "shoes", "furniture", "stroller", "car seat",
+            "diaper", "bottle", "formula", "baby food", "safety", "pediatrician", "doctor",
+            # Romanian equivalents
+            "copii", "copil", "bebe", "bebelus", "adolescent", "prescolari", "scoala", "gradinita",
+            "educatie", "invatare", "meditatie", "meditatii", "activitati", "jocuri", "imbracaminte",
+            "incaltaminte", "carti", "jucarii", "pediatru", "pregatire scoala", "cresa"
+        ]
+        
+        # Medical/pharmacy keywords - all health services and products
+        medical_keywords = [
+            # General medical terms
+            "medicine", "pharmacy", "drug", "prescription", "health", "healthcare", "treatment",
+            "medication", "pharmaceutical", "doctor", "physician", "nurse", "clinic", "hospital",
+            "appointment", "consultation", "checkup", "examination", "diagnosis", "symptoms",
+            "therapy", "recovery", "rehabilitation", "specialist", "surgery", "emergency",
+            "first aid", "bandage", "pain relief", "cold", "flu", "allergy", "vitamin", "supplement",
+            # Romanian equivalents
+            "medicamente", "farmacie", "reteta", "sanatate", "tratament", "farma", "doctor",
+            "medic", "asistenta", "clinica", "spital", "consultatie", "diagnostic", "simptome",
+            "terapie", "recuperare", "specialist", "operatie", "urgenta", "prim ajutor", "durere"
+        ]
+        
+        # Weight control keywords - expanded to include fitness and diet products
+        weight_keywords = [
+            # General weight control terms
+            "weight", "diet", "slim", "fitness", "control", "lose weight", "weight loss", "fat burner",
+            "metabolism", "calorie", "nutrition", "healthy eating", "meal plan", "portion control",
+            "exercise", "workout", "gym", "training", "cardio", "strength", "muscle", "protein",
+            "supplement", "detox", "cleanse", "fasting", "intermittent fasting", "low carb", "keto",
+            "body fat", "scale", "measurement", "BMI", "body mass", "slimming", "toning",
+            # Romanian equivalents
+            "greutate", "dieta", "slabit", "fitness", "control greutate", "controlul greutatii",
+            "pierdere in greutate", "ardere grasimi", "metabolism", "calorii", "nutritie",
+            "alimentatie sanatoasa", "exercitii", "antrenament", "proteine", "detoxifiere"
+        ]
+
+        # VIP service keywords - all premium and exclusive services
+        vip_keywords = [
+            # General VIP terms
+            "vip", "exclusive", "premium", "luxury", "special service", "vip assistance", "elite",
+            "personal assistance", "concierge", "private", "tailored", "customized", "personalized",
+            "high-end", "first class", "priority", "special access", "privileged", "membership",
+            "dedicated", "exclusive access", "bespoke", "prestige", "affluent", "upscale", "deluxe",
+            # Romanian equivalents
+            "asistenta personala", "serviciu exclusiv", "lux", "premium", "personalizat",
+            "prioritar", "acces special", "privilegiat", "dedicat", "prestigios", "exclusivist"
+        ]
+
+        # 24h support keywords - terms related to continuous assistance
+        support_keywords = [
+            # General support terms
+            "support", "help", "assistance", "24/7", "24h", "emergency", "hotline", "helpline",
+            "customer service", "technical support", "round the clock", "all hours", "nonstop",
+            "continuous", "immediate", "instant", "urgent", "crisis", "assistance line", "call center",
+            # Romanian equivalents
+            "suport", "ajutor", "asistenta", "urgenta", "24 ore", "non-stop", "serviciu clienti",
+            "asistenta tehnica", "permanent", "imediat", "instant", "urgent", "criza", "linie asistenta"
+        ]
+        
+        # Italian menu items keywords
+        italian_menu_keywords = [
+            "pasta", "pizza", "risotto", "lasagna", "spaghetti", "carbonara", "bolognese", "penne",
+            "fettuccine", "alfredo", "parmesan", "mozzarella", "bruschetta", "antipasto", "tiramisu",
+            "gelato", "espresso", "cappuccino", "italian food", "italy cuisine", "mediterranean"
+        ]
+        
+        # Traditional menu items keywords (focusing on Romanian traditional food)
+        traditional_menu_keywords = [
+            "traditional", "authentic", "national cuisine", "local food", "heritage", "sarmale",
+            "mici", "mititei", "ciorba", "tochitura", "mamaliga", "placinta", "cozonac", "tuica", 
+            "home-cooked", "recipes", "countryside", "peasant", "regional", "homemade"
+        ]
+        
+        # Asian menu items keywords
+        asia_menu_keywords = [
+            "asian", "chinese", "japanese", "thai", "vietnamese", "korean", "sushi", "ramen", "pho",
+            "stir fry", "noodles", "rice", "curry", "dim sum", "spring roll", "pad thai", "teriyaki",
+            "tempura", "miso", "kimchi", "bibimbap", "bao", "wok", "asian cuisine", "orient"
+        ]
+        
+        # Vegan menu items keywords
+        vegan_menu_keywords = [
+            "vegan", "plant-based", "vegetarian", "meatless", "dairy-free", "eggless", "tofu",
+            "seitan", "tempeh", "legumes", "vegetables", "fruits", "grains", "nuts", "seeds",
+            "plant protein", "vegan cheese", "vegan meat", "vegan milk", "cruelty-free", "ethical"
+        ]
+        
+        # Essential oils keywords
+        essential_oils_keywords = [
+            "essential oil", "aromatherapy", "oil", "extract", "natural oil", "diffuser", "essence",
+            "lavender", "eucalyptus", "peppermint", "tea tree", "rosemary", "frankincense", 
+            "uleiuri", "ulei esential", "aromaterapie", "extract", "difuzor", "esenta", "natural"
+        ]
+        
+        # School preparation and tutoring keywords
+        school_prep_keywords = [
+            "school", "preparation", "tutoring", "tutor", "lessons", "homework", "study",
+            "education", "learning", "teacher", "academic", "course", "class", "subject",
+            "mathematics", "science", "history", "geography", "language", "literature",
+            "meditatii", "profesor", "pregatire", "scoala", "educatie", "invatare", "studiu"
+        ]
+        
+        # Combine related keywords into category groups for context-aware matching
+        food_categories = {
+            "food": food_keywords,
+            "italian_menu": italian_menu_keywords,
+            "traditional_menu": traditional_menu_keywords,
+            "asia_menu": asia_menu_keywords,
+            "vegan_menu": vegan_menu_keywords
+        }
+        
+        health_categories = {
+            "weight_control": weight_keywords,
+            "medical": medical_keywords,
+            "organic_food": organic_food_keywords,
+            "spa": spa_keywords,
+            "essential_oils": essential_oils_keywords
+        }
+        
+        service_categories = {
+            "vip": vip_keywords,
+            "support": support_keywords,
+            "pet": pet_keywords,
+            "children": children_keywords,
+            "school_prep": school_prep_keywords,
+            "travel": travel_keywords,
+            "shopping": shopping_keywords
+        }
+        
+        # Initialize categories dictionary
+        categories = {}
+        
+        # Perform semantic matching using context-aware keyword groups
+        # For food categories - check for cuisine type context
+        for category, keywords in food_categories.items():
+            # Check for both direct mentions and contextual clues
+            direct_match = any(keyword in query_lower for keyword in keywords)
+            food_context = any(food_term in query_lower for food_term in ["food", "eat", "meal", "dining", "restaurant", "mancare"])
+            categories[category] = direct_match or (food_context and any(related in query_lower for related in keywords[:5]))
+        
+        # For health categories - check for health context
+        for category, keywords in health_categories.items():
+            direct_match = any(keyword in query_lower for keyword in keywords)
+            health_context = any(health_term in query_lower for health_term in ["health", "wellness", "sanatate", "tratament"])
+            categories[category] = direct_match or (health_context and any(related in query_lower for related in keywords[:5]))
+            
+        # For service categories - standard matching plus context hints
+        for category, keywords in service_categories.items():
+            categories[category] = any(keyword in query_lower for keyword in keywords)
+        
+        # ===== SEMANTIC PATTERN MATCHING =====
+        # Look for phrase patterns that indicate intent without using specific keywords
+        
+        # Food intent patterns
+        food_patterns = [
+            "i want to eat", "i'm hungry", "food delivery", "order food", "want to order",
+            "looking for a restaurant", "place to eat", "places that deliver",
+            "vreau sa mananc", "mi-e foame", "livrare mancare", "comanda mancare"
+        ]
+        if any(pattern in query_lower for pattern in food_patterns):
+            categories["food"] = True
+            
+        # Travel intent patterns
+        travel_patterns = [
+            "places to visit", "going to", "planning a trip", "need a vacation", 
+            "book a hotel", "flight to", "where can i stay", "looking for accommodation",
+            "locuri de vizitat", "planuiesc o calatorie", "am nevoie de vacanta", "rezervare hotel"
+        ]
+        if any(pattern in query_lower for pattern in travel_patterns):
+            categories["travel"] = True
+            
+        # Check if city names are mentioned - likely travel intent
+        travel_destinations = [
+            "paris", "london", "rome", "barcelona", "new york", "tokyo", "dubai", "bali",
+            "abu dhabi", "alicante", "benidorm", "brasov", "hurgada", "antalya", "maldive"
+        ]
+        if any(city in query_lower for city in travel_destinations):
+            categories["travel"] = True
+        
+        # Pet-related intent patterns
+        pet_patterns = [
+            "my dog", "my cat", "pet needs", "for my pet", "pet care", "animal clinic",
+            "cainele meu", "pisica mea", "animal de companie", "ingrijire animal"
+        ]
+        if any(pattern in query_lower for pattern in pet_patterns):
+            categories["pet"] = True
+            
+        # Check for any direct category matches from scraped data
+        for category in self.scraped_data.keys():
+            # Skip internal categories like 'all_products'
+            if category in ["all_products", "categories", "metadata"]:
+                continue
+                
+            # Convert category name to readable form for matching
+            readable_category = category.replace("_", " ").replace("detailed", "").strip()
+            category_terms = readable_category.split()
+            
+            # Check for direct category mention or semantic match
+            if readable_category in query_lower or any(term.lower() in query_lower for term in category_terms if len(term) > 3):
+                categories[category] = True
+        
+        return categories
+        
+    def _is_food_query(self, query: str) -> Tuple[bool, bool]:
+        """
+        Determine if a query is about food delivery or restaurants.
+        
+        Args:
+            query: User's question
+            
+        Returns:
+            Tuple of (is_food_query, is_pet_query)
+        """
+        categories = self._categorize_query(query)
+        return categories["food"], categories["pet"]
+    
+    def _extract_location_from_query(self, query: str) -> Optional[str]:
+        """
+        Extract location information from user query.
+        
+        Args:
+            query: User's question (lowercase)
+            
+        Returns:
+            Extracted location or None if no location found
+        """
+        # Check for city names mentioned in the query
+        romanian_cities = {
+            # Major cities
+            "bucuresti": "bucuresti", "bucharest": "bucuresti", 
+            "cluj": "cluj", "cluj napoca": "cluj", "cluj-napoca": "cluj",
+            "timisoara": "timisoara", "iasi": "iasi", "brasov": "brasov",
+            "constanta": "constanta", "sibiu": "sibiu", "oradea": "oradea",
+            "arad": "arad", "bacau": "bacau", "pitesti": "pitesti",
+            
+            # Common location phrases
+            "in cluj": "cluj", "in bucharest": "bucuresti", "in bucuresti": "bucuresti"
+        }
+        
+        # Check if any city name is present in the query
+        for city_name, normalized_name in romanian_cities.items():
+            if city_name in query:
+                return normalized_name
+                
+        # Check for "in [location]" patterns
+        in_location_match = re.search(r"\\bin ([a-z]+)\\b", query)
+        if in_location_match:
+            possible_location = in_location_match.group(1)
+            if len(possible_location) > 3:  # Avoid short words
+                return possible_location
+                
+        return None
+    
+    async def _check_specific_product_match(self, query: str) -> List[Dict]:
+        """
+        Check for specific product types and intent when not location-based.
+        
+        Args:
+            query: User's question
+            
+        Returns:
+            List of products based on detected intent
+        """
+        # Ensure query is not None before processing
+        if not query:
+            logging.warning("Empty query provided to _check_specific_product_match")
+            return self._get_default_restaurant_products()  # Default to guaranteed restaurant products
+            
+        query_lower = query.lower()
+        
+        # Check if we can find category matches through the database sync
+        if self.db_sync and self.db_sync.all_categories:
+            # Try to find products based on category matching the query
+            category_products = self.db_sync.find_products_by_category_name(query)
+            if category_products:
+                logging.info(f"Found {len(category_products)} products in categories matching '{query}'")
+                return category_products
+            
+            # Try general search across all products
+            search_results = self.db_sync.search_products(query)
+            if search_results:
+                logging.info(f"Found {len(search_results)} products via database search for '{query}'")
+                return search_results
+        
+        # If database search didn't yield results, fall back to intent-based search with scraped data
+        # First, try to match with any of the available category files
+        categories = self._categorize_query(query_lower)
+        matched_categories = [cat for cat, is_match in categories.items() if is_match]
+        
+        logging.info(f"Matched categories from query: {matched_categories}")
+        
+        # Check each matched category for products
+        for category in matched_categories:
+            # Skip internal categories
+            if category in ['all_products', 'categories', 'metadata']:
+                continue
+                
+            products = self._get_category_products(category)
+            if products:
+                logging.info(f"Found {len(products)} products for category {category}")
+                return products
+                
+        # Also check if any existing JSON filename directly matches keywords in the query
+        # This handles cases where we have data files like 'farma.json' but no explicit category handling
+        existing_categories = [cat.replace('.json', '') for cat in os.listdir(self.data_dir) 
+                             if cat.endswith('.json') and not cat.startswith('.')]
+        
+        for cat in existing_categories:
+            if cat.lower() in query_lower or cat.lower().replace('_', ' ') in query_lower:
+                logging.info(f"Direct category match found: {cat}")
+                products = self._get_category_products(cat)
+                if products:
+                    return products
+                    
+        # If no match with scraped categories, fall back to keyword detection
+        food_keywords = ["restaurant", "food", "lunch", "dinner", "meal", "pizza", "burger", "mâncare", 
+                        "breakfast", "dining", "cuisine", "delivery", "restaurant", "livrare",
+                        "pizza", "hamburger", "kebab", "shaorma", "hungry", "eat"]
+        is_restaurant_query = any(keyword in query_lower for keyword in food_keywords)
+        
+        shopping_keywords = ["mall", "shop", "store", "shopping", "product", "purchase", "buy", "mall delivery"]
+        mall_delivery_keywords = ["mall delivery", "shopping center", "buy from mall", "shop at mall", "shopping mall"]
+        is_shopping_query = any(keyword in query_lower for keyword in shopping_keywords)
+        is_mall_delivery = any(keyword in query_lower for keyword in mall_delivery_keywords) or "mall" in query_lower
+        
+        pet_keywords = ["pet", "dog", "cat", "animal", "veterinary", "clinic", "vet", "pet food", "caini", "pisici", "hrana"]
+        is_pet_query = any(keyword in query_lower for keyword in pet_keywords)
+        
+        travel_keywords = ["travel", "vacation", "holiday", "trip", "tour", "flight", "destination", 
+                         "hotel", "resort", "booking", "tourist", "guide", "tourism", "explore",
+                         "calatorii", "vacanta", "concediu", "calatorie", "tur", "zbor"]
+        is_travel_query = any(keyword in query_lower for keyword in travel_keywords)
+        
+        medical_keywords = ["farma", "pharmacy", "medicine", "medical", "health", "doctor", "clinic", 
+                          "medicamente", "farmacie", "sanatate", "medic", "tratament"]
+        is_medical_query = any(keyword in query_lower for keyword in medical_keywords)
+        
+        vip_keywords = ["vip", "premium", "special", "exclusive", "priority", "assistance", "support", "24/7", "24h", 
+                      "concierge", "personal assistant", "dedicated service", "premium service", "vip assistance"]
+        is_vip_query = any(keyword in query_lower for keyword in vip_keywords)
+        
+        # Keywords for olive oil products
+        olive_oil_keywords = ["ulei de masline", "ulei de măsline", "olive oil", "ulei măsline", "ulei masline", 
+                            "masline", "măsline", "olives", "olive", "extravirgin", "extravirgin oil", "virgin oil"]
+        is_olive_oil_query = any(keyword in query_lower for keyword in olive_oil_keywords)
+        
+        # Keywords for essential oils
+        essential_oil_keywords = ["ulei esential", "ulei esențial", "uleiuri esentiale", "uleiuri esențiale", 
+                                "essential oil", "aromatherapy", "aromaterapie", "aromatic oil", "ulei aromatic", 
+                                "extract", "menta", "lamaie", "lămâie", "lemongrass", "trandafir", "rose oil", "mint oil"]
+        is_essential_oil_query = any(keyword in query_lower for keyword in essential_oil_keywords)
+        
+        # Keywords for sugar-free products
+        sugar_free_keywords = ["fara zahar", "fără zahăr", "sugar free", "sugar-free", "zero sugar", "no sugar", 
+                             "low carb", "keto", "ketogenic", "diabet", "diabetic", "dieta", "dietă", "diet", 
+                             "slabit", "slăbit", "weight loss"]
+        is_sugar_free_query = any(keyword in query_lower for keyword in sugar_free_keywords)
+        
+        # Keywords for school preparation and tutoring
+        tutoring_keywords = ["scoala", "școală", "school", "meditatii", "meditații", "tutoring", "tutor", 
+                           "pregatire", "pregătire", "preparation", "homework", "tema", "teme", "curs", "cursuri", 
+                           "course", "learn", "learning", "study", "education", "educational", "profesor", "teacher", 
+                           "student", "elev", "elevi"]
+        is_tutoring_query = any(keyword in query_lower for keyword in tutoring_keywords)
+        
+        # Keywords for specific menu types
+        asian_food_keywords = ["asian", "asia", "asiatic", "chinese", "chinezesc", "japanese", "japonez", 
+                             "sushi", "noodles", "taitei", "thai", "curry", "wok", "ramen", "miso", "dim sum", 
+                             "spring roll", "tofu"]
+        is_asian_food_query = any(keyword in query_lower for keyword in asian_food_keywords)
+        
+        vegan_food_keywords = ["vegan", "vegetarian", "vegetarian", "plant based", "plant-based", "veggie", "vege", 
+                             "fara carne", "fără carne", "fara produse animale", "fără produse animale", 
+                             "legume", "vegetal", "vegan shaorma", "tofu", "soia"]
+        is_vegan_food_query = any(keyword in query_lower for keyword in vegan_food_keywords)
+        
+        arabic_food_keywords = ["arabic", "arabesc", "arabian", "middle eastern", "mezze", "falafel", "hummus", 
+                              "shawarma", "kebab", "couscous", "tabouleh", "tabbouleh", "baklava", "halal", 
+                              "mancare araba", "mâncare arabă"]
+        is_arabic_food_query = any(keyword in query_lower for keyword in arabic_food_keywords)
+        
+        sport_menu_keywords = ["sport", "fitness", "protein", "athlete", "gym", "workout", "diet", "nutrition", 
+                              "nutritie", "nutriție", "sportiv", "atletic", "sala", "antrenament", "exercitii"]
+        is_sport_menu_query = any(keyword in query_lower for keyword in sport_menu_keywords)
+        
+        # Keywords for Greek cuisine
+        greek_food_keywords = ["greek", "grecesc", "greceasca", "gyros", "souvlaki", "moussaka", "tzatziki", 
+                             "feta", "dolma", "greece", "greek food", "mancare greceasca", "mâncare grecească", 
+                             "bucatarie greceasca", "bucătărie grecească", "elada", "elenic"]
+        is_greek_food_query = any(keyword in query_lower for keyword in greek_food_keywords)
+        
+        # Keywords for Italian cuisine
+        italian_food_keywords = ["italian", "italia", "pizza", "pasta", "spaghetti", "lasagna", "risotto", 
+                               "carbonara", "tiramisu", "parmesan", "parmigiana", "bolognese", "napoletana", 
+                               "italian food", "mancare italiana", "mâncare italiană", "bucatarie italiana", 
+                               "bucătărie italiană"]
+        is_italian_food_query = any(keyword in query_lower for keyword in italian_food_keywords)
+        
+        # Keywords for Spanish cuisine
+        spanish_food_keywords = ["spanish", "spaniol", "spaniola", "spain", "paella", "tapas", "tortilla", 
+                               "gazpacho", "churros", "sangria", "spanish food", "mancare spaniola", 
+                               "mâncare spaniolă", "bucatarie spaniola", "bucătărie spaniolă"]
+        is_spanish_food_query = any(keyword in query_lower for keyword in spanish_food_keywords)
+        
+        # Keywords for Traditional Romanian cuisine
+        traditional_food_keywords = ["traditional", "romania", "romanesc", "romaneasca", "românesc", "românească", 
+                                  "sarmale", "mici", "mititei", "ciorba", "tochitura", "mamaliga", "mămăligă", 
+                                  "cozonac", "placinta", "plăcintă", "traditional food", "mancare traditionala", 
+                                  "mâncare tradițională", "bucatarie romaneasca", "bucătărie românească"]  
+        is_traditional_food_query = any(keyword in query_lower for keyword in traditional_food_keywords)
+        
+        # Keywords for organic food products
+        organic_food_keywords = ["bio", "organic", "ecologic", "alimente bio", "alimente organice", "alimente ecologice", 
+                              "produse bio", "produse organice", "produse ecologice", "mâncare bio", "mâncare organică", 
+                              "mancare bio", "mancare organica", "natural", "fara chimicale", "fără chimicale", 
+                              "fara pesticide", "fără pesticide", "organic food", "eco", "natural food"]
+        is_organic_food_query = any(keyword in query_lower for keyword in organic_food_keywords)
+        
+        # For restaurant queries, check scraped data first before using defaults
+        if is_restaurant_query and not is_pet_query:
+            logging.info("Restaurant query detected, checking scraped data first")
+            # Try all_products.json first if it exists
+            all_products = self._get_category_products('all_products')
+            if all_products:
+                logging.info(f"Found {len(all_products)} products from all_products.json")
+                return all_products
+                
+            # Then try restaurant.json and restaurant_detailed.json
+            restaurant_products = self._get_restaurant_products()
+            if restaurant_products:
+                logging.info(f"Found {len(restaurant_products)} products from restaurant JSON files")
+                return restaurant_products
+                
+            # Then try with other restaurant-related categories as fallback
+            for restaurant_cat in ['meniu', 'food', 'meniu_italian', 'meniu_traditional', 'meniu_asia', 'meniu_vegan']:
+                products = self._get_category_products(restaurant_cat)
+                if products:
+                    logging.info(f"Found {len(products)} products for restaurant category {restaurant_cat}")
+                    return products
+                    
+            # No scraped data found, fall back to guaranteed products
+            logging.info("No restaurant data found in scraped files, using guaranteed restaurant products")
+            return self._get_default_restaurant_products()
+        elif is_medical_query:
+            logging.info("Medical/pharmacy query detected, checking scraped data")
+            # Try with both 'farma' and standard variations
+            for medical_cat in ['farma', 'medical', 'pharmacy', 'medicine', 'health']:
+                products = self._get_category_products(medical_cat)
+                if products:
+                    return products
+        elif is_travel_query:
+            logging.info("Travel query detected, checking scraped data")
+            products = self._get_category_products('travel')
+            if products:
+                return products
+            return self._get_travel_products()  # Fall back to hardcoded travel products
+        elif is_pet_query:
+            logging.info("Pet query detected, checking scraped data")
+            products = self._get_category_products('pet')
+            if products:
+                return products
+            return self._get_default_pet_products()  # Fall back to default pet products
+        elif is_vip_query:
+            logging.info("VIP assistance query detected, checking scraped data")
+            # Try looking for VIP products in various possible data files
+            for vip_cat in ['vip_services', 'suport_24h', '24_hour_support', 'vip', 'premium']:
+                products = self._get_category_products(vip_cat)
+                if products:
+                    logging.info(f"Found {len(products)} products for VIP category {vip_cat}")
+                    return products
+            # If no scraped VIP data found, fall back to default VIP products
+            logging.info("No VIP data found in scraped files, using default VIP products")
+            return self._get_vip_assistance()
+        elif is_olive_oil_query:
+            logging.info("Olive oil query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_olive_oil_products()
+        elif is_essential_oil_query:
+            logging.info("Essential oil query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_essential_oil_products()
+        elif is_sugar_free_query:
+            logging.info("Sugar-free products query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_sugar_free_products()
+        elif is_tutoring_query:
+            logging.info("School tutoring query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_tutoring_products()
+        elif is_asian_food_query:
+            logging.info("Asian food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_asian_food_products()
+        elif is_vegan_food_query:
+            logging.info("Vegan food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_vegan_food_products()
+        elif is_arabic_food_query:
+            logging.info("Arabic food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_arabic_food_products()
+        elif is_sport_menu_query:
+            logging.info("Sport menu query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_sport_menu_products()
+        elif is_greek_food_query:
+            logging.info("Greek food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_greek_food_products()
+        elif is_italian_food_query:
+            logging.info(" Italian food query detected - USING DIRECT METHOD CALL ")
+            # DIRECTLY call our specialized Italian food products method with high-priority override
+            try:
+                # This method has been optimized to directly load from file, bypassing any caching
+                italian_products = self._get_italian_food_products()
+                if italian_products:
+                    logging.info(f" Successfully loaded {len(italian_products)} Italian food products using direct method")
+                    return italian_products
+                else:
+                    logging.error(" Direct method returned empty Italian menu - this should not happen")
+            except Exception as e:
+                logging.error(f" Error in direct Italian food method: {str(e)}")
+            
+            # Fall back to generic restaurant products only as absolute last resort
+            logging.warning(" CRITICAL: All Italian food retrieval methods failed, falling back to generic products")
+            return self._get_default_restaurant_products()
+        elif is_spanish_food_query:
+            logging.info("Spanish food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_spanish_food_products()
+        elif is_traditional_food_query:
+            logging.info("Traditional Romanian food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_traditional_food_products()
+        elif is_organic_food_query:
+            logging.info("Organic food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_organic_food_products()
+        elif is_mall_delivery or "mall delivery" in query_lower:
+            logging.info("Mall delivery query detected, checking scraped data")
+            # Prioritize mall_detailed file first, then check others
+            for mall_cat in ['mall_detailed', 'mall', 'mall_delivery', 'shopping']:
+                products = self._get_category_products(mall_cat)
+                if products:
+                    logging.info(f"Found {len(products)} products for mall category {mall_cat}")
+                    return products
+        elif is_shopping_query:
+            logging.info("Shopping query detected, checking scraped data")
+            # Try with mall_detailed first, then other variations
+            for shopping_cat in ['mall_detailed', 'mall', 'shopping', 'mall_delivery']:
+                products = self._get_category_products(shopping_cat)
+                if products:
+                    logging.info(f"Found {len(products)} products for shopping category {shopping_cat}")
+                    return products
+                    
+        # Get relevant products from any scraped data as a broader search
+        scraped_products = self._get_relevant_scraped_products(query_lower)
+        if scraped_products:
+            logging.info(f"Found {len(scraped_products)} relevant scraped products")
+            return scraped_products
+            
+        # Only try to use WooCommerce API if use_woocommerce flag is True
+        if not self.use_woocommerce:
+            logging.info("WooCommerce API calls disabled, using default products")
+            return self._get_default_restaurant_products()
+        
+        # Try to find specific product matches using WooCommerce API
+        try:
+            # First check if this is a medical/pharmacy-related query
+            medical_keywords = ["farma", "pharmacy", "medicine", "medical", "health", "doctor", "clinic", 
+                            "medicamente", "farmacie", "sanatate", "medic", "tratament"]
+            is_medical_query = any(keyword in query_lower for keyword in medical_keywords)
+            
+            if is_medical_query:
+                logging.info("Medical/pharmacy query detected, checking for pharmacy products")
+                # Try to get pharmacy products from scraped data
+                pharmacy_products = self._get_pharmacy_products()
+                if pharmacy_products:
+                    logging.info(f"Returning {len(pharmacy_products)} pharmacy products")
+                    return pharmacy_products
+            
+            specific_products = await self.woocommerce.find_product_by_type(query)
+            
+            if specific_products:
+                # Filter out pet products if this might be a restaurant query
+                if is_restaurant_query:
+                    filtered_products = []
+                    for product in specific_products:
+                        name = product.get("name", "").lower()
+                        desc = (product.get("short_description", "") + " " + product.get("description", "")).lower()
+                        if not any(term in name or term in desc for term in pet_keywords):
+                            filtered_products.append(product)
+                    
+                    if filtered_products:
+                        logging.info(f"Found {len(filtered_products)} filtered products matching restaurant query")
+                        return filtered_products[:5]
+                    else:
+                        logging.info("No suitable restaurant products found, using guaranteed products")
+                        return self._get_default_restaurant_products()
+                else:
+                    logging.info(f"Found {len(specific_products)} specific products matching the user query")
+                    return specific_products[:5]  # Return top 5 specific products
+        except Exception as e:
+            logging.error(f"Error finding specific products: {e}")
+            # Continue to fallback options
+        
+        # If no specific intent or products found, fall back to category-based search
+        logging.info("No specific intent or products detected, using category-based search")
+        
+        # Get categories from query
+        categories = self._categorize_query(query_lower)
+        logging.info(f"Detected categories: {[c for c, v in categories.items() if v]}")
+        
+        # Prioritize specific category detection - medical/farma comes first
+        if categories.get("medical", False):
+            logging.info("Medical category detected, looking for pharmacy products")
+            farma_products = self._get_pharmacy_products()
+            if farma_products:
+                return farma_products
+        
+        # Check scraped data for all categories
+        for category, is_match in categories.items():
+            category_lower = category.lower()
+            potential_keys = [
+                category_lower,
+                category_lower.replace(" ", "_"),
+                category_lower.replace("_", " "),
+                f"{category_lower}_detailed",
+                category_lower.rstrip("s"),  # Singular form
+                f"{category_lower}s"  # Plural form
+            ]
+            
+            # Special cases for common categories
+            if category_lower in ['mall', 'delivery', 'mall delivery', 'shopping']:
+                potential_keys.extend(['mall_delivery', 'mall_delivery_detailed'])  
+            elif category_lower in ['restaurant', 'food', 'meal', 'lunch', 'dinner']:
+                potential_keys.extend(['restaurant', 'restaurant_detailed', 'food', 'meniu_italian', 'meniu_traditional'])
+            elif category_lower in ['medical', 'pharmacy', 'medicine', 'health']:
+                potential_keys.extend(['farma', 'farma_detailed'])
+            elif category_lower in ['travel', 'vacation', 'holiday']:
+                potential_keys.extend(['travel', 'travel_detailed', 'flights', 'hotels'])
+            
+            for key in potential_keys:
+                products = self._get_category_products(key)
+                if products:
+                    logging.info(f"Found {len(products)} products for category {key}")
+                    return products
+        
+        # Default products based on detected non-location intent
+        try:
+            # Check for medical/pharmacy related queries
+            medical_keywords = ["farma", "pharmacy", "medicine", "medical", "health", "doctor", "clinic", 
+                            "medicamente", "farmacie", "sanatate", "medic", "tratament"]
+            is_medical_query = any(keyword in query_lower for keyword in medical_keywords) or categories.get("medical", False)
+            
+            if is_medical_query:
+                logging.info("Medical/pharmacy query detected, returning pharmacy products")
+                return self._get_pharmacy_products()
+            elif is_restaurant_query:
+                logging.info("Returning guaranteed restaurant products based on food-related query")
+                return self._get_default_restaurant_products()
+            elif is_pet_query:
+                if not self.use_woocommerce:
+                    logging.info("WooCommerce API disabled, using default pet products")
+                    return self._get_default_pet_products()
+                    
+                try:
+                    products = await self.woocommerce.get_pet_products()
+                    if products and len(products) > 0:
+                        logging.info("Returning pet products based on pet-related query")
+                        return products
+                    else:
+                        logging.warning("No pet products found, using fallback pet products")
+                        return self._get_default_pet_products()
+                except Exception:
+                    logging.error("Error getting pet products, using default pet products")
+                    return self._get_default_pet_products()
+            elif categories.get("travel", False) or is_travel_query:
+                logging.info("Travel query detected, returning travel products")
+                return self._get_travel_products()
+                
+            elif is_shopping_query:
+                if not self.use_woocommerce:
+                    logging.info("WooCommerce API disabled, using default shopping products")
+                    return self._get_default_restaurant_products()  # Just use restaurant products as fallback
+                    
+                try:
+                    products = await self.woocommerce.get_mall_delivery_products()
+                    if products and len(products) > 0:
+                        logging.info("Returning mall delivery products based on shopping-related query")
+                        return products
+                    else:
+                        logging.warning("No mall products found, using default restaurant products")
+                        return self._get_default_restaurant_products()
+                except Exception:
+                    logging.error("Error getting mall products, using default restaurant products")
+                    return self._get_default_restaurant_products()
+            else:
+                # Fallback to guaranteed restaurant products if no specific intent detected
+                logging.info("No specific intent detected, returning guaranteed restaurant products as fallback")
+                return self._get_default_restaurant_products()
+        except Exception as e:
+            logging.error(f"Error getting category-based products: {e}")
+            # Ultimate fallback - return empty list if all else fails
+            return []  # Return empty list as ultimate fallback
+    
+    async def _get_relevant_products(self, query: str) -> List[Dict]:
+        """
+        Retrieve relevant products based on user query with advanced intent and location detection.
+        Production-ready implementation with comprehensive intent detection, location awareness,
+        and product type recognition for vogo.family platform.
+        
+        Args:
+            query: User's question or message
+            
+        Returns:
+            List of relevant products matched to user intent and location
+        """
+        if not query:
+            return []
+            
+        query_lower = query.lower()
+        
+        # Extract location information from the query
+        location = self._extract_location_from_query(query_lower)
+        
+        # Check if we should use scraped data instead of API data
+        scraped_products = self._get_relevant_scraped_products(query_lower, location)
+        if scraped_products:
+            logging.info(f"Found {len(scraped_products)} relevant products from scraped data")
+            return scraped_products
+        
+        # If location is found, prioritize location-based products
+        if location:
+            logging.info(f"Location detected in query: {location}")
+            
+            # Check if this is a restaurant query with location
+            is_food_query, is_pet_query = self._is_food_query(query)
+            
+            if is_food_query and not is_pet_query:
+                # Try scraped restaurant data first if available
+                scraped_restaurant_products = []
+                if self.scraped_data:
+                    for category_name, products in self.scraped_data.items():
+                        if "restaurant" in category_name.lower() and isinstance(products, list):
+                            # Filter by location if provided
+                            if location:
+                                products = [p for p in products if location.lower() in p.get("name", "").lower()]
+                            scraped_restaurant_products.extend(products)
+                    
+                    if scraped_restaurant_products:
+                        logging.info(f"Found {len(scraped_restaurant_products)} scraped restaurant products")
+                        return scraped_restaurant_products[:10]  # Limit to 10 products
+                
+                # If no scraped data, fall back to guaranteed products
+                logging.info("Restaurant query with location, using guaranteed restaurant products")
+                return self._get_default_restaurant_products()
+                
+            # Try to find products specific to the location
+            try:
+                # First check scraped data for location
+                if self.scraped_data and "all_products" in self.scraped_data:
+                    location_scraped_products = []
+                    for product in self.scraped_data.get("all_products", []):
+                        if location and location.lower() in product.get("name", "").lower():
+                            location_scraped_products.append(product)
+                    
+                    if location_scraped_products:
+                        logging.info(f"Found {len(location_scraped_products)} scraped products for location '{location}'")
+                        return location_scraped_products[:10]  # Limit to 10 products
+                
+                # If no scraped data for location, try API
+                location_products = await self.woocommerce.get_products_by_location(location)
+                if location_products:
+                    logging.info(f"Found {len(location_products)} API products for location '{location}'")
+                    return location_products
+            except Exception as e:
+                logging.error(f"Error getting location-based products: {e}")
+                
+            # If no location-specific products found, fall back to general intent matching
+            logging.info(f"No products found for location '{location}', falling back to intent detection")
+            
+        # Not a location-based query or no location-specific products found
+        logging.info("Not a location-based query, checking for specific product matches")
+        return await self._check_specific_product_match(query)
+        
+    def _get_relevant_scraped_products(self, query: str, location: Optional[str] = None) -> List[Dict]:
+        """
+        Get relevant products from scraped data based on query and optional location.
+        
+        Args:
+            query: User's question (lowercase)
+            location: Optional location to filter by
+            
+        Returns:
+            List of relevant scraped products
+        """
+        if not self.scraped_data:
+            return []
+            
+        # Extract keywords from query
+        query_words = set(query.split())
+        
+        # Find the most relevant file based on overlap with query words
+        file_relevance = {}
+        for category_name, products in self.scraped_data.items():
+            # Skip special collections
+            if category_name in ['all_products', 'categories', 'metadata']:
+                continue
+                
+            # Convert category name into searchable terms
+            category_terms = set(category_name.replace('_', ' ').lower().split())
+            
+            # Calculate relevance score based on word overlap
+            overlap = len(query_words.intersection(category_terms))
+            if overlap > 0:
+                file_relevance[category_name] = overlap
+        
+        # Sort by relevance score
+        sorted_categories = sorted(file_relevance.items(), key=lambda x: x[1], reverse=True)
+        logging.info(f"Relevant categories by keyword match: {sorted_categories}")
+        
+        # Get products from the most relevant categories
+        for category_name, score in sorted_categories:
+            products = self._get_category_products(category_name)
+            if products:
+                logging.info(f"Found {len(products)} products in category {category_name} with relevance score {score}")
+                return products
+        
+        # Look for location-specific products
+        if location:
+            for category_name, products in self.scraped_data.items():
+                location_products = []
+                for product in products:
+                    product_text = (product.get("name", "") + " " + product.get("description", "")).lower()
+                    if location.lower() in product_text:
+                        location_products.append(product)
+                        
+                if location_products:
+                    logging.info(f"Found {len(location_products)} products for location {location} in category {category_name}")
+                    return self._format_scraped_products(location_products)
+        
+        # Full text search across all products if no category match
+        all_matching_products = []
+        for category_name, products in self.scraped_data.items():
+            # Skip special collections
+            if category_name in ['all_products', 'categories', 'metadata']:
+                continue
+                
+            for product in products:
+                # Convert product data to searchable text
+                product_text = (f"{product.get('name', '')} {product.get('description', '')} "
+                               f"{product.get('short_description', '')} {category_name.replace('_', ' ')}").lower()
+                
+                # Check for query term matches
+                match_count = sum(1 for term in query_words if term in product_text)
+                
+                if match_count > 0:
+                    # Create a copy with relevance score and category
+                    product_copy = dict(product)
+                    product_copy['_relevance_score'] = match_count
+                    product_copy['_category'] = category_name
+                    all_matching_products.append(product_copy)
+        
+        if all_matching_products:
+            # Sort by relevance score
+            sorted_products = sorted(all_matching_products, 
+                                    key=lambda x: x.get('_relevance_score', 0), 
+                                    reverse=True)
+            logging.info(f"Found {len(sorted_products)} products by full text search")
+            return self._format_scraped_products(sorted_products[:5])
+        
+        # No products found through any method
+        return []
+        
+    def _format_scraped_products(self, products_list: List[Dict]) -> List[Dict]:
+        """
+        Format scraped products into a standardized structure.
+        
+        Args:
+            products_list: List of raw scraped product dictionaries
+            
+        Returns:
+            List of formatted product dictionaries
+        """
+        formatted_products = []
+        for product in products_list:
+            # Skip products without necessary data
+            if not product:
+                continue
+                
+            # Get category from product or from the _category field we might have added
+            category = product.get('category', product.get('_category', 'General'))
+            
+            # Generate a stable ID based on URL
+            product_id = hash(product.get("url", "")) % 10000 + 2000
+            
+            # Handle Unknown Product names
+            name = product.get("name", "")
+            if not name or name == "Unknown Product":
+                # Try to extract name from URL
+                extracted_name = self._extract_product_name_from_url(product.get("url", ""))
+                if extracted_name:
+                    name = extracted_name
+                else:
+                    # Use category as fallback for name
+                    name = f"{category.replace('_', ' ').title()} Product"
+            
+            # Create a standardized product object
+            product_obj = {
+                "id": product_id,
+                "name": name,
+                "price": product.get("price", "Price not available"),
+                "description": product.get("description", "") or product.get("short_description", "") or f"Service provided by vogo.family in the {category.replace('_', ' ')} category.",
+                "short_description": product.get("short_description", "") or f"{category.replace('_', ' ').title()} service",
+                "permalink": product.get("url") or "https://vogo.family",
+                "images": [
+                    {"src": img} for img in product.get("gallery_images", [])
+                ] if product.get("gallery_images") else [{
+                    "src": product.get("image_url") or f"https://vogo.family/wp-content/uploads/2023/04/service.jpg"
+                }],
+                "categories": [{
+                    "id": hash(category) % 1000 + 500,  # Generate stable category ID
+                    "name": category.replace("_", " ").title()
+                }]
+            }
+            
+            formatted_products.append(product_obj)
+            
+        return formatted_products[:5]  # Return up to 5 products
+        
+    def _extract_product_name_from_url(self, url: str) -> str:
+        """
+        Extracts a product name from its URL if possible.
+        
+        Args:
+            url: Product URL
+            
+        Returns:
+            Extracted product name or empty string
+        """
+        if not url or "/product/" not in url:
+            return ""
+            
+        # Extract part after /product/
+        try:
+            path = url.split("/product/")[1].rstrip("/")
+            # Replace hyphens with spaces and capitalize words
+            words = path.replace("-", " ").split()
+            return " ".join(word.capitalize() for word in words)
+        except Exception:
+            return ""
+    
+    def _get_travel_products(self) -> List[Dict]:
+        """
+        Returns a list of travel products, preferably from scraped data.
+        If no travel products are found in scraped data, returns generic travel products.
+        
+        Returns:
+            List of travel product dictionaries
+        """
+        # First check if we have travel data in scraped_data
+        if "travel" in self.scraped_data and self.scraped_data["travel"]:
+            logging.info(f"Found {len(self.scraped_data['travel'])} travel products in scraped data")
+            # Convert the scraped data to WooCommerce-like format
+            travel_products = []
+            for product in self.scraped_data["travel"]:
+                # Skip products with no name
+                if product.get("name") == "Unknown Product":
+                    continue
+                    
+                product_obj = {
+                    "id": hash(product.get("url", "")) % 10000 + 8000,  # Generate a stable ID based on URL
+                    "name": product.get("name") or f"Travel Service: {product.get('category', 'General')}",
+                    "price": product.get("price") or "99.00",
+                    "description": product.get("short_description") or "Travel service by vogo.family",
+                    "short_description": product.get("short_description") or "Travel service",
+                    "permalink": product.get("url") or "https://vogo.family",
+                    "images": [
+                        {"src": img} for img in product.get("gallery_images", [])
+                    ] if product.get("gallery_images") else [{"src": product.get("image_url") or "https://vogo.family/wp-content/uploads/2023/04/travel.jpg"}],
+                    "categories": [
+                        {"id": 600, "name": "Travel"}
+                    ]
+                }
+                travel_products.append(product_obj)
+                
+            if travel_products:
+                return travel_products[:5]  # Return top 5 travel products
+        
+        # If no travel products found in scraped data, return generic ones
+        logging.info("No travel products found in scraped data, returning generic travel products")
+        base_url = "https://vogo.family"
+        return [
+            {
+                "id": 8001,
+                "name": "Travel Guide and Assistance - Barcelona",
+                "price": "99.00",
+                "description": "Comprehensive travel guide and assistance for Barcelona. Get detailed information about the city, attractions, transportation, dining, and more.",
+                "short_description": "Get expert guidance for your trip to Barcelona.",
+                "permalink": f"{base_url}/product/travel-guide-and-assistance-barcelona/",
+                "images": [{"src": f"{base_url}/wp-content/uploads/2023/04/barcelona.jpg"}],
+                "categories": [{"id": 600, "name": "Travel"}]
+            },
+            {
+                "id": 8002,
+                "name": "Travel Guide and Assistance - Abu Dhabi",
+                "price": "99.00",
+                "description": "Comprehensive travel guide and assistance for Abu Dhabi. Get detailed information about the city, attractions, transportation, dining, and more.",
+                "short_description": "Get expert guidance for your trip to Abu Dhabi.",
+                "permalink": f"{base_url}/product/travel-guide-and-assistance-abu-dhabi/",
+                "images": [{"src": f"{base_url}/wp-content/uploads/2023/04/abudhabi.jpg"}],
+                "categories": [{"id": 600, "name": "Travel"}]
+            },
+            {
+                "id": 8003,
+                "name": "Travel Guide and Assistance - Hurgada",
+                "price": "99.00",
+                "description": "Comprehensive travel guide and assistance for Hurgada. Get detailed information about the city, attractions, transportation, dining, and more.",
+                "short_description": "Get expert guidance for your trip to Hurgada.",
+                "permalink": f"{base_url}/product/travel-guide-and-assistance-hurgada/",
+                "images": [{"src": f"{base_url}/wp-content/uploads/2023/04/hurgada.jpg"}],
+                "categories": [{"id": 600, "name": "Travel"}]
+            },
+            {
+                "id": 9601,
+                "name": "International Flight Booking",
+                "price": "150.00",
+                "description": "[Example Service] Book international flights to any destination with our premium travel service. Visit our website for current availability and route information.",
+                "short_description": "Book international flights to any destination.",
+                "permalink": base_url,
+                "images": [{"src": f"{base_url}/wp-content/uploads/2023/04/flight.jpg"}],
+                "categories": [{"id": 547, "name": "Travel Services"}]
+            },
+            {
+                "id": 9605,
+                "name": "Travel Insurance",
+                "price": "30.00",
+                "description": "[Example Service] Comprehensive travel insurance for worry-free vacations. Coverage includes trip cancellation, medical emergencies, and lost luggage. Visit our website for policy details.",
+                "short_description": "Comprehensive travel insurance for peace of mind.",
+                "permalink": base_url,
+                "images": [{"src": f"{base_url}/wp-content/uploads/2023/04/insurance.jpg"}],
+                "categories": [{"id": 547, "name": "Travel Services"}]
+            }
+        ]
+    
+    def _direct_load_category_products(self, category_key: str, max_items: int = 5) -> List[Dict]:
+        """
+        Helper method for direct file loading for specialized categories.
+        This is part of the hybrid approach that bypasses caching when needed.
+        
+        Args:
+            category_key: The key in direct_access_categories map (e.g., "italian", "asian")
+            max_items: Maximum number of items to return
+            
+        Returns:
+            List of formatted product dictionaries or empty list if not found
+        """
+        if not hasattr(self, 'direct_access_categories'):
+            logging.warning(f"Direct access categories not initialized. Call _load_scraped_data first.")
+            return []
+            
+        if category_key not in self.direct_access_categories:
+            logging.warning(f"Category key '{category_key}' not found in direct access categories")
+            return []
+            
+        # Get file paths for this category
+        file_paths = self.direct_access_categories[category_key]
+        if not file_paths:
+            logging.warning(f"No file paths found for category '{category_key}'")
+            return []
+            
+        # Try each file in order (detailed first)
+        for file_path in file_paths:
+            if os.path.exists(file_path):
+                try:
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        raw_data = json.load(f)
+                        if isinstance(raw_data, list) and raw_data:
+                            logging.info(f"Direct load: Successfully loaded {len(raw_data)} products from {os.path.basename(file_path)}")
+                            # Format into proper product structure
+                            return self._format_scraped_products(raw_data[:max_items])
+                except Exception as e:
+                    logging.error(f"Error directly loading {file_path}: {str(e)}")
+                    continue
+            else:
+                logging.info(f"File not found: {file_path}")
+                    
+        # If we get here, nothing was found
+        logging.warning(f"No usable files found for category '{category_key}'")
+        return []
+
+    async def get_products_for_query(self, query: str) -> List[Dict]:
+        """
+        Get relevant products for a user query.
+        Implements a hybrid approach that first checks specialized categories directly
+        and then falls back to WooCommerce API as needed.
+        
+        Args:
+            query: User's question about products or services
+            
+        Returns:
+            List of matching product dictionaries
+        """
+        query_lower = query.lower()
+        
+        # Check if the query is a menu-related request
+        if "menu" in query_lower or any(term in query_lower for term in ["vegan", "asian", "italian", "traditional", "greek", "spanish", "arabic", "sport"]):
+            logger.info("Menu-related query detected, using menu router")
+            # Use the menu router to get products for the specific menu category
+            return self.menu_router.get_products_for_menu_category(self, query)
+        
+        # Set up initial flags for intent detection
+        is_food_query = self._is_food_query(query_lower)
+        is_restaurant_query = is_food_query
+        is_travel_query = any(term in query_lower for term in ['travel', 'flight', 'holiday', 'vacation', 'trip', 'hotel'])
+        
+        # Check for specialized food categories
+        is_asian_food_query = any(term in query_lower for term in ['asian', 'asia', 'chinese', 'japanese', 'sushi'])
+        is_italian_food_query = any(term in query_lower for term in ['italian', 'pizza', 'pasta'])
+        is_spanish_food_query = any(term in query_lower for term in ['spanish', 'spain', 'paella', 'tapas'])
+        is_traditional_food_query = any(term in query_lower for term in ['traditional', 'romanian'])
+        is_organic_food_query = any(term in query_lower for term in ['organic', 'bio'])
+        is_sugar_free_query = any(term in query_lower for term in ['sugar free', 'no sugar', 'sugar-free', 'fara zahar'])
+        is_olive_oil_query = any(term in query_lower for term in ['olive oil', 'ulei de masline'])
+        is_essential_oil_query = any(term in query_lower for term in ['essential oil', 'ulei esential'])
+        is_shopping_query = any(term in query_lower for term in ['shopping', 'store', 'mall'])
+        is_mall_delivery = any(term in query_lower for term in ['mall delivery', 'shopping delivery'])
+        
+        # Pet keywords to detect pet-related queries vs food queries
+        pet_keywords = ['pet', 'cat', 'dog', 'animal', 'bird', 'fish']
+        
+        # Check if this might be a restaurant query but contains pet terms
+        if is_food_query and any(term in query_lower for term in pet_keywords):
+            is_restaurant_query = False
+            logging.info("Detected potential pet food query, not treating as restaurant query")
+        
+        # Prioritize specific intents - first travel which is the most requested
+        if is_travel_query or 'travel' in query_lower:
+            logging.info("Travel query detected, getting travel products")
+            return self._get_travel_products()
+        elif is_asian_food_query:
+            logging.info("Asian food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_asian_food_products()
+        elif is_italian_food_query:
+            logging.info("Italian food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            try:
+                italian_products = self._get_italian_food_products()
+                if italian_products:
+                    logging.info(f" Successfully loaded {len(italian_products)} Italian food products using direct method")
+                    return italian_products
+                else:
+                    logging.error(" Direct method returned empty Italian menu - this should not happen")
+            except Exception as e:
+                logging.error(f" Error in direct Italian food method: {str(e)}")
+            
+            # Fall back to generic restaurant products only as absolute last resort
+            logging.warning(" CRITICAL: All Italian food retrieval methods failed, falling back to generic products")
+            return self._get_default_restaurant_products()
+        elif is_spanish_food_query:
+            logging.info("Spanish food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_spanish_food_products()
+        elif is_traditional_food_query:
+            logging.info("Traditional Romanian food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_traditional_food_products()
+        elif is_organic_food_query:
+            logging.info("Organic food query detected, using direct file loading approach")
+            # Use direct file loading helper for hybrid approach
+            return self._get_organic_food_products()
+        elif is_mall_delivery or "mall delivery" in query_lower:
+            logging.info("Mall delivery query detected, checking scraped data")
+            # Prioritize mall_detailed file first, then check others
+            for mall_cat in ['mall_detailed', 'mall', 'mall_delivery', 'shopping']:
+                products = self._get_category_products(mall_cat)
+                if products:
+                    logging.info(f"Found {len(products)} products for mall category {mall_cat}")
+                    return products
+        elif is_shopping_query:
+            logging.info("Shopping query detected, checking scraped data")
+            # Try with mall_detailed first, then other variations
+            for shopping_cat in ['mall_detailed', 'mall', 'shopping', 'mall_delivery']:
+                products = self._get_category_products(shopping_cat)
+                if products:
+                    logging.info(f"Found {len(products)} products for shopping category {shopping_cat}")
+                    return products
+                    
+        # Get relevant products from any scraped data as a broader search
+        scraped_products = self._get_relevant_scraped_products(query_lower)
+        if scraped_products:
+            logging.info(f"Found {len(scraped_products)} relevant scraped products")
+            return scraped_products
+            
+        # Only try to use WooCommerce API if use_woocommerce flag is True
+        if not self.use_woocommerce:
+            logging.info("WooCommerce API calls disabled, using default products")
+            return self._get_default_restaurant_products()
+        
+        # Try to find specific product matches using WooCommerce API
+        try:
+            # First check if this is a medical/pharmacy-related query
+            medical_keywords = ["farma", "pharmacy", "medicine", "medical", "health", "doctor", "clinic", 
+                            "medicamente", "farmacie", "sanatate", "medic", "tratament"]
+            is_medical_query = any(keyword in query_lower for keyword in medical_keywords)
+            
+            if is_medical_query:
+                logging.info("Medical/pharmacy query detected, checking for pharmacy products")
+                # Try to get pharmacy products from scraped data
+                pharmacy_products = self._get_pharmacy_products()
+                if pharmacy_products:
+                    logging.info(f"Returning {len(pharmacy_products)} pharmacy products")
+                    return pharmacy_products
+            
+            specific_products = await self.woocommerce.find_product_by_type(query)
+            
+            if specific_products:
+                # Filter out pet products if this might be a restaurant query
+                if is_restaurant_query:
+                    filtered_products = []
+                    for product in specific_products:
+                        name = product.get("name", "").lower()
+                        desc = (product.get("short_description", "") + " " + product.get("description", "")).lower()
+                        if not any(term in name or term in desc for term in pet_keywords):
+                            filtered_products.append(product)
+                    
+                    if filtered_products:
+                        logging.info(f"Found {len(filtered_products)} filtered products matching restaurant query")
+                        return filtered_products[:5]
+                    else:
+                        logging.info("No suitable restaurant products found, using guaranteed products")
+                        return self._get_default_restaurant_products()
+                else:
+                    logging.info(f"Found {len(specific_products)} specific products matching the user query")
+                    return specific_products[:5]  # Return top 5 specific products
+        except Exception as e:
+            logging.error(f"Error finding specific products: {e}")
+            # Continue to fallback options
+        
+        # If no specific intent or products found, fall back to category-based search
+        logging.info("No specific intent or products detected, using category-based search")
+        
+        # Get categories from query
+        categories = self._categorize_query(query_lower)
+        logging.info(f"Detected categories: {[c for c, v in categories.items() if v]}")
+        
+        # Prioritize specific category detection - medical/farma comes first
+        if categories.get("medical", False):
+            logging.info("Medical category detected, checking for pharmacy products")
+            pharmacy_products = self._get_pharmacy_products()
+            if pharmacy_products:
+                return pharmacy_products
+                
+        # If this is a food query but no specific cuisine was detected
+        if is_restaurant_query:
+            logging.info("Generic restaurant query detected, checking for restaurant products")
+            restaurant_products = self._get_restaurant_products()
+            if restaurant_products:
+                logging.info(f"Returning {len(restaurant_products)} restaurant products from scraped data")
+                return restaurant_products
+            else:
+                logging.info("No restaurant products found in scraped data, using guaranteed products")
+                return self._get_default_restaurant_products()
+                
+        # Check all detected categories in order of priority
+        priority_categories = ["food", "restaurant", "travel", "medical", "shopping", "delivery", "vip"]
+        for category in priority_categories:
+            if categories.get(category, False):
+                logging.info(f"{category.title()} category detected, getting products")
+                
+                # Handle each category appropriately
+                if category == "food" or category == "restaurant":
+                    # This is handled above, but double-check
+                    restaurant_products = self._get_restaurant_products()
+                    if restaurant_products:
+                        return restaurant_products
+                    else:
+                        return self._get_default_restaurant_products()
+                elif category == "travel":
+                    return self._get_travel_products()
+                elif category == "medical":
+                    return self._get_pharmacy_products()
+                elif category == "shopping" or category == "delivery":
+                    # Try with different variations of mall categories
+                    for mall_cat in ["mall_detailed", "mall", "shopping", "mall_delivery"]:
+                        products = self._get_category_products(mall_cat)
+                        if products:
+                            return products
+                elif category == "vip":
+                    # Check for VIP products
+                    vip_products = self._get_category_products("vip_assistance")
+                    if vip_products:
+                        return vip_products
+        
+        # If all else fails, return generic service examples
+        logging.info("No relevant products found, returning generic service examples")
+        return self._get_default_service_products()
+        
+    def _get_category_products(self, category: str) -> List[Dict]:
+        """
+        Get products for a specific category from scraped data.
+        This method uses cached data from memory.
+        
+        Args:
+            category: Category name (can be a filename without extension)
+            
+        Returns:
+            List of formatted product dictionaries
+        """
+        category_data = None
+        category_detailed = None
+        
+        # First try detailed version if available
+        if f"{category}_detailed" in self.scraped_data:
+            category_detailed = self.scraped_data[f"{category}_detailed"]
+            if category_detailed and len(category_detailed) > 0:
+                logging.info(f"Using {len(category_detailed)} {category}_detailed products from cache")
+                return self._format_scraped_products(category_detailed[:5])
+        
+        # Then try the standard version
+        if category in self.scraped_data:
+            category_data = self.scraped_data[category]
+            if category_data and len(category_data) > 0:
+                logging.info(f"Using {len(category_data)} {category} products from cache")
+                return self._format_scraped_products(category_data[:5])
+        
+        # No products found
+        return []
+
+        logging.warning(f"No products found for category: {category}")
+        return []
+        
+    def _get_pharmacy_products(self):
+        """
+        Returns a list of pharmacy/medical products, preferably from scraped data.
+        If no pharmacy products are found in scraped data, returns generic pharmacy products.
+        
+        Returns:
+            List of pharmacy product dictionaries
+        """
+        # First try to get pharmacy products from scraped data
+        pharmacy_products = []
+        
+        # Try to find products in scraper data
+        for filename in ["farma.json", "pharmacy.json", "medical.json"]:
+            try:
+                file_path = os.path.join(self.data_dir, filename)
+                if os.path.exists(file_path):
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                        if isinstance(data, list) and len(data) > 0:
+                            logging.info(f"Found {len(data)} pharmacy products in {filename}")
+                            return self._format_scraped_products(data[:5])
+                        elif isinstance(data, dict) and "products" in data and len(data["products"]) > 0:
+                            logging.info(f"Found {len(data['products'])} pharmacy products in {filename}")
+                            return self._format_scraped_products(data["products"][:5])
+            except Exception as e:
+                logging.error(f"Error loading pharmacy products from {filename}: {e}")
+        
+        # If no scraped pharmacy products, return generic ones
+        logging.info("No pharmacy products found in scraper files, using generic ones")
+        return [
+            {
+                "id": 9601,
+                "name": "Pharmacy Delivery Service",
+                "price": "20.00",
+                "description": "[Example Service] Pharmacy delivery service - we'll deliver medications from local pharmacies to your doorstep. Browse our website for all available pharmacy delivery options.",
+                "short_description": "Medication delivery from nearby pharmacies.",
+                "permalink": "https://vogo.family",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2023/04/pharmacy.jpg"}
+                ],
+                "categories": [{"name": "Pharmacy Delivery"}]
+            },
+            {
+                "id": 9602,
+                "name": "Emergency Medicine Delivery",
+                "price": "35.00",
+                "description": "[Example Service] 24/7 emergency medicine delivery service with priority handling for urgent medications.",
+                "short_description": "Emergency medication delivery service.",
+                "permalink": "https://vogo.family",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2023/04/emergency.jpg"}
+                ],
+                "categories": [{"name": "Pharmacy Delivery"}]
+            },
+            {
+                "id": 9603,
+                "name": "Nutrition and Weight Control",
+                "price": "50.00",
+                "description": "[Example Service] Expert guidance for nutrition planning and weight control programs. Visit our website to learn more about our approach and program options.",
+                "short_description": "Expert guidance for nutrition and weight management.",
+                "permalink": "https://vogo.family/product/nutritie-control-calorii-sport/",
+                "images": [{"src": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/02/medical-2.png?fit=600%2C591&ssl=1"}],
+                "categories": [{"name": "Pharmacy Services"}]
+            },
+        ]
+        
+    def _get_restaurant_products(self) -> List[Dict]:
+        """
+        Returns a list of restaurant products from restaurant.json and restaurant_detailed.json files.
+        
+        Returns:
+            List of formatted restaurant product dictionaries
+        """
+        logging.info("Looking for restaurant products in JSON files")
+        
+        # Try to load from restaurant.json first
+        restaurant_products = []
+        for filename in ["restaurant.json", "restaurant_detailed.json"]:
+            try:
+                file_path = os.path.join(self.data_dir, filename)
+                if os.path.exists(file_path):
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                        
+                        # Handle different JSON structures
+                        products_list = []
+                        
+                        if isinstance(data, list) and len(data) > 0:
+                            products_list = data
+                            logging.info(f"Found {len(products_list)} products in {filename} (list)")
+                        elif isinstance(data, dict):
+                            # Check for common keys where products might be stored
+                            for products_key in ['products', 'items', 'data', 'results', 'content']:
+                                if products_key in data and isinstance(data[products_key], list) and len(data[products_key]) > 0:
+                                    products_list = data[products_key]
+                                    logging.info(f"Found {len(products_list)} products in {filename} under key '{products_key}'")
+                                    break
+                        
+                        if products_list:
+                            # Format products and add to our restaurant products list
+                            formatted_products = self._format_scraped_products(products_list[:5])
+                            if formatted_products:
+                                return formatted_products
+            except Exception as e:
+                logging.error(f"Error loading restaurant products from {filename}: {str(e)}")
+        
+        # No restaurant products found in the JSON files
+        logging.warning("No restaurant products found in restaurant.json or restaurant_detailed.json")
+        return []
+
+    def _get_olive_oil_products(self) -> List[Dict]:
+        """
+        Returns a list of olive oil products.
+        
+        Returns:
+            List of olive oil product dictionaries
+        """
+        return [
+            {
+                "id": 10001,
+                "name": "Ulei de Masline Bio Extra Virgin",
+                "price": "29.99",
+                "description": "Ulei de măsline bio extra virgin, presat la rece. Provenit din măsline cultivate organic în Grecia.",
+                "short_description": "Ulei de măsline bio extra virgin, presat la rece.",
+                "permalink": "https://vogo.family/product/ulei-de-masline-bio-extravirgin/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/ulei-de-masline-bio.jpg"}
+                ],
+                "categories": [{"name": "Ulei de masline bio"}]
+            },
+            {
+                "id": 10002,
+                "name": "Ulei de Masline Bio din Creta",
+                "price": "39.99",
+                "description": "Ulei de măsline bio din Creta, PDO, extravirgin. Cultivat și procesat folosind metode tradiționale grecești.",
+                "short_description": "Ulei de măsline bio din Creta, PDO, extravirgin.",
+                "permalink": "https://vogo.family/product/ulei-bio-de-masline-din-creta-p-d-o-extravirgin/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/ulei-de-masline-creta.jpg"}
+                ],
+                "categories": [{"name": "Ulei de masline bio"}]
+            }
+        ]    
+    def _get_asian_food_products(self) -> List[Dict]:
+        """
+        Returns a list of Asian food products using direct file loading.
+        Ensures proper formatting for the chatbot presentation.
+        
+        Returns:
+            List of Asian food product dictionaries
+        """
+        logger.info("Getting Asian food products using direct file loading")
+        
+        # Try loading from detailed file first
+        file_paths = [
+            os.path.join(self.data_dir, "meniu_asia_detailed.json"),
+            os.path.join(self.data_dir, "meniu_asia.json")
+        ]
+        
+        for file_path in file_paths:
+            if os.path.exists(file_path):
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        raw_products = json.load(f)
+                        if isinstance(raw_products, list) and raw_products:
+                            # Format scraped products to match expected chatbot format
+                            formatted_products = self._format_scraped_products(raw_products)
+                            logger.info(f"Successfully retrieved and formatted {len(formatted_products)} Asian food products from {os.path.basename(file_path)}")
+                            return formatted_products[:10] if len(formatted_products) > 10 else formatted_products
+                except Exception as e:
+                    logger.error(f"Error loading Asian food products from {file_path}: {str(e)}")
+        
+        # Fallback to hardcoded sample Asian dishes if we can't load from files
+        logger.warning("No Asian food products found via direct file loading, providing sample Asian dishes")
+        return [
+            {
+                "id": 40001,
+                "name": "Sushi Platter Deluxe",
+                "price": "75.00",
+                "description": "Premium assortment of nigiri, maki, and sashimi featuring the freshest seafood. Includes tuna, salmon, eel, and California rolls.",
+                "short_description": "Deluxe platter with variety of sushi.",
+                "permalink": "https://vogo.family/asian-food/sushi-platter/",
+                "images": [{"src": "https://vogo.family/wp-content/uploads/2025/02/sushi-platter.jpg"}],
+                "categories": [{"name": "Asian Food"}]
+            },
+            {
+                "id": 40002,
+                "name": "Pad Thai with Prawns",
+                "price": "55.00",
+                "description": "Authentic Thai rice noodles stir-fried with prawns, eggs, bean sprouts, and peanuts in a sweet and tangy sauce. A classic Thai dish.",
+                "short_description": "Thai rice noodles with prawns and peanuts.",
+                "permalink": "https://vogo.family/asian-food/pad-thai/",
+                "images": [{"src": "https://vogo.family/wp-content/uploads/2025/02/pad-thai.jpg"}],
+                "categories": [{"name": "Asian Food"}]
+            },
+            {
+                "id": 40003,
+                "name": "Beijing Roasted Duck",
+                "price": "90.00",
+                "description": "Traditional Chinese delicacy featuring whole duck marinated, air-dried, and roasted to perfection. Served with pancakes, scallions, cucumber, and sweet bean sauce.",
+                "short_description": "Classic Chinese roasted duck with pancakes.",
+                "permalink": "https://vogo.family/asian-food/beijing-duck/",
+                "images": [{"src": "https://vogo.family/wp-content/uploads/2025/02/peking-duck.jpg"}],
+                "categories": [{"name": "Asian Food"}]
+            }
+        ]
+        
+    def _get_italian_food_products(self) -> List[Dict]:
+        """
+        Returns a list of Italian food products using direct file loading.
+        Ensures proper formatting for the chatbot presentation.
+        
+        Returns:
+            List of Italian food product dictionaries
+        """
+        logger.info("Getting Italian food products using direct file loading")
+        
+        # Try loading from detailed file first
+        file_paths = [
+            os.path.join(self.data_dir, "meniu_italian_detailed.json"),
+            os.path.join(self.data_dir, "meniu_italian.json")
+        ]
+        
+        for file_path in file_paths:
+            if os.path.exists(file_path):
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        raw_products = json.load(f)
+                        if isinstance(raw_products, list) and raw_products:
+                            # Format scraped products to match expected chatbot format
+                            formatted_products = self._format_scraped_products(raw_products)
+                            logger.info(f"Successfully retrieved and formatted {len(formatted_products)} Italian food products from {os.path.basename(file_path)}")
+                            return formatted_products[:10] if len(formatted_products) > 10 else formatted_products
+                except Exception as e:
+                    logger.error(f"Error loading Italian food products from {file_path}: {str(e)}")
+        
+        # Fallback to hardcoded sample Italian dishes if we can't load from files
+        logger.warning("No Italian food products found via direct file loading, providing sample Italian dishes")
+        return [
+            {
+                "id": 30001,
+                "name": "Margherita Pizza",
+                "price": "45.00",
+                "description": "Classic Italian pizza with San Marzano tomato sauce, fresh mozzarella, basil, and extra virgin olive oil. Baked in a traditional wood-fired oven.",
+                "short_description": "Traditional Neapolitan pizza with tomato and mozzarella.",
+                "permalink": "https://vogo.family/italian-food/margherita-pizza/",
+                "images": [{"src": "https://vogo.family/wp-content/uploads/2025/02/margherita-pizza.jpg"}],
+                "categories": [{"name": "Italian Food"}]
+            },
+            {
+                "id": 30002,
+                "name": "Spaghetti Carbonara",
+                "price": "55.00",
+                "description": "Authentic Roman pasta dish made with eggs, Pecorino Romano cheese, pancetta, and black pepper. Served with al dente spaghetti.",
+                "short_description": "Classic Roman pasta with eggs, cheese and pancetta.",
+                "permalink": "https://vogo.family/italian-food/spaghetti-carbonara/",
+                "images": [{"src": "https://vogo.family/wp-content/uploads/2025/02/spaghetti-carbonara.jpg"}],
+                "categories": [{"name": "Italian Food"}]
+            },
+            {
+                "id": 30003,
+                "name": "Osso Buco alla Milanese",
+                "price": "85.00",
+                "description": "Slow-cooked veal shanks braised with vegetables, white wine, and broth. Traditionally served with gremolata and risotto alla Milanese.",
+                "short_description": "Braised veal shanks with saffron risotto.",
+                "permalink": "https://vogo.family/italian-food/osso-buco/",
+                "images": [{"src": "https://vogo.family/wp-content/uploads/2025/02/osso-buco.jpg"}],
+                "categories": [{"name": "Italian Food"}]
+            }
+        ]    
+    def _get_italian_food_products(self) -> List[Dict]:
+        """
+        Returns a list of Italian food products using direct file loading.
+        This is part of the hybrid approach that prioritizes local files.
+        
+        Returns:
+            List of Italian food product dictionaries
+        """
+        # Use our direct file loading helper for the hybrid approach
+        products = self._direct_load_category_products("italian", max_items=5)
+        
+        if products:
+            logging.info(f"Successfully retrieved {len(products)} Italian food products using direct file access")
+            return products
+        
+        # Emergency fallback - create direct examples in case files are missing
+        logging.warning("EMERGENCY FALLBACK: Creating Italian menu items directly")
+        return [
+            {
+                "id": 10901,
+                "name": "Pizza Napolitana Autentică",
+                "price": "55.00",
+                "description": "Pizza autentică napolitană cu blat subțire, sos de roșii San Marzano, mozzarella di bufala, busuioc și ulei de măsline extra virgin.",
+                "short_description": "Pizza autentică napolitană cu ingrediente premium.",
+                "permalink": "https://vogo.family/product/pizza-napolitana-autentica/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/pizza-napolitana.jpg"}
+                ],
+                "categories": [{"name": "Meniu Italian"}]
+            },
+            {
+                "id": 10902,
+                "name": "Pasta Carbonara Tradițională",
+                "price": "45.00",
+                "description": "Paste carbonara preparate după rețeta tradițională italiană, cu ouă, guanciale, pecorino romano și piper negru proaspăt măcinat.",
+                "short_description": "Paste carbonara autentic italienesti.",
+                "permalink": "https://vogo.family/product/pasta-carbonara-traditionala/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/carbonara.jpg"}
+                ],
+                "categories": [{"name": "Meniu Italian"}]
+            },
+            {
+                "id": 10903,
+                "name": "Risotto ai Funghi Porcini",
+                "price": "50.00",
+                "description": "Risotto cremoas cu ciuperci porcini, vin alb, ceapă și parmezan, asezonat cu ulei de trufe și pătrunjel proaspăt.",
+                "short_description": "Risotto cremoas cu ciuperci porcini și parmezan.",
+                "permalink": "https://vogo.family/product/risotto-ai-funghi-porcini/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/risotto.jpg"}
+                ],
+                "categories": [{"name": "Meniu Italian"}]
+            }
+        ]    
+    def _get_sport_menu_products(self) -> List[Dict]:
+        """
+        Returns a list of sport menu products.
+        
+        Returns:
+            List of sport menu product dictionaries
+        """
+        return [
+            {
+                "id": 10701,
+                "name": "Meniu Fitness - Protein Plus",
+                "price": "65.00",
+                "description": "Meniu special creat pentru sportivi, bogat în proteine: piept de pui la grătar, ouă, brânză de vaci slabă, legume la grătar și orez brun/quinoa.",
+                "short_description": "Meniu bogat în proteine pentru sportivi.",
+                "permalink": "https://vogo.family/product/meniu-fitness-protein-plus/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/fitness-protein-menu.jpg"}
+                ],
+                "categories": [{"name": "Meniu Sport"}]
+            },
+            {
+                "id": 10702,
+                "name": "Shake Proteic Post-Antrenament",
+                "price": "25.00",
+                "description": "Shake proteic nutritiv ideal pentru recuperare după antrenament, cu 25g proteine din zer, banane, fulgi de ovăz și unt de arahide.",
+                "short_description": "Shake proteic pentru recuperare după antrenament.",
+                "permalink": "https://vogo.family/product/shake-proteic-post-antrenament/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/protein-shake.jpg"}
+                ],
+                "categories": [{"name": "Meniu Sport"}]
+            },
+            {
+                "id": 10703,
+                "name": "Pachet Nutriție Sportivă - 5 Zile",
+                "price": "280.00",
+                "description": "Plan alimentar complet pentru 5 zile, special conceput pentru sportivi, cu 3 mese principale și 2 gustari zilnice, echilibrate în proteine, carbohidrați și grăsimi sănătoase.",
+                "short_description": "Plan alimentar de 5 zile pentru sportivi.",
+                "permalink": "https://vogo.family/product/pachet-nutritie-sportiva-5-zile/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/sport-nutrition-pack.jpg"}
+                ],
+                "categories": [{"name": "Meniu Sport"}]
+            }
+        ]
+
+    def _get_tutoring_products(self) -> List[Dict]:
+        """
+        Returns a list of school preparation and tutoring services.
+        
+        Returns:
+            List of tutoring service dictionaries
+        """
+        return [
+            {
+                "id": 10301,
+                "name": "Pregătire & Meditații Biologie",
+                "price": "90.00",
+                "description": "Servicii de pregătire și meditații pentru biologie, adaptate pentru elevi de gimnaziu și liceu. Profesori calificați cu experiență în domeniu.",
+                "short_description": "Meditații la biologie pentru gimnaziu și liceu.",
+                "permalink": "https://vogo.family/product/pregatire-meditatii-biologie/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/04/copii-pregatire-biologie-1.png"}
+                ],
+                "categories": [{"name": "Pregatire scoala si meditatii"}]
+            },
+            {
+                "id": 10302,
+                "name": "Pregătire & Meditații Chimie",
+                "price": "90.00",
+                "description": "Servicii de pregătire și meditații pentru chimie, cu profesori specializați. Cursuri adaptate pentru gimnaziu și liceu, inclusiv pregătire pentru examene.",
+                "short_description": "Meditații la chimie pentru gimnaziu și liceu.",
+                "permalink": "https://vogo.family/product/pregatire-meditatii-chimie/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/04/copii-pregatire-chimie-1.png"}
+                ],
+                "categories": [{"name": "Pregatire scoala si meditatii"}]
+            },
+            {
+                "id": 10303,
+                "name": "Pregătire & Meditații Informatică",
+                "price": "90.00",
+                "description": "Servicii de pregătire și meditații pentru educație tehnologică și informatică. Cursuri practice pentru dezvoltarea abilităților digitale și tehnice.",
+                "short_description": "Meditații la informatică și educație tehnologică.",
+                "permalink": "https://vogo.family/product/pregatire-meditatii-educatie-tehnologica-si-informatica/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/04/copii-pregatire-informatica.png"}
+                ],
+                "categories": [{"name": "Pregatire scoala si meditatii"}]
+            }
+        ]
+
+    def _get_organic_food_products(self) -> List[Dict]:
+        """
+        Returns a list of organic food products using direct file loading.
+        This is part of the hybrid approach that prioritizes local files.
+        
+        Returns:
+            List of organic food product dictionaries
+        """
+        # Use our direct file loading helper for the hybrid approach
+        products = self._direct_load_category_products("organic", max_items=5)
+        
+        if products:
+            logging.info(f"Successfully retrieved {len(products)} organic food products using direct file access")
+            return products
+        
+        # If no organic food products found via direct loading, return fallback products
+        logging.warning("No organic food products found via direct file access, using fallback products")
+        return [
+            {
+                "id": 12001,
+                "name": "Coș Produse Bio Săptămânal",
+                "price": "150.00",
+                "description": "Coș săptămânal cu produse organice și ecologice: legume și fructe de sezon, produse lactate, ouă, miere, pâine din făină integrală și alte alimente bio certificate.",
+                "short_description": "Coș săptămânal cu produse organice și ecologice certificate.",
+                "permalink": "https://vogo.family/product/cos-produse-bio-saptamanal/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/cos-bio.jpg"}
+                ],
+                "categories": [{"name": "Alimente Bio"}]
+            },
+            {
+                "id": 12002,
+                "name": "Mix Cereale Bio",
+                "price": "35.00",
+                "description": "Amestec de cereale bio premium: quinoa, amaranth, mei, hrișcă și ovăz, cultivate fără pesticide și îngrășăminte chimice. Perfecte pentru micul dejun sau diverse preparate sănătoase.",
+                "short_description": "Amestec de cereale bio premium, cultivate fără chimicale.",
+                "permalink": "https://vogo.family/product/mix-cereale-bio/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/cereale-bio.jpg"}
+                ],
+                "categories": [{"name": "Alimente Bio"}]
+            },
+            {
+                "id": 12003,
+                "name": "Miere Polifloră Ecologică",
+                "price": "45.00",
+                "description": "Miere polifloră 100% naturală și ecologică, provenită din stupine amplasate în zone nepoluate, departe de culturi tratate chimic. Recoltată și procesată cu grijă pentru a păstra toate proprietățile benefice.",
+                "short_description": "Miere polifloră ecologică din zone nepoluate.",
+                "permalink": "https://vogo.family/product/miere-poliflora-ecologica/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/miere-bio.jpg"}
+                ],
+                "categories": [{"name": "Alimente Bio"}]
+            }
+        ]
+    
+    def _get_essential_oil_products(self) -> List[Dict]:
+        """
+        Returns a list of essential oil products.
+        
+        Returns:
+            List of essential oil product dictionaries
+        """
+        return [
+            {
+                "id": 10101,
+                "name": "Ulei Esențial Bio de Mentă Piperată",
+                "price": "38.59",
+                "description": "Ulei esențial bio de mentă piperată, de calitate alimentară. Ideal pentru aromaterapie și uz culinar.",
+                "short_description": "Ulei esențial bio de mentă piperată, calitate alimentară.",
+                "permalink": "https://vogo.family/product/ulei-esential-bio-de-menta-piperata-alimentar/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/ulei-esential-menta.jpg"}
+                ],
+                "categories": [{"name": "Uleiuri esentiale alimentare bio"}]
+            },
+            {
+                "id": 10102,
+                "name": "Extract de Trandafir Alimentar",
+                "price": "83.42",
+                "description": "Extract de trandafir bio, calitate alimentară. Aromă seducătoare, ideală pentru deserturi și băuturi.",
+                "short_description": "Extract de trandafir bio, calitate alimentară.",
+                "permalink": "https://vogo.family/product/extract-de-trandafir-alimentar/",
+                "images": [
+                    {"src": "https://vogo.family/wp-content/uploads/2025/02/extract-trandafir.jpg"}
+                ],
+                "categories": [{"name": "Uleiuri esentiale alimentare bio"}]
+            }
+        ]
+
+    def _get_vip_assistance(self):
+        """
+        Returns a list of VIP assistance products.
+        
+        Returns:
+            List of VIP assistance product dictionaries
+        """
+        return [
+            {
+                "id": 9701,
+                "name": "VIP Personalized Support",
+                "price": "100.00",
+                "description": "[Example Service] Personalized support for VIP clients, including priority assistance and tailored solutions.",
+                "short_description": "Personalized support for VIP clients.",
+                "permalink": "https://vogo.family/product/vip-personalized-support/",
+                "images": [{"src": "https://vogo.family/wp-content/uploads/2023/04/vip.jpg"}],
+                "categories": [{"name": "VIP Services"}]
+            },
+            {
+                "id": 9702,
+                "name": "VIP Concierge Service",
+                "price": "150.00",
+                "description": "[Example Service] VIP concierge service, offering exclusive access to premium events and experiences.",
+                "short_description": "Exclusive access to premium events and experiences.",
+                "permalink": "https://vogo.family/product/vip-concierge-service/",
+                "images": [{"src": "https://vogo.family/wp-content/uploads/2023/04/concierge.jpg"}],
+                "categories": [{"name": "VIP Services"}]
+            },
+        ]
+        
+    def _create_context(self, products: List[Dict], query: str) -> str:
+        """
+        
+        Args:
+            products: List of product dictionaries
+            query: User's question
+            
+        Returns:
+            Formatted context string
+        """
+        # Determine how many products to display in the context
+        max_products = 5  # Limit to top 5 products for context
+        display_products = products[:max_products]
+        
+        # Create a formatted context string with product details
+        context = f"Available products related to: {query}\n\n"
+        
+        for i, product in enumerate(display_products):
+            # Extract basic product info
+            name = product.get("name", "Unnamed Product")
+            price = product.get("price", "N/A")
+            
+            # Try to extract location and mall info
+            location = None
+            mall = None
+            
+            # Add description if available
+            if 'short_description' in product and product['short_description']:
+                short_desc = product['short_description']
+            else:
+                short_desc = product.get('description', 'No description available')
+                
+            # Clean up HTML tags from description
+            short_desc = re.sub(r'<[^>]+>', '', short_desc)
+            context += f"Description: {short_desc[:150]}...\n\n"
+        
+        # If there are more products than we showed
+        if len(products) > len(display_products):
+            context += f"\n(Showing top {len(display_products)} of {len(products)} relevant products)\n"
+                
+        return context
+        
+    async def _llm_get_completion(self, system_prompt: str, user_message: str, model: str) -> str:
+        """
+        Get a completion from the OpenAI API with proper timeout handling.
+        
+        Args:
+            system_prompt: The system prompt to provide context to the model
+            user_message: The user's message to generate a response for
+            model: The model to use for completion
+            
+        Returns:
+            The generated completion text
+        """
+        # Log that we're entering the completion method
+        logging.info(f"Generating AI completion for message: '{user_message[:30]}...'")
+        
+        if not self.client:
+            logging.warning("OpenAI client not initialized. Using fallback response.")
+            return "I'm sorry, but I couldn't process your request at this time. Please try again later."
+            
+        # Set a timeout directly on the OpenAI API call
+        import time
+        start_time = time.time()
+            
+        try:
+            import asyncio
+            # Run the OpenAI call in a separate thread with strict timeouts
+            def run_completion():
+                # Set a hard timeout for the API request
+                import requests
+                try:
+                    # Set the OpenAI client timeout to 20 seconds to allow sufficient time for response
+                    response = self.client.chat.completions.create(
+                        model=model,
+                        messages=[
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": user_message}
+                        ],
+                        timeout=20  # 20 second timeout for the API call
+                    )
+                    logging.info("OpenAI API call completed successfully")
+                    return response
+                except requests.exceptions.Timeout:
+                    logging.error("OpenAI request timed out")
+                    raise
+                except Exception as e:
+                    logging.error(f"Error in OpenAI API call: {e}")
+                    raise
+                
+            # Create a task that runs in a ThreadPool with a timeout
+            try:
+                # Use a longer timeout (25 seconds) for the entire operation
+                completion = await asyncio.wait_for(
+                    asyncio.get_running_loop().run_in_executor(None, run_completion),
+                    timeout=25.0
+                )
+                logging.info("Successfully received OpenAI completion")
+                return completion.choices[0].message.content
+            except asyncio.TimeoutError:
+                logging.error("OpenAI API call execution timed out")
+                return "I'm sorry, but I couldn't process your request in time. Please try again with a simpler question."
+        except Exception as e:
+            logging.error(f"Error generating AI completion: {e}")
+            return "I'm sorry, but I encountered an error processing your request. Please try again later."
+        
+        # Special handling for location listing requests
+        if any(keyword in query_lower for keyword in ["available locations", "list of locations", "what locations", "which cities", "available cities", "unde livrați", "în ce orașe"]):
+            logging.info("Generating special response for location listing query")
+            
+            # If we have the database synced, get all unique locations from products
+            locations = [
+                "Bucharest", "Cluj-Napoca", "Timisoara", "Iasi", "Constanta", "Brasov", 
+                "Sibiu", "Oradea", "Arad", "Bacau", "Pitesti", "Galati", "Craiova", 
+                "Ploiesti", "Braila", "Vaslui", "Botosani", "Piatra Neamt", "Miercurea Ciuc"
+            ]
+            return "We offer a variety of pet services and products. For more details and current offerings, please visit our website at https://vogo.family."
+        else:
+            return "Thank you for your message. We offer various services including restaurant delivery, mall shopping, and pet services. For more information, please visit our website at https://vogo.family."
+    
+    async def generate_response(self, query: str) -> Dict[str, Any]:
+        """
+        Generate an AI response to the user's query with relevant product information.
+        Uses both the API product database and scraped data for comprehensive responses.
+        
+        Args:
+            query: User's question or message
+            
+        Returns:
+            Response object with message and related products
+        """
+        if not query or query.strip() == "":
+            return {
+                "response": "I'm sorry, I didn't receive a question. How can I help you today?",
+                "products": []
+            }
+            
+        # Check for simple greetings first - return immediately without any product search
+        query_lower = query.lower().strip()
+        greeting_patterns = [
+            "hi", "hello", "hey", "greetings", "good morning", "good afternoon", "good evening",
+            "howdy", "what's up", "sup", "hiya", "yo", "hai", "salut", "buna", "bună", "neata", "bună ziua"
+        ]
+        
+        if query_lower in greeting_patterns or any(query_lower.startswith(g) for g in greeting_patterns):
+            logging.info("Greeting detected, responding with welcome message")
+            return {
+                "response": "Hello! Welcome to Vogo Family chatbot. How can I assist you today? You can ask about our restaurant options, mall delivery services, or other offerings.",
+                "products": []
+            }
+        
+        # HIGHEST PRIORITY: Direct check for Italian food keywords before any other processing
+        query_lower = query.lower()
+        italian_keywords = ["italian", "italia", "pizza", "pasta", "carbonara", "lasagna", "risotto", "italian food", 
+                          "meniu italian", "meniu italienesc", "meniu_italian", "mancare italiana"]
+        
+        if any(keyword in query_lower for keyword in italian_keywords):
+            logging.info(" PRIORITY OVERRIDE: Italian food keywords detected in initial query, bypassing standard flow")
+            italian_products = self._get_italian_food_products()
+            return {
+                "response": "Here are our Italian menu items:",
+                "products": italian_products
+            }
+        
+        # Special handling for direct method calls (used for testing and debugging)
+        direct_method_patterns = {
+            "_get_italian_food_products": self._get_italian_food_products,
+            "get_italian_menu": self._get_italian_food_products,
+            "meniu_italian": self._get_italian_food_products,
+            "italian_menu": self._get_italian_food_products,
+            "pizza": self._get_italian_food_products,
+            "_get_traditional_food_products": self._get_traditional_food_products,
+            "meniu_traditional": self._get_traditional_food_products,
+            "_get_vegan_food_products": self._get_vegan_food_products,
+            "meniu_vegan": self._get_vegan_food_products,
+            "_get_asian_food_products": self._get_asian_food_products,
+            "meniu_asia": self._get_asian_food_products,
+            "asian_menu": self._get_asian_food_products,
+            "asian": self._get_asian_food_products,
+            "_get_organic_food_products": self._get_organic_food_products,
+            "alimente_bio": self._get_organic_food_products,
+            "restaurant": self._get_restaurant_services,
+            "restaurant_services": self._get_restaurant_services,
+            "restraunt": self._get_restaurant_services,
+            "food_delivery": self._get_restaurant_services
+        }
+        
+        # Check for direct method calls - VERY AGGRESSIVE PATTERN MATCHING
+        try:
+            # Try to find the JSON format first if possible
+            if '{' in query and '}' in query:
+                logging.info("Detected JSON-like query structure: " + query)
+                # Try to extract message content from JSON-like structure
+                match = re.search(r'"message"\s*:\s*"([^"]+)"', query)
+                if match:
+                    message_content = match.group(1)
+                    logging.info(f"Extracted message content: {message_content}")
+                    for pattern, method in direct_method_patterns.items():
+                        if pattern in message_content.lower():
+                            logging.info(f"Direct method call detected in JSON: {pattern}")
+                            # Force call the method directly and return its results
+                            products = method()
+                            return {
+                                "response": f"Here are the requested {pattern.replace('_get_', '').replace('_products', '')} menu items:",
+                                "products": products
+                            }
+            
+            # Fallback to simple pattern matching for plain text requests
+            cleaned_query = query.lower().replace('{', '').replace('}', '').replace('"', '').replace('\'', '').replace('message:', '').strip()
+            logging.info(f"Processing cleaned query: {cleaned_query}")
+            
+            for pattern, method in direct_method_patterns.items():
+                if pattern in cleaned_query:
+                    logging.info(f"Direct method call detected in plaintext: {pattern}")
+                    # Force call the method directly and return its results
+                    products = method()
+                    return {
+                        "response": f"Here are the requested {pattern.replace('_get_', '').replace('_products', '')} menu items:",
+                        "products": products
+                    }
+                    
+            # Last resort - check for specific keywords
+            if any(keyword in cleaned_query for keyword in ['italian', 'pizza', 'pasta', 'menu', 'meniu']):
+                logging.info("Italian food keywords detected - forcing Italian menu return")
+                products = self._get_italian_food_products()
+                return {
+                    "response": "Here are our Italian menu items:",
+                    "products": products
+                }
+        except Exception as e:
+            logging.error(f"Error in direct method detection: {str(e)}")
+            # Continue with normal processing if direct method detection fails
+        
+        # Ensure scraped data is loaded
+        if not self.scraped_data:
+            try:
+                self._load_scraped_data()
+                logging.info(f"Loaded scraped data with {len(self.scraped_data.get('all_products', []))} products")
+            except Exception as e:
+                logging.error(f"Error loading scraped data: {e}")
+                # Continue with empty scraped data
+        try:
+            query_lower = query.lower().strip()
+            logging.info(f"Generating response for query: '{query}'")
+            
+            # Handle empty queries
+            if not query_lower:
+                return {
+                    "response": "How can I help you today? You can ask about our mall delivery services, restaurant options, or pet services.",
+                    "products": []
+                }
+                
+            # Check if this is a query about scraped data availability
+            if any(term in query_lower for term in ["web scraping", "scraper", "scraped data", "latest data", "up to date", "fresh data"]):
+                if self.scraped_data and "all_products" in self.scraped_data:
+                    product_count = len(self.scraped_data.get("all_products", []))
+                    category_count = len(self.scraped_data.get("categories", []))
+                    response = f"Yes, we have scraped data available from the website. We currently have {product_count} products from {category_count} categories in our scraped database. This helps us provide accurate and up-to-date information about our offerings."
+                else:
+                    response = "We're currently in the process of setting up web scraping to enhance our chatbot with the latest data from our website. This will ensure you get the most accurate information possible. Please check back soon!"
+                    
+                return {
+                    "response": response,
+                    "products": []
+                }
+            
+            # Special handling for location listing requests
+            if any(keyword in query_lower for keyword in ["available locations", "list of locations", "what locations", "which cities", "available cities", "unde livrați", "în ce orașe"]):
+                logging.info("Generating special response for location listing query")
+                
+                # If we have the database synced, get all unique locations from products
+                locations = [
+                    "Bucharest", "Cluj-Napoca", "Timisoara", "Iasi", "Constanta", "Brasov", 
+                    "Sibiu", "Oradea", "Arad", "Bacau", "Pitesti", "Galati", "Craiova", 
+                    "Ploiesti", "Braila", "Vaslui", "Botosani", "Piatra Neamt", "Miercurea Ciuc"
+                ]
+                
+                # If we have scraped data, add locations from there
+                if self.scraped_data and "all_products" in self.scraped_data:
+                    scraped_locations = set()
+                    for product in self.scraped_data.get("all_products", []):
+                        product_name = product.get("name", "")
+                        # Look for city names in product name
+                        for city in locations:
+                            if city.lower() in product_name.lower():
+                                scraped_locations.add(city)
+                        # Also look for new locations not in our predefined list
+                        for word in product_name.split("-"):
+                            word = word.strip()
+                            if len(word) > 3 and word[0].isupper() and word not in locations:
+                                potential_city = True
+                                # Skip words that are likely not cities
+                                skip_words = ["Mall", "Shopping", "Center", "Plaza", "Service"]
+                                for skip in skip_words:
+                                    if skip in word:
+                                        potential_city = False
+                                        break
+                                if potential_city:
+                                    scraped_locations.add(word)
+                    
+                    # Add new locations to our list
+                    for loc in scraped_locations:
+                        if loc not in locations:
+                            locations.append(loc)
+                    locations = sorted(locations)
+                
+                # If database is synced, extract locations from products
+                if self.db_sync and self.db_sync.all_products:
+                    extracted_locations = set()
+                    for product_id, product in self.db_sync.all_products.items():
+                        # Try to extract location from product name
+                        if "name" in product and product["name"]:
+                            product_name = product["name"]
+                            # Look for city names in product name
+                            for city in locations:
+                                if city.lower() in product_name.lower():
+                                    extracted_locations.add(city)
+                                    break
+                                    
+                    # Add new locations from the API to our list
+                    for loc in extracted_locations:
+                        if loc not in locations:
+                            locations.append(loc)
+                    locations = sorted(locations)
+                    
+                # Create a custom response for location listing
+                is_romanian = any(romanian_word in query_lower for romanian_word in ['locațiile', 'orașe', 'livrați', 'unde'])
+                
+                if is_romanian:
+                    location_response = "Serviciile noastre sunt disponibile în următoarele locații: " + ", ".join(locations[:10]) + ", și multe altele. În ce oraș vă interesează serviciile noastre?"
+                else:
+                    location_response = "We have services available in the following locations: " + ", ".join(locations[:10]) + ", and more. Which city are you interested in?"
+                
+                # Return a special location-only response
+                return {
+                    "response": location_response,
+                    "products": [] # No products needed for a location listing
+                }
+            
+            # Extract location if present
+            location = None
+            location_prefixes = ["from", "in", "at", "near", "din", "în", "la", "lângă"]
+            for prefix in location_prefixes:
+                pattern = f"{prefix}\\s+([\\w\\s-]+)(?:[.,]|$)"
+                match = re.search(pattern, query_lower)
+                if match:
+                    location = match.group(1).strip()
+                    break
+            
+            # Special handling for food delivery and pet service queries
+            is_food_query, is_pet_query = self._is_food_query(query)
+            
+            # Handle pet service queries
+            if is_pet_query:
+                logging.info("Generating response for pet service query")
+                
+                # First try to get pet products from scraped data
+                try:
+                    scraped_pet_products = []
+                    if self.scraped_data:
+                        # Look for pet-related categories
+                        for category_name, products in self.scraped_data.items():
+                            if (any(pet_term in category_name.lower() for pet_term in ["pet", "animal", "dog", "cat", "veterinary", "uleiuri", "esentiale"]) 
+                                and isinstance(products, list)):
+                                logging.info(f"Found pet category: {category_name} with {len(products)} products")
+                                scraped_pet_products.extend(products)
+                        
+                        # Also search all products for pet-related terms
+                        if "all_products" in self.scraped_data:
+                            pet_terms = ["pet", "dog", "cat", "animal", "veterinary", "vet", "clinic", "grooming", "ulei", "extract", "trandafir", "esentiale"]
+                            for product in self.scraped_data.get("all_products", []):
+                                product_text = (product.get("name", "") + " " + product.get("description", "") + " " + 
+                                              product.get("title", "") + " " + 
+                                              ",".join([cat.get("name", "") for cat in product.get("categories", [])])).lower()
+                                if any(term in product_text for term in pet_terms):
+                                    scraped_pet_products.append(product)
+                    
+                    if scraped_pet_products and len(scraped_pet_products) > 0:
+                        # Use scraped pet products
+                        logging.info(f"Found {len(scraped_pet_products)} scraped pet products")
+                        pet_context = self._create_context(scraped_pet_products[:10], query)  # Limit to 10 products
+                    else:
+                        # Use default pet products as fallback
+                        default_products = self._get_default_pet_products()
+                        logging.info(f"Using {len(default_products)} default pet products as fallback")
+                        pet_context = self._create_context(default_products, query)
+                        
+                    # Generate a chat response about pet services
+                    chat_response = await self._llm_get_completion(
+                        system_prompt=self.system_prompt + "\n\nWhen explaining pet services, focus on our premium options for pet care, food delivery, veterinary services, and other pet needs.",
+                        user_message=f"{query}\n\nContext: {pet_context}\n\nProvide helpful information about our pet services based on the context provided.",
+                        model=self.model
+                    )
+                    
+                    # Include relevant products in the response
+                    products_to_include = scraped_pet_products[:5] if scraped_pet_products else default_products
+                    
+                    return {
+                        "response": chat_response,
+                        "products": products_to_include
+                    }
+                    
+                except Exception as e:
+                    logging.error(f"Error fetching pet products: {e}")
+                    try:
+                        # Use default pet products as ultimate fallback
+                        default_products = self._get_default_pet_products()
+                        pet_context = self._create_context(default_products, query)
+                        
+                        chat_response = await self._llm_get_completion(
+                            system_prompt=self.system_prompt,
+                            user_message=f"{query}\n\nContext: {pet_context}",
+                            model=self.model
+                        )
+                        
+                        return {
+                            "response": chat_response,
+                            "products": default_products
+                        }
+                    except Exception as inner_e:
+                        logging.error(f"Critical error in pet product fallback: {inner_e}")
+                        # Return a minimal response when everything fails
+                        return {
+                            "response": "We offer a variety of pet services including food delivery, grooming, and veterinary services. Please visit our website for more details.",
+                            "products": []
+                        }
+            
+            # Handle food delivery queries
+            elif is_food_query:
+                logging.info("Generating response for food delivery query")
+                
+                # First try to get restaurant products from scraped data
+                try:
+                    scraped_restaurant_products = []
+                    if self.scraped_data:
+                        for category_name, products in self.scraped_data.items():
+                            if "restaurant" in category_name.lower() and isinstance(products, list):
+                                scraped_restaurant_products.extend(products)
+                        
+                        # Also search all products for restaurant-related terms
+                        if "all_products" in self.scraped_data:
+                            restaurant_terms = ["restaurant", "food", "pizza", "burger", "sushi", "cuisine"]
+                            for product in self.scraped_data.get("all_products", []):
+                                product_text = (product.get("name", "") + " " + product.get("description", "")).lower()
+                                if any(term in product_text for term in restaurant_terms):
+                                    scraped_restaurant_products.append(product)
+                    
+                    if scraped_restaurant_products and len(scraped_restaurant_products) > 0:
+                        # Use scraped restaurant products
+                        logging.info(f"Found {len(scraped_restaurant_products)} scraped restaurant products")
+                        food_context = self._create_context(scraped_restaurant_products[:10], query)  # Limit to 10 products
+                    else:
+                        # Try to get actual restaurant products from WooCommerce API
+                        actual_restaurant_products = await self.woocommerce.get_restaurant_products()
+                        if actual_restaurant_products and len(actual_restaurant_products) > 0:
+                            # Use actual products from WooCommerce if available
+                            logging.info(f"Found {len(actual_restaurant_products)} actual restaurant products from API")
+                            food_context = self._create_context(actual_restaurant_products, query)
+                        else:
+                            # Use default restaurant products as fallback
+                            default_products = self._get_default_restaurant_products()
+                            logging.info(f"Using {len(default_products)} default restaurant products as fallback")
+                            food_context = self._create_context(default_products, query)
+                except Exception as e:
+                    logging.error(f"Error fetching restaurant products: {e}")
+                    # Use default restaurant products as ultimate fallback
+                    default_products = self._get_default_restaurant_products()
+                    food_context = self._create_context(default_products, query)
+
+                # Generate a chat response about restaurant services
+                chat_response = await self._llm_get_completion(
+                    system_prompt=self.system_prompt + "\n\nWhen explaining restaurant or food delivery options, mention that we offer food delivery services from various restaurants. Explain that users can visit the website for current menu items, prices, and specific restaurant options.",
+                    user_message=f"{query}\n\nContext: {food_context}\n\nProvide information about our restaurant services based on the context provided. If specific restaurant data is available, mention it, otherwise suggest visiting our website for the most current offerings.",
+                    model=self.model
+                )
+                
+                # Include relevant products in the response
+                products_to_include = []
+                
+                # If we have scraped restaurant products, include them
+                if 'scraped_restaurant_products' in locals() and scraped_restaurant_products:
+                    products_to_include = scraped_restaurant_products[:5]  # Limit to 5 products
+                # Otherwise, if we have actual API products, include those
+                elif 'actual_restaurant_products' in locals() and actual_restaurant_products:
+                    products_to_include = actual_restaurant_products[:5]  # Limit to 5 products
+                # As a last resort, use default products
+                else:
+                    products_to_include = default_products[:5]  # Limit to 5 products
+                
+                return {
+                    "response": chat_response,
+                    "products": products_to_include
+                }
+            
+            # For all other queries, get relevant products and generate a response
+            products = await self._get_relevant_products(query)
+            
+            if not products:
+                # No products found, provide a helpful response
+                no_products_response = await self._llm_get_completion(
+                    system_prompt=self.system_prompt,
+                    user_message=f"{query}\n\nNo products found matching this query. Provide a helpful response suggesting related services on vogo.family or suggesting they visit the website.",
+                    model=self.model
+                )
+                
+                return {
+                    "response": no_products_response,
+                    "products": []
+                }
+                
+            # Create context from relevant products
+            context = self._create_context(products, query)
+            
+            # Generate an AI response based on the products
+            ai_response = await self._llm_get_completion(
+                system_prompt=self.system_prompt,
+                user_message=f"{query}\n\nProduct context:\n{context}",
+                model=self.model
+            )
+            
+            return {
+                "response": ai_response,
+                "products": products
+            }
+        except Exception as e:
+            logging.error(f"Error generating response: {e}")
+            # Try to return pet products if the query might be about pets
+            if any(term in query.lower() for term in ["pet", "dog", "cat", "animal", "veterinary", "ulei", "extract", "trandafir"]):
+                try:
+                    default_pet_products = self._get_default_pet_products()
+                    return {
+                        "response": "We offer a variety of pet services and products. Our services include premium pet food delivery, veterinary clinics, pet grooming, pet sitting and walking, and pet supplies delivery.",
+                        "products": default_pet_products
+                    }
+                except Exception:
+                    pass
+                    
+            # Final fallback
+            return {
+                "response": "I apologize, but I encountered an error while generating a response. Please try again or ask a different question.",
+                "products": []
+            }

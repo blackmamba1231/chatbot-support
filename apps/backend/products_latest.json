@@ -1,0 +1,2689 @@
+[
+  {
+    "id": 32671,
+    "name": "Vaslui - Proxima Shopping Center",
+    "slug": "vaslui-proxima-shopping-center",
+    "permalink": "https://vogo.family/product/vaslui-proxima-shopping-center/",
+    "date_created": "2025-04-09T22:56:36",
+    "date_created_gmt": "2025-04-09T20:56:36",
+    "date_modified": "2025-04-10T20:40:08",
+    "date_modified_gmt": "2025-04-10T18:40:08",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Livrare produse din Proxima Shopping Center - Vaslui - pret de baza; pretul poate varia in functie de numarul de produse, magazin si distanta)</p>\n",
+    "short_description": "<p>Vaslui &#8211; Proxima Shopping Center</p>\n",
+    "sku": "617ae7e16bc3",
+    "price": "99",
+    "regular_price": "99",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 8,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": false,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 223,
+        "name": "Mall Delivery",
+        "slug": "mall-delivery"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 32762,
+        "date_created": "2025-04-10T22:39:05",
+        "date_created_gmt": "2025-04-10T18:39:05",
+        "date_modified": "2025-04-10T22:39:31",
+        "date_modified_gmt": "2025-04-10T18:39:31",
+        "src": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall-1.png?fit=476%2C373&ssl=1",
+        "name": "Alba Iulia Carolina Mall",
+        "alt": ""
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>99,00&nbsp;<span class=\"woocommerce-Price-currencySymbol\">lei</span></bdi></span>",
+    "related_ids": [
+      32503,
+      32483,
+      32495,
+      32473,
+      32521
+    ],
+    "meta_data": [
+      {
+        "id": 311901,
+        "key": "_wp_page_template",
+        "value": "default"
+      },
+      {
+        "id": 315928,
+        "key": "woodmart_sguide_select",
+        "value": "none"
+      },
+      {
+        "id": 315929,
+        "key": "jk_sku",
+        "value": ""
+      },
+      {
+        "id": 315930,
+        "key": "custom_package_number",
+        "value": ""
+      },
+      {
+        "id": 315931,
+        "key": "custom_product_type",
+        "value": ""
+      },
+      {
+        "id": 315932,
+        "key": "_is_subscription",
+        "value": "no"
+      },
+      {
+        "id": 315933,
+        "key": "acquired_price",
+        "value": ""
+      },
+      {
+        "id": 315934,
+        "key": "woodmart_price_unit_of_measure",
+        "value": ""
+      },
+      {
+        "id": 315935,
+        "key": "woodmart_fbt_bundles_id",
+        "value": [
+          ""
+        ]
+      },
+      {
+        "id": 315936,
+        "key": "woodmart_total_stock_quantity",
+        "value": ""
+      },
+      {
+        "id": 315937,
+        "key": "woodmart_wc_video_gallery",
+        "value": {
+          "32762": {
+            "video_type": "mp4",
+            "upload_video_id": "",
+            "upload_video_url": "",
+            "youtube_url": "",
+            "vimeo_url": "",
+            "autoplay": "0",
+            "video_size": "contain",
+            "video_control": "theme",
+            "hide_gallery_img": "0",
+            "hide_information": "0",
+            "audio_status": "unmute"
+          }
+        }
+      },
+      {
+        "id": 315938,
+        "key": "_product_360_image_gallery",
+        "value": ""
+      },
+      {
+        "id": 315939,
+        "key": "want_translated",
+        "value": [
+          "yes"
+        ]
+      },
+      {
+        "id": 315940,
+        "key": "_want_translated",
+        "value": "field_67b6c194131d0"
+      },
+      {
+        "id": 315941,
+        "key": "_woodmart_whb_header",
+        "value": "none"
+      },
+      {
+        "id": 315942,
+        "key": "_woodmart_main_layout",
+        "value": "default"
+      },
+      {
+        "id": 315943,
+        "key": "_woodmart_sidebar_width",
+        "value": "default"
+      },
+      {
+        "id": 315944,
+        "key": "_woodmart_custom_sidebar",
+        "value": "none"
+      },
+      {
+        "id": 315945,
+        "key": "_woodmart_new_label",
+        "value": ""
+      },
+      {
+        "id": 315946,
+        "key": "_woodmart_new_label_date",
+        "value": ""
+      },
+      {
+        "id": 315947,
+        "key": "_woodmart_swatches_attribute",
+        "value": ""
+      },
+      {
+        "id": 315948,
+        "key": "_woodmart_related_off",
+        "value": ""
+      },
+      {
+        "id": 315949,
+        "key": "_woodmart_exclude_show_single_variation",
+        "value": ""
+      },
+      {
+        "id": 315950,
+        "key": "_woodmart_product_video",
+        "value": ""
+      },
+      {
+        "id": 315951,
+        "key": "_woodmart_product_hashtag",
+        "value": ""
+      },
+      {
+        "id": 315952,
+        "key": "_woodmart_single_product_style",
+        "value": "inherit"
+      },
+      {
+        "id": 315953,
+        "key": "_woodmart_thums_position",
+        "value": "inherit"
+      },
+      {
+        "id": 315954,
+        "key": "_woodmart_extra_content",
+        "value": ""
+      },
+      {
+        "id": 315955,
+        "key": "_woodmart_extra_position",
+        "value": "after"
+      },
+      {
+        "id": 315956,
+        "key": "_woodmart_product_design",
+        "value": "inherit"
+      },
+      {
+        "id": 315957,
+        "key": "_woodmart_product-background",
+        "value": ""
+      },
+      {
+        "id": 315958,
+        "key": "_woodmart_hide_tabs_titles",
+        "value": ""
+      },
+      {
+        "id": 315959,
+        "key": "_woodmart_product_custom_tab_title",
+        "value": ""
+      },
+      {
+        "id": 315960,
+        "key": "_woodmart_product_custom_tab_content_type",
+        "value": "text"
+      },
+      {
+        "id": 315961,
+        "key": "_woodmart_product_custom_tab_content",
+        "value": ""
+      },
+      {
+        "id": 315962,
+        "key": "_woodmart_product_custom_tab_html_block",
+        "value": ""
+      },
+      {
+        "id": 315963,
+        "key": "_woodmart_product_custom_tab_title_2",
+        "value": ""
+      },
+      {
+        "id": 315964,
+        "key": "_woodmart_product_custom_tab_content_type_2",
+        "value": "text"
+      },
+      {
+        "id": 315965,
+        "key": "_woodmart_product_custom_tab_content_2",
+        "value": ""
+      },
+      {
+        "id": 315966,
+        "key": "_woodmart_product_custom_tab_html_block_2",
+        "value": ""
+      },
+      {
+        "id": 315967,
+        "key": "_yoast_wpseo_primary_product_cat",
+        "value": ""
+      },
+      {
+        "id": 315968,
+        "key": "_yoast_wpseo_primary_product_provider",
+        "value": ""
+      },
+      {
+        "id": 315969,
+        "key": "_yoast_wpseo_content_score",
+        "value": "90"
+      },
+      {
+        "id": 315970,
+        "key": "_yoast_wpseo_estimated-reading-time-minutes",
+        "value": "1"
+      },
+      {
+        "id": 326344,
+        "key": "wd_page_css_files",
+        "value": [
+          "helpers-wpb-elem",
+          "widget-recent-post-comments",
+          "widget-nav",
+          "widget-wd-layered-nav",
+          "woo-mod-swatches-base",
+          "woo-mod-swatches-filter",
+          "widget-layered-nav-stock-status",
+          "widget-slider-price-filter",
+          "wpcf7",
+          "revolution-slider",
+          "woo-payments",
+          "elementor-base",
+          "elementor-pro-base",
+          "woocommerce-base",
+          "mod-star-rating",
+          "woo-el-track-order",
+          "woocommerce-block-notices",
+          "woo-mod-quantity",
+          "woo-opt-free-progress-bar",
+          "woo-mod-progress-bar",
+          "woo-single-prod-el-base",
+          "woo-mod-stock-status",
+          "woo-mod-shop-attributes",
+          "wd-search-results",
+          "wd-search-form",
+          "mod-animations-keyframes",
+          "animations",
+          "woo-single-prod-builder",
+          "woo-el-breadcrumbs-builder",
+          "woo-single-prod-el-navigation",
+          "woo-single-prod-el-gallery",
+          "swiper",
+          "swiper-arrows",
+          "button",
+          "accordion",
+          "accordion-elem-wpb",
+          "mod-comments",
+          "tabs",
+          "woo-single-prod-el-tabs-opt-layout-tabs",
+          "product-loop",
+          "product-loop-standard",
+          "woo-mod-add-btn-replace",
+          "woo-opt-stretch-cont",
+          "woo-opt-title-limit",
+          "swiper-pagin",
+          "widget-collapse",
+          "footer-base",
+          "section-title",
+          "mod-nav-menu-label",
+          "scroll-top",
+          "header-mod-content-calc",
+          "widget-shopping-cart",
+          "widget-product-list",
+          "header-my-account-sidebar",
+          "woo-mod-login-form",
+          "cookies-popup",
+          "bottom-toolbar",
+          "mod-tools",
+          "header-elements-base",
+          "header-cart-side",
+          "header-cart",
+          "header-my-account"
+        ]
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v24.8.1 - https://yoast.com/wordpress/plugins/seo/ -->\n<title>Vaslui - Proxima Shopping Center - Vogo Family</title>\n<!-- Admin only notice: this page does not show a meta description because it does not have one, either write it for this page specifically or go into the [Yoast SEO - Settings] menu and set up a template. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://vogo.family/product/vaslui-proxima-shopping-center/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:locale\" content=\"en_US\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:type\" content=\"article\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:title\" content=\"Vaslui - Proxima Shopping Center - Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:description\" content=\"Vaslui - Proxima Shopping Center\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:url\" content=\"https://vogo.family/product/vaslui-proxima-shopping-center/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:site_name\" content=\"Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"article:modified_time\" content=\"2025-04-10T18:40:08+00:00\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:image\" content=\"https://vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall-1.png\" class=\"yoast-seo-meta-tag\" />\n\t<meta property=\"og:image:width\" content=\"476\" class=\"yoast-seo-meta-tag\" />\n\t<meta property=\"og:image:height\" content=\"373\" class=\"yoast-seo-meta-tag\" />\n\t<meta property=\"og:image:type\" content=\"image/png\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:label1\" content=\"Est. reading time\" class=\"yoast-seo-meta-tag\" />\n\t<meta name=\"twitter:data1\" content=\"1 minute\" class=\"yoast-seo-meta-tag\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://vogo.family/product/vaslui-proxima-shopping-center/\",\"url\":\"https://vogo.family/product/vaslui-proxima-shopping-center/\",\"name\":\"Vaslui - Proxima Shopping Center - Vogo Family\",\"isPartOf\":{\"@id\":\"https://vogo.family/#website\"},\"primaryImageOfPage\":{\"@id\":\"https://vogo.family/product/vaslui-proxima-shopping-center/#primaryimage\"},\"image\":{\"@id\":\"https://vogo.family/product/vaslui-proxima-shopping-center/#primaryimage\"},\"thumbnailUrl\":\"https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall-1.png?fit=476%2C373&ssl=1\",\"datePublished\":\"2025-04-09T20:56:36+00:00\",\"dateModified\":\"2025-04-10T18:40:08+00:00\",\"breadcrumb\":{\"@id\":\"https://vogo.family/product/vaslui-proxima-shopping-center/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://vogo.family/product/vaslui-proxima-shopping-center/\"]}]},{\"@type\":\"ImageObject\",\"inLanguage\":\"en-US\",\"@id\":\"https://vogo.family/product/vaslui-proxima-shopping-center/#primaryimage\",\"url\":\"https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall-1.png?fit=476%2C373&ssl=1\",\"contentUrl\":\"https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall-1.png?fit=476%2C373&ssl=1\",\"width\":476,\"height\":373},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://vogo.family/product/vaslui-proxima-shopping-center/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://vogo.family/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Magazin\",\"item\":\"https://vogo.family/shop/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Vaslui &#8211; Proxima Shopping Center\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://vogo.family/#website\",\"url\":\"https://vogo.family/\",\"name\":\"Vogo Family\",\"description\":\"\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://vogo.family/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO plugin. -->",
+    "yoast_head_json": {
+      "title": "Vaslui - Proxima Shopping Center - Vogo Family",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://vogo.family/product/vaslui-proxima-shopping-center/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "Vaslui - Proxima Shopping Center - Vogo Family",
+      "og_description": "Vaslui - Proxima Shopping Center",
+      "og_url": "https://vogo.family/product/vaslui-proxima-shopping-center/",
+      "og_site_name": "Vogo Family",
+      "article_modified_time": "2025-04-10T18:40:08+00:00",
+      "og_image": [
+        {
+          "width": 476,
+          "height": 373,
+          "url": "https://vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall-1.png",
+          "type": "image/png"
+        }
+      ],
+      "twitter_card": "summary_large_image",
+      "twitter_misc": {
+        "Est. reading time": "1 minute"
+      },
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://vogo.family/product/vaslui-proxima-shopping-center/",
+            "url": "https://vogo.family/product/vaslui-proxima-shopping-center/",
+            "name": "Vaslui - Proxima Shopping Center - Vogo Family",
+            "isPartOf": {
+              "@id": "https://vogo.family/#website"
+            },
+            "primaryImageOfPage": {
+              "@id": "https://vogo.family/product/vaslui-proxima-shopping-center/#primaryimage"
+            },
+            "image": {
+              "@id": "https://vogo.family/product/vaslui-proxima-shopping-center/#primaryimage"
+            },
+            "thumbnailUrl": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall-1.png?fit=476%2C373&ssl=1",
+            "datePublished": "2025-04-09T20:56:36+00:00",
+            "dateModified": "2025-04-10T18:40:08+00:00",
+            "breadcrumb": {
+              "@id": "https://vogo.family/product/vaslui-proxima-shopping-center/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://vogo.family/product/vaslui-proxima-shopping-center/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "ImageObject",
+            "inLanguage": "en-US",
+            "@id": "https://vogo.family/product/vaslui-proxima-shopping-center/#primaryimage",
+            "url": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall-1.png?fit=476%2C373&ssl=1",
+            "contentUrl": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/04/Alba-Iulia-Carolina-Mall-1.png?fit=476%2C373&ssl=1",
+            "width": 476,
+            "height": 373
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://vogo.family/product/vaslui-proxima-shopping-center/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vogo.family/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Magazin",
+                "item": "https://vogo.family/shop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Vaslui &#8211; Proxima Shopping Center"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vogo.family/#website",
+            "url": "https://vogo.family/",
+            "name": "Vogo Family",
+            "description": "",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vogo.family/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "jetpack_sharing_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products/32671",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 32673,
+    "name": "Miercurea Ciuc - Nest Park Retail",
+    "slug": "miercurea-ciuc-nest-park-retail",
+    "permalink": "https://vogo.family/product/miercurea-ciuc-nest-park-retail/",
+    "date_created": "2025-04-09T22:56:36",
+    "date_created_gmt": "2025-04-09T20:56:36",
+    "date_modified": "2025-04-09T22:56:36",
+    "date_modified_gmt": "2025-04-09T20:56:36",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Livrare produse din Nest Park Retail - Miercurea Ciuc - pret de baza; pretul poate varia in functie de numarul de produse, magazin si distanta)</p>\n",
+    "short_description": "<p>Miercurea Ciuc &#8211; Nest Park Retail</p>\n",
+    "sku": "67fc57f9e493",
+    "price": "99",
+    "regular_price": "99",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 1,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": false,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 223,
+        "name": "Mall Delivery",
+        "slug": "mall-delivery"
+      }
+    ],
+    "tags": [],
+    "images": [],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>99,00&nbsp;<span class=\"woocommerce-Price-currencySymbol\">lei</span></bdi></span>",
+    "related_ids": [
+      32471,
+      32511,
+      32505,
+      32473,
+      32515
+    ],
+    "meta_data": [
+      {
+        "id": 311922,
+        "key": "_wp_page_template",
+        "value": "default"
+      },
+      {
+        "id": 326572,
+        "key": "wd_page_css_files",
+        "value": [
+          "helpers-wpb-elem",
+          "widget-recent-post-comments",
+          "widget-nav",
+          "widget-wd-layered-nav",
+          "woo-mod-swatches-base",
+          "woo-mod-swatches-filter",
+          "widget-layered-nav-stock-status",
+          "widget-slider-price-filter",
+          "wpcf7",
+          "revolution-slider",
+          "woo-payments",
+          "elementor-base",
+          "elementor-pro-base",
+          "woocommerce-base",
+          "mod-star-rating",
+          "woo-el-track-order",
+          "woocommerce-block-notices",
+          "woo-mod-quantity",
+          "woo-opt-free-progress-bar",
+          "woo-mod-progress-bar",
+          "woo-single-prod-el-base",
+          "woo-mod-stock-status",
+          "woo-mod-shop-attributes",
+          "wd-search-results",
+          "wd-search-form",
+          "mod-animations-keyframes",
+          "animations",
+          "woo-single-prod-builder",
+          "woo-el-breadcrumbs-builder",
+          "woo-single-prod-el-navigation",
+          "woo-single-prod-el-gallery",
+          "swiper",
+          "swiper-arrows",
+          "button",
+          "accordion",
+          "accordion-elem-wpb",
+          "mod-comments",
+          "tabs",
+          "woo-single-prod-el-tabs-opt-layout-tabs",
+          "product-loop",
+          "product-loop-standard",
+          "woo-mod-add-btn-replace",
+          "woo-opt-stretch-cont",
+          "woo-opt-title-limit",
+          "swiper-pagin",
+          "widget-collapse",
+          "footer-base",
+          "section-title",
+          "mod-nav-menu-label",
+          "scroll-top",
+          "header-mod-content-calc",
+          "widget-shopping-cart",
+          "widget-product-list",
+          "header-my-account-sidebar",
+          "woo-mod-login-form",
+          "cookies-popup",
+          "bottom-toolbar",
+          "mod-tools",
+          "header-elements-base",
+          "header-cart-side",
+          "header-cart",
+          "header-my-account"
+        ]
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v24.8.1 - https://yoast.com/wordpress/plugins/seo/ -->\n<title>Miercurea Ciuc - Nest Park Retail - Vogo Family</title>\n<!-- Admin only notice: this page does not show a meta description because it does not have one, either write it for this page specifically or go into the [Yoast SEO - Settings] menu and set up a template. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://vogo.family/product/miercurea-ciuc-nest-park-retail/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:locale\" content=\"en_US\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:type\" content=\"article\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:title\" content=\"Miercurea Ciuc - Nest Park Retail - Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:description\" content=\"Miercurea Ciuc - Nest Park Retail\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:url\" content=\"https://vogo.family/product/miercurea-ciuc-nest-park-retail/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:site_name\" content=\"Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" class=\"yoast-seo-meta-tag\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://vogo.family/product/miercurea-ciuc-nest-park-retail/\",\"url\":\"https://vogo.family/product/miercurea-ciuc-nest-park-retail/\",\"name\":\"Miercurea Ciuc - Nest Park Retail - Vogo Family\",\"isPartOf\":{\"@id\":\"https://vogo.family/#website\"},\"datePublished\":\"2025-04-09T20:56:36+00:00\",\"breadcrumb\":{\"@id\":\"https://vogo.family/product/miercurea-ciuc-nest-park-retail/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://vogo.family/product/miercurea-ciuc-nest-park-retail/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://vogo.family/product/miercurea-ciuc-nest-park-retail/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://vogo.family/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Magazin\",\"item\":\"https://vogo.family/shop/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Miercurea Ciuc &#8211; Nest Park Retail\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://vogo.family/#website\",\"url\":\"https://vogo.family/\",\"name\":\"Vogo Family\",\"description\":\"\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://vogo.family/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO plugin. -->",
+    "yoast_head_json": {
+      "title": "Miercurea Ciuc - Nest Park Retail - Vogo Family",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://vogo.family/product/miercurea-ciuc-nest-park-retail/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "Miercurea Ciuc - Nest Park Retail - Vogo Family",
+      "og_description": "Miercurea Ciuc - Nest Park Retail",
+      "og_url": "https://vogo.family/product/miercurea-ciuc-nest-park-retail/",
+      "og_site_name": "Vogo Family",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://vogo.family/product/miercurea-ciuc-nest-park-retail/",
+            "url": "https://vogo.family/product/miercurea-ciuc-nest-park-retail/",
+            "name": "Miercurea Ciuc - Nest Park Retail - Vogo Family",
+            "isPartOf": {
+              "@id": "https://vogo.family/#website"
+            },
+            "datePublished": "2025-04-09T20:56:36+00:00",
+            "breadcrumb": {
+              "@id": "https://vogo.family/product/miercurea-ciuc-nest-park-retail/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://vogo.family/product/miercurea-ciuc-nest-park-retail/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://vogo.family/product/miercurea-ciuc-nest-park-retail/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vogo.family/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Magazin",
+                "item": "https://vogo.family/shop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Miercurea Ciuc &#8211; Nest Park Retail"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vogo.family/#website",
+            "url": "https://vogo.family/",
+            "name": "Vogo Family",
+            "description": "",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vogo.family/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "jetpack_sharing_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products/32673",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 32659,
+    "name": "T\u00e2rgu Mure\u0219 - PlazaM T\u00e2rgu Mure\u0219",
+    "slug": "targu-mures-plazam-targu-mures",
+    "permalink": "https://vogo.family/product/targu-mures-plazam-targu-mures/",
+    "date_created": "2025-04-09T22:56:29",
+    "date_created_gmt": "2025-04-09T20:56:29",
+    "date_modified": "2025-04-09T22:56:31",
+    "date_modified_gmt": "2025-04-09T20:56:31",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Livrare produse din PlazaM T\u00e2rgu Mure\u0219 - T\u00e2rgu Mure\u0219 - pret de baza; pretul poate varia in functie de numarul de produse, magazin si distanta)</p>\n",
+    "short_description": "<p>T\u00e2rgu Mure\u0219 &#8211; PlazaM T\u00e2rgu Mure\u0219</p>\n",
+    "sku": "659b0d8ee1dd",
+    "price": "99",
+    "regular_price": "99",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": false,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 223,
+        "name": "Mall Delivery",
+        "slug": "mall-delivery"
+      }
+    ],
+    "tags": [],
+    "images": [],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>99,00&nbsp;<span class=\"woocommerce-Price-currencySymbol\">lei</span></bdi></span>",
+    "related_ids": [
+      32495,
+      32489,
+      32493,
+      32511,
+      32517
+    ],
+    "meta_data": [
+      {
+        "id": 311775,
+        "key": "_wp_page_template",
+        "value": "default"
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v24.8.1 - https://yoast.com/wordpress/plugins/seo/ -->\n<title>T\u00e2rgu Mure\u0219 - PlazaM T\u00e2rgu Mure\u0219 - Vogo Family</title>\n<!-- Admin only notice: this page does not show a meta description because it does not have one, either write it for this page specifically or go into the [Yoast SEO - Settings] menu and set up a template. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://vogo.family/product/targu-mures-plazam-targu-mures/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:locale\" content=\"en_US\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:type\" content=\"article\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:title\" content=\"T\u00e2rgu Mure\u0219 - PlazaM T\u00e2rgu Mure\u0219 - Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:description\" content=\"T\u00e2rgu Mure\u0219 - PlazaM T\u00e2rgu Mure\u0219\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:url\" content=\"https://vogo.family/product/targu-mures-plazam-targu-mures/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:site_name\" content=\"Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"article:modified_time\" content=\"2025-04-09T20:56:31+00:00\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" class=\"yoast-seo-meta-tag\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://vogo.family/product/targu-mures-plazam-targu-mures/\",\"url\":\"https://vogo.family/product/targu-mures-plazam-targu-mures/\",\"name\":\"T\u00e2rgu Mure\u0219 - PlazaM T\u00e2rgu Mure\u0219 - Vogo Family\",\"isPartOf\":{\"@id\":\"https://vogo.family/#website\"},\"datePublished\":\"2025-04-09T20:56:29+00:00\",\"dateModified\":\"2025-04-09T20:56:31+00:00\",\"breadcrumb\":{\"@id\":\"https://vogo.family/product/targu-mures-plazam-targu-mures/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://vogo.family/product/targu-mures-plazam-targu-mures/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://vogo.family/product/targu-mures-plazam-targu-mures/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://vogo.family/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Magazin\",\"item\":\"https://vogo.family/shop/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"T\u00e2rgu Mure\u0219 &#8211; PlazaM T\u00e2rgu Mure\u0219\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://vogo.family/#website\",\"url\":\"https://vogo.family/\",\"name\":\"Vogo Family\",\"description\":\"\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://vogo.family/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO plugin. -->",
+    "yoast_head_json": {
+      "title": "T\u00e2rgu Mure\u0219 - PlazaM T\u00e2rgu Mure\u0219 - Vogo Family",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://vogo.family/product/targu-mures-plazam-targu-mures/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "T\u00e2rgu Mure\u0219 - PlazaM T\u00e2rgu Mure\u0219 - Vogo Family",
+      "og_description": "T\u00e2rgu Mure\u0219 - PlazaM T\u00e2rgu Mure\u0219",
+      "og_url": "https://vogo.family/product/targu-mures-plazam-targu-mures/",
+      "og_site_name": "Vogo Family",
+      "article_modified_time": "2025-04-09T20:56:31+00:00",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://vogo.family/product/targu-mures-plazam-targu-mures/",
+            "url": "https://vogo.family/product/targu-mures-plazam-targu-mures/",
+            "name": "T\u00e2rgu Mure\u0219 - PlazaM T\u00e2rgu Mure\u0219 - Vogo Family",
+            "isPartOf": {
+              "@id": "https://vogo.family/#website"
+            },
+            "datePublished": "2025-04-09T20:56:29+00:00",
+            "dateModified": "2025-04-09T20:56:31+00:00",
+            "breadcrumb": {
+              "@id": "https://vogo.family/product/targu-mures-plazam-targu-mures/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://vogo.family/product/targu-mures-plazam-targu-mures/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://vogo.family/product/targu-mures-plazam-targu-mures/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vogo.family/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Magazin",
+                "item": "https://vogo.family/shop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "T\u00e2rgu Mure\u0219 &#8211; PlazaM T\u00e2rgu Mure\u0219"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vogo.family/#website",
+            "url": "https://vogo.family/",
+            "name": "Vogo Family",
+            "description": "",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vogo.family/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "jetpack_sharing_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products/32659",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 32653,
+    "name": "Suceava - Iulius Mall Suceava",
+    "slug": "suceava-iulius-mall-suceava",
+    "permalink": "https://vogo.family/product/suceava-iulius-mall-suceava/",
+    "date_created": "2025-04-09T22:56:29",
+    "date_created_gmt": "2025-04-09T20:56:29",
+    "date_modified": "2025-04-09T22:56:30",
+    "date_modified_gmt": "2025-04-09T20:56:30",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Livrare produse din Iulius Mall Suceava - Suceava - pret de baza; pretul poate varia in functie de numarul de produse, magazin si distanta)</p>\n",
+    "short_description": "<p>Suceava &#8211; Iulius Mall Suceava</p>\n",
+    "sku": "14936b7acf3b",
+    "price": "99",
+    "regular_price": "99",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": false,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 223,
+        "name": "Mall Delivery",
+        "slug": "mall-delivery"
+      }
+    ],
+    "tags": [],
+    "images": [],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>99,00&nbsp;<span class=\"woocommerce-Price-currencySymbol\">lei</span></bdi></span>",
+    "related_ids": [
+      32513,
+      32509,
+      32485,
+      32487,
+      32483
+    ],
+    "meta_data": [
+      {
+        "id": 311712,
+        "key": "_wp_page_template",
+        "value": "default"
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v24.8.1 - https://yoast.com/wordpress/plugins/seo/ -->\n<title>Suceava - Iulius Mall Suceava - Vogo Family</title>\n<!-- Admin only notice: this page does not show a meta description because it does not have one, either write it for this page specifically or go into the [Yoast SEO - Settings] menu and set up a template. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://vogo.family/product/suceava-iulius-mall-suceava/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:locale\" content=\"en_US\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:type\" content=\"article\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:title\" content=\"Suceava - Iulius Mall Suceava - Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:description\" content=\"Suceava - Iulius Mall Suceava\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:url\" content=\"https://vogo.family/product/suceava-iulius-mall-suceava/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:site_name\" content=\"Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"article:modified_time\" content=\"2025-04-09T20:56:30+00:00\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" class=\"yoast-seo-meta-tag\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://vogo.family/product/suceava-iulius-mall-suceava/\",\"url\":\"https://vogo.family/product/suceava-iulius-mall-suceava/\",\"name\":\"Suceava - Iulius Mall Suceava - Vogo Family\",\"isPartOf\":{\"@id\":\"https://vogo.family/#website\"},\"datePublished\":\"2025-04-09T20:56:29+00:00\",\"dateModified\":\"2025-04-09T20:56:30+00:00\",\"breadcrumb\":{\"@id\":\"https://vogo.family/product/suceava-iulius-mall-suceava/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://vogo.family/product/suceava-iulius-mall-suceava/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://vogo.family/product/suceava-iulius-mall-suceava/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://vogo.family/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Magazin\",\"item\":\"https://vogo.family/shop/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Suceava &#8211; Iulius Mall Suceava\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://vogo.family/#website\",\"url\":\"https://vogo.family/\",\"name\":\"Vogo Family\",\"description\":\"\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://vogo.family/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO plugin. -->",
+    "yoast_head_json": {
+      "title": "Suceava - Iulius Mall Suceava - Vogo Family",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://vogo.family/product/suceava-iulius-mall-suceava/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "Suceava - Iulius Mall Suceava - Vogo Family",
+      "og_description": "Suceava - Iulius Mall Suceava",
+      "og_url": "https://vogo.family/product/suceava-iulius-mall-suceava/",
+      "og_site_name": "Vogo Family",
+      "article_modified_time": "2025-04-09T20:56:30+00:00",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://vogo.family/product/suceava-iulius-mall-suceava/",
+            "url": "https://vogo.family/product/suceava-iulius-mall-suceava/",
+            "name": "Suceava - Iulius Mall Suceava - Vogo Family",
+            "isPartOf": {
+              "@id": "https://vogo.family/#website"
+            },
+            "datePublished": "2025-04-09T20:56:29+00:00",
+            "dateModified": "2025-04-09T20:56:30+00:00",
+            "breadcrumb": {
+              "@id": "https://vogo.family/product/suceava-iulius-mall-suceava/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://vogo.family/product/suceava-iulius-mall-suceava/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://vogo.family/product/suceava-iulius-mall-suceava/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vogo.family/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Magazin",
+                "item": "https://vogo.family/shop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Suceava &#8211; Iulius Mall Suceava"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vogo.family/#website",
+            "url": "https://vogo.family/",
+            "name": "Vogo Family",
+            "description": "",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vogo.family/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "jetpack_sharing_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products/32653",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 32655,
+    "name": "Suceava - Shopping City Suceava",
+    "slug": "suceava-shopping-city-suceava",
+    "permalink": "https://vogo.family/product/suceava-shopping-city-suceava/",
+    "date_created": "2025-04-09T22:56:29",
+    "date_created_gmt": "2025-04-09T20:56:29",
+    "date_modified": "2025-04-09T22:56:30",
+    "date_modified_gmt": "2025-04-09T20:56:30",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Livrare produse din Shopping City Suceava - Suceava - pret de baza; pretul poate varia in functie de numarul de produse, magazin si distanta)</p>\n",
+    "short_description": "<p>Suceava &#8211; Shopping City Suceava</p>\n",
+    "sku": "02defc04a7ac",
+    "price": "99",
+    "regular_price": "99",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": false,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 223,
+        "name": "Mall Delivery",
+        "slug": "mall-delivery"
+      }
+    ],
+    "tags": [],
+    "images": [],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>99,00&nbsp;<span class=\"woocommerce-Price-currencySymbol\">lei</span></bdi></span>",
+    "related_ids": [
+      32521,
+      32473,
+      32519,
+      32499,
+      32495
+    ],
+    "meta_data": [
+      {
+        "id": 311733,
+        "key": "_wp_page_template",
+        "value": "default"
+      },
+      {
+        "id": 327107,
+        "key": "wd_page_css_files",
+        "value": [
+          "helpers-wpb-elem",
+          "widget-recent-post-comments",
+          "widget-nav",
+          "widget-wd-layered-nav",
+          "woo-mod-swatches-base",
+          "woo-mod-swatches-filter",
+          "widget-layered-nav-stock-status",
+          "widget-slider-price-filter",
+          "wpcf7",
+          "revolution-slider",
+          "woo-payments",
+          "elementor-base",
+          "elementor-pro-base",
+          "woocommerce-base",
+          "mod-star-rating",
+          "woo-el-track-order",
+          "woocommerce-block-notices",
+          "woo-mod-quantity",
+          "woo-opt-free-progress-bar",
+          "woo-mod-progress-bar",
+          "woo-single-prod-el-base",
+          "woo-mod-stock-status",
+          "woo-mod-shop-attributes",
+          "wd-search-results",
+          "wd-search-form",
+          "mod-animations-keyframes",
+          "animations",
+          "woo-single-prod-builder",
+          "woo-el-breadcrumbs-builder",
+          "woo-single-prod-el-navigation",
+          "woo-single-prod-el-gallery",
+          "swiper",
+          "swiper-arrows",
+          "button",
+          "accordion",
+          "accordion-elem-wpb",
+          "mod-comments",
+          "tabs",
+          "woo-single-prod-el-tabs-opt-layout-tabs",
+          "product-loop",
+          "product-loop-standard",
+          "woo-mod-add-btn-replace",
+          "woo-opt-stretch-cont",
+          "woo-opt-title-limit",
+          "swiper-pagin",
+          "widget-collapse",
+          "footer-base",
+          "section-title",
+          "mod-nav-menu-label",
+          "scroll-top",
+          "header-mod-content-calc",
+          "widget-shopping-cart",
+          "widget-product-list",
+          "header-my-account-sidebar",
+          "woo-mod-login-form",
+          "cookies-popup",
+          "bottom-toolbar",
+          "mod-tools",
+          "header-elements-base",
+          "header-cart-side",
+          "header-cart",
+          "header-my-account"
+        ]
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v24.8.1 - https://yoast.com/wordpress/plugins/seo/ -->\n<title>Suceava - Shopping City Suceava - Vogo Family</title>\n<!-- Admin only notice: this page does not show a meta description because it does not have one, either write it for this page specifically or go into the [Yoast SEO - Settings] menu and set up a template. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://vogo.family/product/suceava-shopping-city-suceava/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:locale\" content=\"en_US\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:type\" content=\"article\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:title\" content=\"Suceava - Shopping City Suceava - Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:description\" content=\"Suceava - Shopping City Suceava\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:url\" content=\"https://vogo.family/product/suceava-shopping-city-suceava/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:site_name\" content=\"Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"article:modified_time\" content=\"2025-04-09T20:56:30+00:00\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" class=\"yoast-seo-meta-tag\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://vogo.family/product/suceava-shopping-city-suceava/\",\"url\":\"https://vogo.family/product/suceava-shopping-city-suceava/\",\"name\":\"Suceava - Shopping City Suceava - Vogo Family\",\"isPartOf\":{\"@id\":\"https://vogo.family/#website\"},\"datePublished\":\"2025-04-09T20:56:29+00:00\",\"dateModified\":\"2025-04-09T20:56:30+00:00\",\"breadcrumb\":{\"@id\":\"https://vogo.family/product/suceava-shopping-city-suceava/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://vogo.family/product/suceava-shopping-city-suceava/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://vogo.family/product/suceava-shopping-city-suceava/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://vogo.family/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Magazin\",\"item\":\"https://vogo.family/shop/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Suceava &#8211; Shopping City Suceava\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://vogo.family/#website\",\"url\":\"https://vogo.family/\",\"name\":\"Vogo Family\",\"description\":\"\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://vogo.family/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO plugin. -->",
+    "yoast_head_json": {
+      "title": "Suceava - Shopping City Suceava - Vogo Family",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://vogo.family/product/suceava-shopping-city-suceava/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "Suceava - Shopping City Suceava - Vogo Family",
+      "og_description": "Suceava - Shopping City Suceava",
+      "og_url": "https://vogo.family/product/suceava-shopping-city-suceava/",
+      "og_site_name": "Vogo Family",
+      "article_modified_time": "2025-04-09T20:56:30+00:00",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://vogo.family/product/suceava-shopping-city-suceava/",
+            "url": "https://vogo.family/product/suceava-shopping-city-suceava/",
+            "name": "Suceava - Shopping City Suceava - Vogo Family",
+            "isPartOf": {
+              "@id": "https://vogo.family/#website"
+            },
+            "datePublished": "2025-04-09T20:56:29+00:00",
+            "dateModified": "2025-04-09T20:56:30+00:00",
+            "breadcrumb": {
+              "@id": "https://vogo.family/product/suceava-shopping-city-suceava/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://vogo.family/product/suceava-shopping-city-suceava/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://vogo.family/product/suceava-shopping-city-suceava/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vogo.family/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Magazin",
+                "item": "https://vogo.family/shop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Suceava &#8211; Shopping City Suceava"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vogo.family/#website",
+            "url": "https://vogo.family/",
+            "name": "Vogo Family",
+            "description": "",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vogo.family/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "jetpack_sharing_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products/32655",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 32669,
+    "name": "T\u00e2rgu-Jiu - Targu-Jiu Shopping City",
+    "slug": "targu-jiu-targu-jiu-shopping-city",
+    "permalink": "https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/",
+    "date_created": "2025-04-09T22:56:29",
+    "date_created_gmt": "2025-04-09T20:56:29",
+    "date_modified": "2025-04-09T22:56:34",
+    "date_modified_gmt": "2025-04-09T20:56:34",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Livrare produse din Targu-Jiu Shopping City - T\u00e2rgu-Jiu - pret de baza; pretul poate varia in functie de numarul de produse, magazin si distanta)</p>\n",
+    "short_description": "<p>T\u00e2rgu-Jiu &#8211; Targu-Jiu Shopping City</p>\n",
+    "sku": "af84b013fa27",
+    "price": "99",
+    "regular_price": "99",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 3,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": false,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 223,
+        "name": "Mall Delivery",
+        "slug": "mall-delivery"
+      }
+    ],
+    "tags": [],
+    "images": [],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>99,00&nbsp;<span class=\"woocommerce-Price-currencySymbol\">lei</span></bdi></span>",
+    "related_ids": [
+      32489,
+      32503,
+      32519,
+      32471,
+      32513
+    ],
+    "meta_data": [
+      {
+        "id": 311880,
+        "key": "_wp_page_template",
+        "value": "default"
+      },
+      {
+        "id": 326350,
+        "key": "wd_page_css_files",
+        "value": [
+          "helpers-wpb-elem",
+          "widget-recent-post-comments",
+          "widget-nav",
+          "widget-wd-layered-nav",
+          "woo-mod-swatches-base",
+          "woo-mod-swatches-filter",
+          "widget-layered-nav-stock-status",
+          "widget-slider-price-filter",
+          "wpcf7",
+          "revolution-slider",
+          "woo-payments",
+          "elementor-base",
+          "elementor-pro-base",
+          "woocommerce-base",
+          "mod-star-rating",
+          "woo-el-track-order",
+          "woocommerce-block-notices",
+          "woo-mod-quantity",
+          "woo-opt-free-progress-bar",
+          "woo-mod-progress-bar",
+          "woo-single-prod-el-base",
+          "woo-mod-stock-status",
+          "woo-mod-shop-attributes",
+          "wd-search-results",
+          "wd-search-form",
+          "mod-animations-keyframes",
+          "animations",
+          "woo-single-prod-builder",
+          "woo-el-breadcrumbs-builder",
+          "woo-single-prod-el-navigation",
+          "woo-single-prod-el-gallery",
+          "swiper",
+          "swiper-arrows",
+          "button",
+          "accordion",
+          "accordion-elem-wpb",
+          "mod-comments",
+          "tabs",
+          "woo-single-prod-el-tabs-opt-layout-tabs",
+          "product-loop",
+          "product-loop-standard",
+          "woo-mod-add-btn-replace",
+          "woo-opt-stretch-cont",
+          "woo-opt-title-limit",
+          "swiper-pagin",
+          "widget-collapse",
+          "footer-base",
+          "section-title",
+          "mod-nav-menu-label",
+          "scroll-top",
+          "header-mod-content-calc",
+          "widget-shopping-cart",
+          "widget-product-list",
+          "header-my-account-sidebar",
+          "woo-mod-login-form",
+          "cookies-popup",
+          "bottom-toolbar",
+          "mod-tools",
+          "header-elements-base",
+          "header-cart-side",
+          "header-cart",
+          "header-my-account"
+        ]
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v24.8.1 - https://yoast.com/wordpress/plugins/seo/ -->\n<title>T\u00e2rgu-Jiu - Targu-Jiu Shopping City - Vogo Family</title>\n<!-- Admin only notice: this page does not show a meta description because it does not have one, either write it for this page specifically or go into the [Yoast SEO - Settings] menu and set up a template. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:locale\" content=\"en_US\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:type\" content=\"article\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:title\" content=\"T\u00e2rgu-Jiu - Targu-Jiu Shopping City - Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:description\" content=\"T\u00e2rgu-Jiu - Targu-Jiu Shopping City\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:url\" content=\"https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:site_name\" content=\"Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"article:modified_time\" content=\"2025-04-09T20:56:34+00:00\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" class=\"yoast-seo-meta-tag\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/\",\"url\":\"https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/\",\"name\":\"T\u00e2rgu-Jiu - Targu-Jiu Shopping City - Vogo Family\",\"isPartOf\":{\"@id\":\"https://vogo.family/#website\"},\"datePublished\":\"2025-04-09T20:56:29+00:00\",\"dateModified\":\"2025-04-09T20:56:34+00:00\",\"breadcrumb\":{\"@id\":\"https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://vogo.family/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Magazin\",\"item\":\"https://vogo.family/shop/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"T\u00e2rgu-Jiu &#8211; Targu-Jiu Shopping City\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://vogo.family/#website\",\"url\":\"https://vogo.family/\",\"name\":\"Vogo Family\",\"description\":\"\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://vogo.family/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO plugin. -->",
+    "yoast_head_json": {
+      "title": "T\u00e2rgu-Jiu - Targu-Jiu Shopping City - Vogo Family",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "T\u00e2rgu-Jiu - Targu-Jiu Shopping City - Vogo Family",
+      "og_description": "T\u00e2rgu-Jiu - Targu-Jiu Shopping City",
+      "og_url": "https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/",
+      "og_site_name": "Vogo Family",
+      "article_modified_time": "2025-04-09T20:56:34+00:00",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/",
+            "url": "https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/",
+            "name": "T\u00e2rgu-Jiu - Targu-Jiu Shopping City - Vogo Family",
+            "isPartOf": {
+              "@id": "https://vogo.family/#website"
+            },
+            "datePublished": "2025-04-09T20:56:29+00:00",
+            "dateModified": "2025-04-09T20:56:34+00:00",
+            "breadcrumb": {
+              "@id": "https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://vogo.family/product/targu-jiu-targu-jiu-shopping-city/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vogo.family/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Magazin",
+                "item": "https://vogo.family/shop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "T\u00e2rgu-Jiu &#8211; Targu-Jiu Shopping City"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vogo.family/#website",
+            "url": "https://vogo.family/",
+            "name": "Vogo Family",
+            "description": "",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vogo.family/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "jetpack_sharing_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products/32669",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 32657,
+    "name": "T\u00e2rgu Mure\u0219 - Mure\u0219 Mall",
+    "slug": "targu-mures-mures-mall",
+    "permalink": "https://vogo.family/product/targu-mures-mures-mall/",
+    "date_created": "2025-04-09T22:56:29",
+    "date_created_gmt": "2025-04-09T20:56:29",
+    "date_modified": "2025-04-09T22:56:31",
+    "date_modified_gmt": "2025-04-09T20:56:31",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Livrare produse din Mure\u0219 Mall - T\u00e2rgu Mure\u0219 - pret de baza; pretul poate varia in functie de numarul de produse, magazin si distanta)</p>\n",
+    "short_description": "<p>T\u00e2rgu Mure\u0219 &#8211; Mure\u0219 Mall</p>\n",
+    "sku": "2dd4802e14de",
+    "price": "99",
+    "regular_price": "99",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 1,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": false,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 223,
+        "name": "Mall Delivery",
+        "slug": "mall-delivery"
+      }
+    ],
+    "tags": [],
+    "images": [],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>99,00&nbsp;<span class=\"woocommerce-Price-currencySymbol\">lei</span></bdi></span>",
+    "related_ids": [
+      32519,
+      32505,
+      32509,
+      32495,
+      32521
+    ],
+    "meta_data": [
+      {
+        "id": 311754,
+        "key": "_wp_page_template",
+        "value": "default"
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v24.8.1 - https://yoast.com/wordpress/plugins/seo/ -->\n<title>T\u00e2rgu Mure\u0219 - Mure\u0219 Mall - Vogo Family</title>\n<!-- Admin only notice: this page does not show a meta description because it does not have one, either write it for this page specifically or go into the [Yoast SEO - Settings] menu and set up a template. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://vogo.family/product/targu-mures-mures-mall/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:locale\" content=\"en_US\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:type\" content=\"article\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:title\" content=\"T\u00e2rgu Mure\u0219 - Mure\u0219 Mall - Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:description\" content=\"T\u00e2rgu Mure\u0219 - Mure\u0219 Mall\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:url\" content=\"https://vogo.family/product/targu-mures-mures-mall/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:site_name\" content=\"Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"article:modified_time\" content=\"2025-04-09T20:56:31+00:00\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" class=\"yoast-seo-meta-tag\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://vogo.family/product/targu-mures-mures-mall/\",\"url\":\"https://vogo.family/product/targu-mures-mures-mall/\",\"name\":\"T\u00e2rgu Mure\u0219 - Mure\u0219 Mall - Vogo Family\",\"isPartOf\":{\"@id\":\"https://vogo.family/#website\"},\"datePublished\":\"2025-04-09T20:56:29+00:00\",\"dateModified\":\"2025-04-09T20:56:31+00:00\",\"breadcrumb\":{\"@id\":\"https://vogo.family/product/targu-mures-mures-mall/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://vogo.family/product/targu-mures-mures-mall/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://vogo.family/product/targu-mures-mures-mall/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://vogo.family/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Magazin\",\"item\":\"https://vogo.family/shop/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"T\u00e2rgu Mure\u0219 &#8211; Mure\u0219 Mall\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://vogo.family/#website\",\"url\":\"https://vogo.family/\",\"name\":\"Vogo Family\",\"description\":\"\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://vogo.family/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO plugin. -->",
+    "yoast_head_json": {
+      "title": "T\u00e2rgu Mure\u0219 - Mure\u0219 Mall - Vogo Family",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://vogo.family/product/targu-mures-mures-mall/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "T\u00e2rgu Mure\u0219 - Mure\u0219 Mall - Vogo Family",
+      "og_description": "T\u00e2rgu Mure\u0219 - Mure\u0219 Mall",
+      "og_url": "https://vogo.family/product/targu-mures-mures-mall/",
+      "og_site_name": "Vogo Family",
+      "article_modified_time": "2025-04-09T20:56:31+00:00",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://vogo.family/product/targu-mures-mures-mall/",
+            "url": "https://vogo.family/product/targu-mures-mures-mall/",
+            "name": "T\u00e2rgu Mure\u0219 - Mure\u0219 Mall - Vogo Family",
+            "isPartOf": {
+              "@id": "https://vogo.family/#website"
+            },
+            "datePublished": "2025-04-09T20:56:29+00:00",
+            "dateModified": "2025-04-09T20:56:31+00:00",
+            "breadcrumb": {
+              "@id": "https://vogo.family/product/targu-mures-mures-mall/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://vogo.family/product/targu-mures-mures-mall/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://vogo.family/product/targu-mures-mures-mall/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vogo.family/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Magazin",
+                "item": "https://vogo.family/shop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "T\u00e2rgu Mure\u0219 &#8211; Mure\u0219 Mall"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vogo.family/#website",
+            "url": "https://vogo.family/",
+            "name": "Vogo Family",
+            "description": "",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vogo.family/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "jetpack_sharing_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products/32657",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 32651,
+    "name": "Sf\u00e2ntu Gheorghe - Sepsi Value Centre",
+    "slug": "sfantu-gheorghe-sepsi-value-centre",
+    "permalink": "https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/",
+    "date_created": "2025-04-09T22:56:29",
+    "date_created_gmt": "2025-04-09T20:56:29",
+    "date_modified": "2025-04-09T22:56:29",
+    "date_modified_gmt": "2025-04-09T20:56:29",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Livrare produse din Sepsi Value Centre - Sf\u00e2ntu Gheorghe - pret de baza; pretul poate varia in functie de numarul de produse, magazin si distanta)</p>\n",
+    "short_description": "<p>Sf\u00e2ntu Gheorghe &#8211; Sepsi Value Centre</p>\n",
+    "sku": "dd916816b8df",
+    "price": "99",
+    "regular_price": "99",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": false,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 223,
+        "name": "Mall Delivery",
+        "slug": "mall-delivery"
+      }
+    ],
+    "tags": [],
+    "images": [],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>99,00&nbsp;<span class=\"woocommerce-Price-currencySymbol\">lei</span></bdi></span>",
+    "related_ids": [
+      32493,
+      32471,
+      32473,
+      32497,
+      32495
+    ],
+    "meta_data": [
+      {
+        "id": 311691,
+        "key": "_wp_page_template",
+        "value": "default"
+      },
+      {
+        "id": 326831,
+        "key": "wd_page_css_files",
+        "value": [
+          "helpers-wpb-elem",
+          "widget-recent-post-comments",
+          "widget-nav",
+          "widget-wd-layered-nav",
+          "woo-mod-swatches-base",
+          "woo-mod-swatches-filter",
+          "widget-layered-nav-stock-status",
+          "widget-slider-price-filter",
+          "wpcf7",
+          "revolution-slider",
+          "woo-payments",
+          "elementor-base",
+          "elementor-pro-base",
+          "woocommerce-base",
+          "mod-star-rating",
+          "woo-el-track-order",
+          "woocommerce-block-notices",
+          "woo-mod-quantity",
+          "woo-opt-free-progress-bar",
+          "woo-mod-progress-bar",
+          "woo-single-prod-el-base",
+          "woo-mod-stock-status",
+          "woo-mod-shop-attributes",
+          "wd-search-results",
+          "wd-search-form",
+          "mod-animations-keyframes",
+          "animations",
+          "woo-single-prod-builder",
+          "woo-el-breadcrumbs-builder",
+          "woo-single-prod-el-navigation",
+          "woo-single-prod-el-gallery",
+          "swiper",
+          "swiper-arrows",
+          "button",
+          "accordion",
+          "accordion-elem-wpb",
+          "mod-comments",
+          "tabs",
+          "woo-single-prod-el-tabs-opt-layout-tabs",
+          "product-loop",
+          "product-loop-standard",
+          "woo-mod-add-btn-replace",
+          "woo-opt-stretch-cont",
+          "woo-opt-title-limit",
+          "swiper-pagin",
+          "widget-collapse",
+          "footer-base",
+          "section-title",
+          "mod-nav-menu-label",
+          "scroll-top",
+          "header-mod-content-calc",
+          "widget-shopping-cart",
+          "widget-product-list",
+          "header-my-account-sidebar",
+          "woo-mod-login-form",
+          "cookies-popup",
+          "bottom-toolbar",
+          "mod-tools",
+          "header-elements-base",
+          "header-cart-side",
+          "header-cart",
+          "header-my-account"
+        ]
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v24.8.1 - https://yoast.com/wordpress/plugins/seo/ -->\n<title>Sf\u00e2ntu Gheorghe - Sepsi Value Centre - Vogo Family</title>\n<!-- Admin only notice: this page does not show a meta description because it does not have one, either write it for this page specifically or go into the [Yoast SEO - Settings] menu and set up a template. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:locale\" content=\"en_US\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:type\" content=\"article\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:title\" content=\"Sf\u00e2ntu Gheorghe - Sepsi Value Centre - Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:description\" content=\"Sf\u00e2ntu Gheorghe - Sepsi Value Centre\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:url\" content=\"https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:site_name\" content=\"Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" class=\"yoast-seo-meta-tag\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/\",\"url\":\"https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/\",\"name\":\"Sf\u00e2ntu Gheorghe - Sepsi Value Centre - Vogo Family\",\"isPartOf\":{\"@id\":\"https://vogo.family/#website\"},\"datePublished\":\"2025-04-09T20:56:29+00:00\",\"breadcrumb\":{\"@id\":\"https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://vogo.family/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Magazin\",\"item\":\"https://vogo.family/shop/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Sf\u00e2ntu Gheorghe &#8211; Sepsi Value Centre\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://vogo.family/#website\",\"url\":\"https://vogo.family/\",\"name\":\"Vogo Family\",\"description\":\"\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://vogo.family/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO plugin. -->",
+    "yoast_head_json": {
+      "title": "Sf\u00e2ntu Gheorghe - Sepsi Value Centre - Vogo Family",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "Sf\u00e2ntu Gheorghe - Sepsi Value Centre - Vogo Family",
+      "og_description": "Sf\u00e2ntu Gheorghe - Sepsi Value Centre",
+      "og_url": "https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/",
+      "og_site_name": "Vogo Family",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/",
+            "url": "https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/",
+            "name": "Sf\u00e2ntu Gheorghe - Sepsi Value Centre - Vogo Family",
+            "isPartOf": {
+              "@id": "https://vogo.family/#website"
+            },
+            "datePublished": "2025-04-09T20:56:29+00:00",
+            "breadcrumb": {
+              "@id": "https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://vogo.family/product/sfantu-gheorghe-sepsi-value-centre/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vogo.family/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Magazin",
+                "item": "https://vogo.family/shop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Sf\u00e2ntu Gheorghe &#8211; Sepsi Value Centre"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vogo.family/#website",
+            "url": "https://vogo.family/",
+            "name": "Vogo Family",
+            "description": "",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vogo.family/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "jetpack_sharing_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products/32651",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 32661,
+    "name": "T\u00e2rgu Mure\u0219 - Shopping City",
+    "slug": "targu-mures-shopping-city",
+    "permalink": "https://vogo.family/product/targu-mures-shopping-city/",
+    "date_created": "2025-04-09T22:56:29",
+    "date_created_gmt": "2025-04-09T20:56:29",
+    "date_modified": "2025-04-09T22:56:32",
+    "date_modified_gmt": "2025-04-09T20:56:32",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Livrare produse din Shopping City - T\u00e2rgu Mure\u0219 - pret de baza; pretul poate varia in functie de numarul de produse, magazin si distanta)</p>\n",
+    "short_description": "<p>T\u00e2rgu Mure\u0219 &#8211; Shopping City</p>\n",
+    "sku": "3d0847322a66",
+    "price": "99",
+    "regular_price": "99",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": false,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 223,
+        "name": "Mall Delivery",
+        "slug": "mall-delivery"
+      }
+    ],
+    "tags": [],
+    "images": [],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>99,00&nbsp;<span class=\"woocommerce-Price-currencySymbol\">lei</span></bdi></span>",
+    "related_ids": [
+      32513,
+      32519,
+      32503,
+      32481,
+      32479
+    ],
+    "meta_data": [
+      {
+        "id": 311796,
+        "key": "_wp_page_template",
+        "value": "default"
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v24.8.1 - https://yoast.com/wordpress/plugins/seo/ -->\n<title>T\u00e2rgu Mure\u0219 - Shopping City - Vogo Family</title>\n<!-- Admin only notice: this page does not show a meta description because it does not have one, either write it for this page specifically or go into the [Yoast SEO - Settings] menu and set up a template. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://vogo.family/product/targu-mures-shopping-city/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:locale\" content=\"en_US\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:type\" content=\"article\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:title\" content=\"T\u00e2rgu Mure\u0219 - Shopping City - Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:description\" content=\"T\u00e2rgu Mure\u0219 - Shopping City\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:url\" content=\"https://vogo.family/product/targu-mures-shopping-city/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:site_name\" content=\"Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"article:modified_time\" content=\"2025-04-09T20:56:32+00:00\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" class=\"yoast-seo-meta-tag\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://vogo.family/product/targu-mures-shopping-city/\",\"url\":\"https://vogo.family/product/targu-mures-shopping-city/\",\"name\":\"T\u00e2rgu Mure\u0219 - Shopping City - Vogo Family\",\"isPartOf\":{\"@id\":\"https://vogo.family/#website\"},\"datePublished\":\"2025-04-09T20:56:29+00:00\",\"dateModified\":\"2025-04-09T20:56:32+00:00\",\"breadcrumb\":{\"@id\":\"https://vogo.family/product/targu-mures-shopping-city/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://vogo.family/product/targu-mures-shopping-city/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://vogo.family/product/targu-mures-shopping-city/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://vogo.family/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Magazin\",\"item\":\"https://vogo.family/shop/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"T\u00e2rgu Mure\u0219 &#8211; Shopping City\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://vogo.family/#website\",\"url\":\"https://vogo.family/\",\"name\":\"Vogo Family\",\"description\":\"\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://vogo.family/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO plugin. -->",
+    "yoast_head_json": {
+      "title": "T\u00e2rgu Mure\u0219 - Shopping City - Vogo Family",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://vogo.family/product/targu-mures-shopping-city/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "T\u00e2rgu Mure\u0219 - Shopping City - Vogo Family",
+      "og_description": "T\u00e2rgu Mure\u0219 - Shopping City",
+      "og_url": "https://vogo.family/product/targu-mures-shopping-city/",
+      "og_site_name": "Vogo Family",
+      "article_modified_time": "2025-04-09T20:56:32+00:00",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://vogo.family/product/targu-mures-shopping-city/",
+            "url": "https://vogo.family/product/targu-mures-shopping-city/",
+            "name": "T\u00e2rgu Mure\u0219 - Shopping City - Vogo Family",
+            "isPartOf": {
+              "@id": "https://vogo.family/#website"
+            },
+            "datePublished": "2025-04-09T20:56:29+00:00",
+            "dateModified": "2025-04-09T20:56:32+00:00",
+            "breadcrumb": {
+              "@id": "https://vogo.family/product/targu-mures-shopping-city/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://vogo.family/product/targu-mures-shopping-city/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://vogo.family/product/targu-mures-shopping-city/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vogo.family/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Magazin",
+                "item": "https://vogo.family/shop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "T\u00e2rgu Mure\u0219 &#8211; Shopping City"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vogo.family/#website",
+            "url": "https://vogo.family/",
+            "name": "Vogo Family",
+            "description": "",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vogo.family/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "jetpack_sharing_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products/32661",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 32667,
+    "name": "Timi\u0219oara - Shopping City Timi\u0219oara",
+    "slug": "timisoara-shopping-city-timisoara",
+    "permalink": "https://vogo.family/product/timisoara-shopping-city-timisoara/",
+    "date_created": "2025-04-09T22:56:29",
+    "date_created_gmt": "2025-04-09T20:56:29",
+    "date_modified": "2025-04-09T22:56:33",
+    "date_modified_gmt": "2025-04-09T20:56:33",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Livrare produse din Shopping City Timi\u0219oara - Timi\u0219oara - pret de baza; pretul poate varia in functie de numarul de produse, magazin si distanta)</p>\n",
+    "short_description": "<p>Timi\u0219oara &#8211; Shopping City Timi\u0219oara</p>\n",
+    "sku": "41f1ba32de77",
+    "price": "99",
+    "regular_price": "99",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 1,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": false,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 223,
+        "name": "Mall Delivery",
+        "slug": "mall-delivery"
+      }
+    ],
+    "tags": [],
+    "images": [],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>99,00&nbsp;<span class=\"woocommerce-Price-currencySymbol\">lei</span></bdi></span>",
+    "related_ids": [
+      32495,
+      32487,
+      32493,
+      32479,
+      32511
+    ],
+    "meta_data": [
+      {
+        "id": 311859,
+        "key": "_wp_page_template",
+        "value": "default"
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v24.8.1 - https://yoast.com/wordpress/plugins/seo/ -->\n<title>Timi\u0219oara - Shopping City Timi\u0219oara - Vogo Family</title>\n<!-- Admin only notice: this page does not show a meta description because it does not have one, either write it for this page specifically or go into the [Yoast SEO - Settings] menu and set up a template. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://vogo.family/product/timisoara-shopping-city-timisoara/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:locale\" content=\"en_US\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:type\" content=\"article\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:title\" content=\"Timi\u0219oara - Shopping City Timi\u0219oara - Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:description\" content=\"Timi\u0219oara - Shopping City Timi\u0219oara\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:url\" content=\"https://vogo.family/product/timisoara-shopping-city-timisoara/\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"og:site_name\" content=\"Vogo Family\" class=\"yoast-seo-meta-tag\" />\n<meta property=\"article:modified_time\" content=\"2025-04-09T20:56:33+00:00\" class=\"yoast-seo-meta-tag\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" class=\"yoast-seo-meta-tag\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://vogo.family/product/timisoara-shopping-city-timisoara/\",\"url\":\"https://vogo.family/product/timisoara-shopping-city-timisoara/\",\"name\":\"Timi\u0219oara - Shopping City Timi\u0219oara - Vogo Family\",\"isPartOf\":{\"@id\":\"https://vogo.family/#website\"},\"datePublished\":\"2025-04-09T20:56:29+00:00\",\"dateModified\":\"2025-04-09T20:56:33+00:00\",\"breadcrumb\":{\"@id\":\"https://vogo.family/product/timisoara-shopping-city-timisoara/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://vogo.family/product/timisoara-shopping-city-timisoara/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://vogo.family/product/timisoara-shopping-city-timisoara/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://vogo.family/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Magazin\",\"item\":\"https://vogo.family/shop/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Timi\u0219oara &#8211; Shopping City Timi\u0219oara\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://vogo.family/#website\",\"url\":\"https://vogo.family/\",\"name\":\"Vogo Family\",\"description\":\"\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://vogo.family/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO plugin. -->",
+    "yoast_head_json": {
+      "title": "Timi\u0219oara - Shopping City Timi\u0219oara - Vogo Family",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://vogo.family/product/timisoara-shopping-city-timisoara/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "Timi\u0219oara - Shopping City Timi\u0219oara - Vogo Family",
+      "og_description": "Timi\u0219oara - Shopping City Timi\u0219oara",
+      "og_url": "https://vogo.family/product/timisoara-shopping-city-timisoara/",
+      "og_site_name": "Vogo Family",
+      "article_modified_time": "2025-04-09T20:56:33+00:00",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://vogo.family/product/timisoara-shopping-city-timisoara/",
+            "url": "https://vogo.family/product/timisoara-shopping-city-timisoara/",
+            "name": "Timi\u0219oara - Shopping City Timi\u0219oara - Vogo Family",
+            "isPartOf": {
+              "@id": "https://vogo.family/#website"
+            },
+            "datePublished": "2025-04-09T20:56:29+00:00",
+            "dateModified": "2025-04-09T20:56:33+00:00",
+            "breadcrumb": {
+              "@id": "https://vogo.family/product/timisoara-shopping-city-timisoara/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://vogo.family/product/timisoara-shopping-city-timisoara/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://vogo.family/product/timisoara-shopping-city-timisoara/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vogo.family/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Magazin",
+                "item": "https://vogo.family/shop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Timi\u0219oara &#8211; Shopping City Timi\u0219oara"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vogo.family/#website",
+            "url": "https://vogo.family/",
+            "name": "Vogo Family",
+            "description": "",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vogo.family/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "jetpack_sharing_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products/32667",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://vogo.family/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  }
+]

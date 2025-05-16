@@ -1,0 +1,79 @@
+{
+  "generated_at": "2025-04-26T14:08:34.505576",
+  "base_url": "https://vogo.family",
+  "authentication": {
+    "type": "Basic Auth",
+    "parameters": {
+      "consumer_key": "WP_CONSUMER_KEY environment variable",
+      "consumer_secret": "WP_CONSUMER_SECRET environment variable"
+    }
+  },
+  "endpoints": {
+    "products": {
+      "list_products": {
+        "endpoint": "products",
+        "method": "GET",
+        "url": "https://vogo.familywc/v3/products",
+        "error": "HTTPSConnectionPool(host='vogo.familywc', port=443): Max retries exceeded with url: /v3/products (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x0000026FB22884A0>: Failed to resolve 'vogo.familywc' (Name or service not known: vogo.familywc using 1 resolver(s))\"))"
+      },
+      "restaurants": {
+        "endpoint": "products",
+        "method": "GET",
+        "url": "https://vogo.familywc/v3/products",
+        "error": "HTTPSConnectionPool(host='vogo.familywc', port=443): Max retries exceeded with url: /v3/products?category=restaurante (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x0000026FB2288DD0>: Failed to resolve 'vogo.familywc' (Name or service not known: vogo.familywc using 1 resolver(s))\"))"
+      },
+      "mall_delivery": {
+        "endpoint": "products",
+        "method": "GET",
+        "url": "https://vogo.familywc/v3/products",
+        "error": "HTTPSConnectionPool(host='vogo.familywc', port=443): Max retries exceeded with url: /v3/products?category=223 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x0000026FB2289760>: Failed to resolve 'vogo.familywc' (Name or service not known: vogo.familywc using 1 resolver(s))\"))"
+      },
+      "mall_products": {
+        "endpoint": "products",
+        "method": "GET",
+        "url": "https://vogo.familywc/v3/products",
+        "error": "HTTPSConnectionPool(host='vogo.familywc', port=443): Max retries exceeded with url: /v3/products?category=793 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x0000026FB2253CE0>: Failed to resolve 'vogo.familywc' (Name or service not known: vogo.familywc using 1 resolver(s))\"))"
+      },
+      "alba_iulia_services": {
+        "endpoint": "products",
+        "method": "GET",
+        "url": "https://vogo.familywc/v3/products",
+        "error": "HTTPSConnectionPool(host='vogo.familywc', port=443): Max retries exceeded with url: /v3/products?tag=alba-iulia (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x0000026FB2288C80>: Failed to resolve 'vogo.familywc' (Name or service not known: vogo.familywc using 1 resolver(s))\"))"
+      }
+    },
+    "categories": {
+      "list_categories": {
+        "endpoint": "products/categories",
+        "method": "GET",
+        "url": "https://vogo.familywc/v3/products/categories",
+        "error": "HTTPSConnectionPool(host='vogo.familywc', port=443): Max retries exceeded with url: /v3/products/categories (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x0000026FB2289D30>: Failed to resolve 'vogo.familywc' (Name or service not known: vogo.familywc using 1 resolver(s))\"))"
+      },
+      "mall_parent_category": {
+        "endpoint": "products/categories/793",
+        "method": "GET",
+        "url": "https://vogo.familywc/v3/products/categories/793",
+        "error": "HTTPSConnectionPool(host='vogo.familywc', port=443): Max retries exceeded with url: /v3/products/categories/793 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x0000026FB228A690>: Failed to resolve 'vogo.familywc' (Name or service not known: vogo.familywc using 1 resolver(s))\"))"
+      },
+      "mall_subcategories": {
+        "endpoint": "products/categories",
+        "method": "GET",
+        "url": "https://vogo.familywc/v3/products/categories",
+        "error": "HTTPSConnectionPool(host='vogo.familywc', port=443): Max retries exceeded with url: /v3/products/categories?parent=793 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x0000026FB222DCD0>: Failed to resolve 'vogo.familywc' (Name or service not known: vogo.familywc using 1 resolver(s))\"))"
+      },
+      "restaurant_category": {
+        "endpoint": "products/categories",
+        "method": "GET",
+        "url": "https://vogo.familywc/v3/products/categories",
+        "error": "HTTPSConnectionPool(host='vogo.familywc', port=443): Max retries exceeded with url: /v3/products/categories?slug=restaurante (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x0000026FB2288140>: Failed to resolve 'vogo.familywc' (Name or service not known: vogo.familywc using 1 resolver(s))\"))"
+      }
+    },
+    "orders": {
+      "list_orders": {
+        "endpoint": "orders",
+        "method": "GET",
+        "url": "https://vogo.familywc/v3/orders",
+        "error": "HTTPSConnectionPool(host='vogo.familywc', port=443): Max retries exceeded with url: /v3/orders?status=processing (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x0000026FB2288E60>: Failed to resolve 'vogo.familywc' (Name or service not known: vogo.familywc using 1 resolver(s))\"))"
+      }
+    }
+  }
+}
