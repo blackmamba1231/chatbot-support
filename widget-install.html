@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vogo.Family Chat Widget Installation</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .note { background: #fffde7; padding: 10px; border-left: 4px solid #ffd600; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>Vogo.Family Chat Widget Installation Guide</h1>
+    
+    <h2>Option 1: Using Custom HTML Widget</h2>
+    <ol>
+        <li>Go to <strong>Appearance > Widgets</strong> in your WordPress admin</li>
+        <li>Add a "Custom HTML" widget to your desired widget area</li>
+        <li>Paste the following code:</li>
+    </ol>
+    
+    <pre><code>&lt;!-- Vogo.Family Chat Widget --&gt;
+&lt;div id="vogo-chat-root"&gt;&lt;/div&gt;
+&lt;script src="https://chatbot-support-1-9ljn.onrender.com/static/js/main.cacfdeba.js"&gt;&lt;/script&gt;
+&lt;link href="https://chatbot-support-1-9ljn.onrender.com/static/css/main.cda35c4f.css" rel="stylesheet"&gt;</code></pre>
+
+    <h2>Option 2: Using Theme Customizer (Footer Code)</h2>
+    <ol>
+        <li>Go to <strong>Appearance > Customize</strong></li>
+        <li>Look for "Additional CSS" or "Custom HTML/JavaScript" section</li>
+        <li>Paste the widget code in the footer section</li>
+    </ol>
+
+    <h2>Option 3: Using a Plugin</h2>
+    <ol>
+        <li>Install the "Header and Footer Scripts" plugin</li>
+        <li>Go to <strong>Settings > Header and Footer Scripts</strong></li>
+        <li>Add the widget code to the "Scripts in Footer" section</li>
+    </ol>
+
+    <h2>Option 4: Editing theme's footer.php</h2>
+    <ol>
+        <li>Go to <strong>Appearance > Theme Editor</strong></li>
+        <li>Select your theme's footer.php file</li>
+        <li>Add the widget code just before the closing &lt;/body&gt; tag</li>
+        <li>Click "Update File" to save</li>
+    </ol>
+
+    <div class="note">
+        <strong>Note:</strong> If you update your theme, any changes made directly to theme files will be lost. 
+        Using a child theme or one of the other methods is recommended.
+    </div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './ChatWidget.css';
 
-function VoiceInput({ onVoiceRecorded, disabled }) {
+function VoiceInput({ onSendMessage, disabled }) {
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -24,7 +24,7 @@ function VoiceInput({ onVoiceRecorded, disabled }) {
       
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' });
-        onVoiceRecorded(audioBlob);
+        onSendMessage(audioBlob);
         
         // Stop all tracks in the stream
         stream.getTracks().forEach(track => track.stop());
