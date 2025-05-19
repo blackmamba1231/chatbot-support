@@ -1,6 +1,6 @@
 [
   {
-    "name": "Unknown Product",
+    "name": "Pregătire – meditații Biologie",
     "url": "https://vogo.family/product/pregatire-meditatii-biologie/",
     "price": "90,00 lei",
     "category": "Pregatire scoala si meditatii",
@@ -8,7 +8,7 @@
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Pregătire – meditații Chimie",
     "url": "https://vogo.family/product/pregatire-meditatii-chimie/",
     "price": "90,00 lei",
     "category": "Pregatire scoala si meditatii",
@@ -16,7 +16,7 @@
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Pregătire – meditații educație tehnologică și informatică",
     "url": "https://vogo.family/product/pregatire-meditatii-educatie-tehnologica-si-informatica/",
     "price": "90,00 lei",
     "category": "Pregatire scoala si meditatii",
@@ -24,7 +24,7 @@
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Pregătire – meditații Engleză",
     "url": "https://vogo.family/product/pregatire-meditatii-engleza/",
     "price": "90,00 lei",
     "category": "Pregatire scoala si meditatii",
@@ -32,7 +32,7 @@
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Pregătire – meditații Fizică",
     "url": "https://vogo.family/product/pregatire-meditatii-fizica/",
     "price": "90,00 lei",
     "category": "Pregatire scoala si meditatii",
@@ -40,7 +40,7 @@
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Pregătire – meditații Franceză",
     "url": "https://vogo.family/product/pregatire-meditatii-franceza/",
     "price": "90,00 lei",
     "category": "Pregatire scoala si meditatii",
@@ -48,7 +48,7 @@
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Pregătire – meditații Germană",
     "url": "https://vogo.family/product/pregatire-meditatii-germana/",
     "price": "90,00 lei",
     "category": "Pregatire scoala si meditatii",
@@ -56,7 +56,7 @@
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Pregătire – meditații Istorie (Clasele IV-VIII)",
     "url": "https://vogo.family/product/pregatire-meditatii-istorie-clasa-iv-v-vi-vii-viii/",
     "price": "90,00 lei",
     "category": "Pregatire scoala si meditatii",
@@ -64,7 +64,7 @@
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Pregătire – meditații Limba și Literatura Română (Clasele III-VIII)",
     "url": "https://vogo.family/product/pregatire-meditatii-limba-si-literatura-romana-clasa-iii-iv-v-vi-vii-viii/",
     "price": "90,00 lei",
     "category": "Pregatire scoala si meditatii",
@@ -72,7 +72,7 @@
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Pregătire – meditații Matematică (Clasele III-VIII)",
     "url": "https://vogo.family/product/pregatire-matematica-clasa-iii-iv-v-vi-vii-viii/",
     "price": "90,00 lei",
     "category": "Pregatire scoala si meditatii",
@@ -80,34 +80,34 @@
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Clinică veterinară non-stop",
     "url": "https://vogo.family/product/clinica-veterinata-aproape-de-mine-non-stop/",
     "price": "380,00 lei",
-    "category": "Pregatire scoala si meditatii",
+    "category": "Servicii veterinare",
     "image_url": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/05/clinica-veterinara-animale-de-companie.png?fit=557%2C461&ssl=1",
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Hrană premium pentru câini PAU",
     "url": "https://vogo.family/product/hrana-premium-caini-pau/",
     "price": "38,00 lei",
-    "category": "Pregatire scoala si meditatii",
+    "category": "Hrană pentru animale",
     "image_url": "https://vogo.family/wp-content/uploads/2025/05/hrana_pauu.avif",
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Hrană umedă dietetică monoproteică cu carne de gâscă pentru câini și pisici (100g) SOLO",
     "url": "https://vogo.family/product/hrana-umeda-dietetica-monoproteica-cu-carne-de-gasca-pentru-caini-si-pisici-100-g-solo/",
     "price": "38,00 lei",
-    "category": "Pregatire scoala si meditatii",
+    "category": "Hrană pentru animale",
     "image_url": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/05/hrana_pisici_solo_gasca.webp?fit=450%2C450&ssl=1",
     "description": ""
   },
   {
-    "name": "Unknown Product",
+    "name": "Hrană umedă dietetică monoproteică cu carne de mistreț pentru câini și pisici SOLO",
     "url": "https://vogo.family/product/hrana-umeda-dietetica-monoproteica-carne-mistret-caini-pisici/",
     "price": "38,00 lei",
-    "category": "Pregatire scoala si meditatii",
+    "category": "Hrană pentru animale",
     "image_url": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/05/hrana_pisici_solo_mistret.webp?fit=450%2C450&ssl=1",
     "description": ""
   }

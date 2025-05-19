@@ -1,8 +1,8 @@
 [
   {
-    "name": "Unknown Product",
+    "name": "Personal assistant",
     "url": "https://vogo.family/product/personal-assistant/",
-    "price": "26,76 lei",
+    "price": "26,76 lei",
     "category": "VIP Assistance",
     "image_url": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/03/personal-asistance.png?fit=445%2C311&ssl=1",
     "description": "Ne concentrăm pe domeniile esențiale pentru viața modernă, inclusiv sănătatea, cariera, educația, și relaxarea, pentru a te ajuta să găsești echilibrul în tot ceea ce faci. Fie că este vorba de organizarea ședințelor de lucru, stabilirea obiectivelor de sănătate, facilitarea accesului la resurse educaționale sau planificarea timpului pentru activități recreative, noi ne ocupăm de detalii, astfel încât tu să te poți concentra pe ceea ce contează cu adevărat.\nBeneficiază acum de asistența personalizată care îți va transforma viata într-una mai productivă, mai fericita și mai lipsită de stres!",
@@ -14,7 +14,7 @@
     "reviews": []
   },
   {
-    "name": "Unknown Product",
+    "name": "servicii-avocatiale-complete-in-era-digitala",
     "url": "https://vogo.family/product/servicii-avocatiale-complete-in-era-digitala/",
     "price": "",
     "category": "VIP Assistance",
@@ -28,7 +28,7 @@
     "reviews": []
   },
   {
-    "name": "Unknown Product",
+    "name": "sirop-de-agave-ecologic",
     "url": "https://vogo.family/product/sirop-de-agave-ecologic/",
     "price": "53,60 lei",
     "category": "VIP Assistance",
@@ -42,9 +42,9 @@
     "reviews": []
   },
   {
-    "name": "Unknown Product",
+    "name": "vogo-personal-asistant-monthly-subscription",
     "url": "https://vogo.family/product/vogo-personal-asistant-monthly-subscription/",
-    "price": "60,00 lei",
+    "price": "60,00 lei",
     "category": "VIP Assistance",
     "image_url": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/01/download-4.png?fit=832%2C1216&ssl=1",
     "description": "Monthly subscription for VOGO PERSONAL ASISTANT Service – 9.8 USD / monthPayable each month.\n\n\n\n\n\n\n \nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
