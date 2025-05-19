@@ -31,40 +31,18 @@ async def transcribe_audio(file_path: str, language: Optional[str] = None) -> st
         raise HTTPException(status_code=500, detail="OpenAI API key not configured")
     
     try:
+        from openai import OpenAI
+        client = OpenAI(api_key=api_key)
+        
         with open(file_path, "rb") as audio_file:
-            # Prepare headers with API key
-            headers = {
-                "Authorization": f"Bearer {api_key}"
-            }
-            
-            # Prepare form data
-            form_data = {
-                "model": "whisper-1",
-            }
-            
-            if language:
-                form_data["language"] = language
-            
-            files = {
-                "file": audio_file
-            }
-            
             # Call Whisper API
-            async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    "https://api.openai.com/v1/audio/transcriptions",
-                    headers=headers,
-                    data=form_data,
-                    files=files,
-                    timeout=30.0
-                )
-                
-                if response.status_code != 200:
-                    logger.error(f"Whisper API error: {response.text}")
-                    raise HTTPException(status_code=response.status_code, detail=f"Transcription failed: {response.text}")
-                
-                result = response.json()
-                return result.get("text", "")
+            response = await client.audio.transcriptions.create(
+                model="whisper-1",
+                file=audio_file,
+                language=language if language else None
+            )
+            
+            return response.text
                 
     except Exception as e:
         logger.error(f"Error transcribing audio: {str(e)}")
