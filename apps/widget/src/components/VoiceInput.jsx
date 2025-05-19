@@ -12,7 +12,9 @@ function VoiceInput({ onSendMessage, disabled }) {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       
-      const mediaRecorder = new MediaRecorder(stream);
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'audio/webm;codecs=opus'
+      });
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
       
@@ -23,7 +25,7 @@ function VoiceInput({ onSendMessage, disabled }) {
       };
       
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' });
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
         onSendMessage(audioBlob);
         
         // Stop all tracks in the stream

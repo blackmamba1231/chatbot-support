@@ -70,14 +70,44 @@ async def transcribe_audio(file_path: str, language: Optional[str] = None) -> st
         logger.error(f"Error transcribing audio: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error processing audio: {str(e)}")
 
-@voice_router.post("/transcribe", response_model=ChatResponse)
+@voice_router.post("/transcribe")
 async def process_voice(
     audio: UploadFile = File(...),
-    language: Optional[str] = Form(None),
-    user_id: Optional[str] = Form(None),
-    session_id: Optional[str] = Form(None),
-    rag_engine: RAGEngine = Depends(lambda wc=Depends(): RAGEngine(wc))
+    user_id: str = Form(...),
+    session_id: str = Form(...)
 ):
+    # Log received data
+    logger.info(f"Received audio file: {audio.filename}, content_type: {audio.content_type}")
+    logger.info(f"User ID: {user_id}, Session ID: {session_id}")
+    
+    try:
+        # Save uploaded file to temp directory
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as temp_file:
+            temp_file.write(await audio.read())
+            temp_file_path = temp_file.name
+        
+        try:
+            # Transcribe audio
+            transcribed_text = await transcribe_audio(temp_file_path)
+            
+            # Process transcribed text with RAG engine
+            rag_engine = RAGEngine()
+            result = await rag_engine.generate_response(transcribed_text)
+            
+            return {
+                "response": result["response"],
+                "transcription": transcribed_text,
+                "products": result.get("products", [])
+            }
+            
+        finally:
+            # Clean up temp file
+            if os.path.exists(temp_file_path):
+                os.unlink(temp_file_path)
+                
+    except Exception as e:
+        logger.error(f"Error processing voice message: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
     """
     Process voice message:
     1. Receive audio file
@@ -96,7 +126,7 @@ async def process_voice(
     """
     try:
         # Save uploaded file to temp directory
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as temp_file:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as temp_file:
             temp_file.write(await audio.read())
             temp_file_path = temp_file.name
         

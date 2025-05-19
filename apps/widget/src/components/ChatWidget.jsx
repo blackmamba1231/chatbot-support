@@ -161,56 +161,51 @@ function ChatWidget() {
   };
 
   const handleVoiceInput = async (audioBlob) => {
-    setLoading(true);
-    
     try {
+      setLoading(true);
+      
+      // Create form data
       const formData = new FormData();
-      formData.append('audio', audioBlob, 'recording.wav');
+      formData.append('audio', audioBlob, 'voice.webm');
       formData.append('user_id', userInfo.userId);
       formData.append('session_id', userInfo.sessionId);
-      
+
       const response = await fetch(`${API_URL}/voice/transcribe`, {
         method: 'POST',
         body: formData
       });
       
+      const data = await response.json();
+      
       if (response.ok) {
-        const data = await response.json();
-        
         // Add transcribed message from user
-        if (data.transcription) {
-          const userMessage = {
-            id: Date.now(),
-            text: data.transcription,
-            sender: 'user',
-            timestamp: new Date().toISOString(),
-            isVoice: true
-          };
-          
-          setMessages(prev => [...prev, userMessage]);
-        }
+        const userMessage = {
+          id: Date.now(),
+          text: data.transcription || 'Voice message sent',
+          sender: 'user',
+          timestamp: new Date().toISOString(),
+          isVoice: true
+        };
         
         // Add bot response
-        if (data.response) {
-          const botMessage = {
-            id: Date.now() + 1,
-            text: data.response,
-            sender: 'bot',
-            timestamp: new Date().toISOString(),
-            products: data.products || []
-          };
-          
-          setMessages(prev => [...prev, botMessage]);
-          
-          // Ensure scroll happens after voice response is added
-          setTimeout(() => {
-            if (chatRef.current) {
-              chatRef.current.scrollTop = chatRef.current.scrollHeight;
-            }
-          }, 100);
-        }
+        const botMessage = {
+          id: Date.now() + 1,
+          text: data.response || 'Message received',
+          sender: 'bot',
+          timestamp: new Date().toISOString(),
+          products: data.products || []
+        };
+        
+        setMessages(prev => [...prev, userMessage, botMessage]);
+        
+        // Scroll to bottom
+        setTimeout(() => {
+          if (chatRef.current) {
+            chatRef.current.scrollTop = chatRef.current.scrollHeight;
+          }
+        }, 100);
       } else {
-        throw new Error('Failed to process voice input');
+        throw new Error('Could not process voice message');
       }
     } catch (error) {
       console.error('Error processing voice input:', error);
@@ -225,13 +220,6 @@ function ChatWidget() {
       };
       
       setMessages(prev => [...prev, errorMessage]);
-      
-      // Ensure scroll happens after voice error message is added
-      setTimeout(() => {
-        if (chatRef.current) {
-          chatRef.current.scrollTop = chatRef.current.scrollHeight;
-        }
-      }, 100);
     } finally {
       setLoading(false);
     }
