@@ -68,6 +68,7 @@ class RAGEngine:
         - uleiuri_esentiale (essential oils)
         - farma (pharmacy products)
         - copii (children products and services)
+        - auto_service (auto repair and maintenance services)
         """
         
         # Initialize OpenAI client
@@ -128,6 +129,9 @@ class RAGEngine:
                     file_path = self.available_files[name]
                     with open(file_path, 'r', encoding='utf-8') as f:
                         data = json.load(f)
+                        # Handle both list and single-object JSON files
+                        if isinstance(data, dict):
+                            data = [data]  # Convert single object to list
                         if isinstance(data, list):
                             # Cache the data
                             self.data_cache[file_name] = data
@@ -154,19 +158,32 @@ class RAGEngine:
         
         for product in products:
             # Skip empty products
-            if not product.get("name"):
+            if not (product.get("name") or product.get("title")):
                 continue
                 
-            formatted_product = {
-                "id": hash(product.get("url", "") + product.get("name", "")),  # Generate unique ID
-                "name": product.get("name", ""),
-                "price": product.get("price", ""),
-                "description": product.get("description", ""),
-                "short_description": product.get("short_description", ""),
-                "permalink": product.get("url", ""),
-                "images": [{"src": product.get("image_url", "")}] if product.get("image_url") else [],
-                "categories": [{"name": product.get("category", "")}] if product.get("category") else []
-            }
+            # Special handling for auto service data
+            if product.get("category") == "Auto Service":
+                formatted_product = {
+                    "id": hash(product.get("url", "") + product.get("title", "")),  # Generate unique ID
+                    "name": product.get("title", ""),
+                    "price": product.get("price", ""),
+                    "description": product.get("description", ""),
+                    "short_description": product.get("description", ""),  # Auto service uses description for both
+                    "permalink": product.get("url", ""),
+                    "images": [],  # Auto service data doesn't include images yet
+                    "categories": [{"name": "Auto Service"}]
+                }
+            else:
+                formatted_product = {
+                    "id": hash(product.get("url", "") + product.get("name", "")),  # Generate unique ID
+                    "name": product.get("name", ""),
+                    "price": product.get("price", ""),
+                    "description": product.get("description", ""),
+                    "short_description": product.get("short_description", ""),
+                    "permalink": product.get("url", ""),
+                    "images": [{"src": product.get("image_url", "")}] if product.get("image_url") else [],
+                    "categories": [{"name": product.get("category", "")}] if product.get("category") else []
+                }
             
             formatted_products.append(formatted_product)
             
@@ -240,7 +257,8 @@ class RAGEngine:
             "ulei_de_masline_bio": ["ulei_de_masline_bio"],
             "uleiuri_esentiale": ["uleiuri_esentiale_alimentare_bio"],
             "farma": ["farma"],
-            "copii": ["copii"]
+            "copii": ["copii"],
+            "auto_service": ["auto_service"]
         }
         
         # Get file names for the category
@@ -446,6 +464,9 @@ class RAGEngine:
                     context += "Explain our tutoring and educational support services. "
                 elif category == 'Copii':
                     context += "Describe our children's products and services. "
+                elif category == 'Auto Service':
+                    context += "Explain our auto repair and maintenance services. "
+                    context += "Include information about service locations and availability. "
                 
                 context += "\nInclude pricing information where available. "
                 context += "Be enthusiastic and welcoming! "

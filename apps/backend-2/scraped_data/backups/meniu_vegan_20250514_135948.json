@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Meniu vegetarian  – supa, fel principal, desert",
+    "url": "https://vogo.family/product/daily-vegan-menu/",
+    "price": "98,00",
+    "category": "Meniu Vegan",
+    "image_url": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/01/meniu-vegan.png?fit=600%2C877&ssl=1",
+    "description": ""
+  },
+  {
+    "name": "Program nutritie",
+    "url": "https://vogo.family/product/program-nutritie/",
+    "price": ",,,,,,",
+    "category": "Meniu Vegan",
+    "image_url": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/02/nutrition-program-2-1.png?fit=600%2C301&ssl=1",
+    "description": ""
+  },
+  {
+    "name": "Shaorma vegana",
+    "url": "https://vogo.family/product/shaorma-vegana/",
+    "price": "98,0098,00.70,0070,00.",
+    "category": "Meniu Vegan",
+    "image_url": "https://i0.wp.com/vogo.family/wp-content/uploads/2025/02/vegan-shawarma.png?fit=600%2C877&ssl=1",
+    "description": ""
+  }
+]
