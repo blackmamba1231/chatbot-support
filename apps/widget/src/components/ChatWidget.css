@@ -24,8 +24,8 @@
 /* Widget container */
 .vogo-chat-widget-container {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 80px;
+  left: 20px;
   z-index: 999999;
   font-size: 16px;
   transition: all 0.3s ease;
@@ -203,7 +203,7 @@
 .vogo-chat-close-button {
   width: 30px;
   height: 30px;
-  background: rgba(255, 255, 255, 0.2);
+  background: none;
   color: white;
   border: none;
   border-radius: 50%;
