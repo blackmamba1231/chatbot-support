@@ -7,6 +7,7 @@ import QuickResponses from './QuickResponses';
 import VoiceInput from './VoiceInput';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+console.log('API_URL:', API_URL);
 
 function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +24,10 @@ function ChatWidget() {
   // Load quick responses on mount
   useEffect(() => {
     fetchQuickResponses();
+    setUserInfo({
+      userId: `user-${Math.random().toString(36).substring(2, 9)}`,
+      sessionId: `session-${Math.random().toString(36).substring(2, 9)}`
+    });
   }, []);
 
   // Scroll to bottom when messages change
@@ -36,6 +41,7 @@ function ChatWidget() {
   }, [messages, loading]);
 
   const fetchQuickResponses = async () => {
+    console.log('Fetching quick responses...');
     try {
       const response = await fetch(`${API_URL}/chat/quick-responses`);
       if (response.ok) {
@@ -156,9 +162,7 @@ function ChatWidget() {
     }
   };
 
-  const handleQuickResponse = (response) => {
-    handleSendMessage(response.text);
-  };
+  
 
   const handleVoiceInput = async (audioBlob) => {
     try {
