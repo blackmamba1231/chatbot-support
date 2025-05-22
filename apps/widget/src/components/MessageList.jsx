@@ -19,7 +19,7 @@ function MessageList({ messages }) {
           className={`vogo-chat-message ${message.sender === 'user' ? 'vogo-chat-message-user' : 'vogo-chat-message-bot'} ${message.isError ? 'vogo-chat-message-error' : ''}`}
         >
           {message.sender === 'bot' && (
-            <div className="vogo-chat-avatar">K</div>
+            <div className="vogo-chat-avatar">V</div>
           )}
           
           <div className="vogo-chat-message-content">

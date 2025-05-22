@@ -244,8 +244,7 @@ function ChatWidget() {
                 <MessageList messages={messages} />
               </div>
               <div className="vogo-chat-bottom">
-                <QuickResponses responses={quickResponses} onSelect={handleSendMessage} />
-                <div className="vogo-chat-input-container">
+                        <div className="vogo-chat-input-container">
                   <ChatInput onSendMessage={handleSendMessage} loading={loading} />
                   <VoiceInput onSendMessage={handleSendMessage} />
                 </div>
