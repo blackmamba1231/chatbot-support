@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ChatIcon from './icons/ChatIcon';
 import './ChatWidget.css';
 import ChatHeader from './ChatHeader';
 import MessageList from './MessageList';
@@ -254,7 +255,8 @@ function ChatWidget() {
         </div>
       ) : (
         <button className="vogo-chat-widget-button" onClick={toggleChat}>
-          💬
+          <span className="vogo-chat-widget-button-icon"><ChatIcon /></span>
+          <span className="vogo-chat-widget-button-text">Ask Vogo</span>
         </button>
       )}
     </div>

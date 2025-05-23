@@ -53,19 +53,35 @@
 
 /* Chat Button */
 .vogo-chat-widget-button {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: var(--vogo-primary);
+  width: 115px;
+  height: 45px;
+  border-radius: 25px;
+  background-color: green;
   color: white;
   border: none;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 8px;
   box-shadow: var(--vogo-shadow);
-  font-size: 24px;
+  padding: 0 16px;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vogo-chat-widget-button-icon {
+  display: flex;
+  align-items: center;
+}
+
+.vogo-chat-widget-button-icon .h-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.vogo-chat-widget-button-text {
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .vogo-chat-header-actions {
