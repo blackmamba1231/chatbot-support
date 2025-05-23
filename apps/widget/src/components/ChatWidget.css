@@ -166,7 +166,7 @@
 
 /* Chat Header */
 .vogo-chat-header {
-  background-color: var(--vogo-primary);
+  background-color: green;
   color: white;
   height: var(--vogo-header-height);
   display: flex;
@@ -202,7 +202,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: var(--vogo-secondary);
+  background-color:rgba(122, 214, 135, 0.7);
   color: white;
   display: flex;
   justify-content: center;
